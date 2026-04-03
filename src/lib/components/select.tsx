@@ -73,7 +73,7 @@ function SelectBase({ className, defaultValue, disabled = false, hint, id, label
           aria-expanded={open}
           aria-haspopup="listbox"
           className={cn(
-            'w-full appearance-none rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] px-3 py-1.5 pr-9 text-[0.88rem] text-[color:var(--text-main)] outline-none transition focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
+            'w-full appearance-none rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] px-3 py-1.5 pr-9 text-left text-[0.88rem] text-[color:var(--text-main)] outline-none transition focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
             disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer',
             className,
           )}
@@ -82,7 +82,7 @@ function SelectBase({ className, defaultValue, disabled = false, hint, id, label
           onClick={() => setOpen((current) => !current)}
           type="button"
         >
-          <span className={cn(selectedOption ? 'text-[color:var(--text-main)]' : 'text-[color:var(--text-muted)]')}>
+          <span className={cn('block text-left', selectedOption ? 'text-[color:var(--text-main)]' : 'text-[color:var(--text-muted)]')}>
             {selectedOption?.label ?? placeholder}
           </span>
         </button>
