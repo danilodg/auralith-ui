@@ -1,4 +1,4 @@
-import { GlassPanel, Tag } from '../../lib'
+import { CodeBlock, GlassPanel, Tag } from '../../lib'
 import { SectionHeader } from '../../lib/components/section-header'
 import { useLocale } from '../../locale-context'
 import type { ComponentDoc } from '../../types/docs'
@@ -70,9 +70,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
               <p className={sectionLabelClass}>{strings.docs.basicUsageLabel}</p>
             </div>
             <div className="px-6 py-5 sm:px-7">
-              <pre className="overflow-x-auto rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-2)] p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
-                <code>{doc.snippet}</code>
-              </pre>
+              <CodeBlock snippets={[{ code: doc.snippet, language: 'tsx' }]} />
             </div>
           </GlassPanel>
         </div>
@@ -138,9 +136,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
             {examples.map((example) => (
               <div key={example.title}>
                 <p className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-lg font-semibold text-[color:var(--text-main)]">{example.title}</p>
-                <pre className="mt-3 overflow-x-auto rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
-                  <code>{example.code}</code>
-                </pre>
+                <CodeBlock className="mt-3" snippets={[{ code: example.code, language: 'tsx' }]} />
               </div>
             ))}
           </div>

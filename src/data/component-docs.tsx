@@ -3,6 +3,7 @@ import {
   CalendarDays,
   CaseSensitive,
   CheckSquare,
+  Code2,
   ChevronDownSquare,
   Clock3,
   Hash,
@@ -17,7 +18,7 @@ import {
   Waypoints,
 } from 'lucide-react'
 
-import { Button, Card, Checkbox, DateInput, DropdownMenu, GlassPanel, Input, NumberInput, SectionLabel, Select, Tag, Textarea, TimeInput, Tooltip } from '../lib'
+import { Button, Card, Checkbox, CodeBlock, DateInput, DropdownMenu, GlassPanel, Input, NumberInput, SectionLabel, Select, Tag, Textarea, TimeInput, Tooltip } from '../lib'
 import { ModalPreview } from '../features/docs/modal-preview'
 import type { Language } from '../i18n'
 import type { ComponentDoc } from '../types/docs'
@@ -51,6 +52,15 @@ function getStructuredMeta(id: string, isPt: boolean) {
       anatomy: ['Tag'],
       parts: [{ name: 'Tag', description: isPt ? 'Chip de rotulo curto.' : 'Short label chip.' }],
       notes: isPt ? ['Ideal para stacks, categorias e estados leves.'] : ['Ideal for stacks, categories and lightweight states.'],
+    },
+    'code-block': {
+      anatomy: ['CodeBlock', 'CodeBlock.Root'],
+      parts: [
+        { name: 'snippets', description: isPt ? 'Lista de linguagens e codigos disponiveis no mesmo bloco.' : 'List of languages and code snippets available in the same block.' },
+        { name: 'showToneToggle', description: isPt ? 'Mostra o toggle entre modo colorido e cor unica.' : 'Shows the toggle between colorful and single-color mode.' },
+        { name: 'showLanguageTabs', description: isPt ? 'Exibe abas para alternar linguagem.' : 'Shows tabs to switch language.' },
+      ],
+      notes: isPt ? ['Use `showLanguageTabs={false}` quando houver apenas uma linguagem.'] : ['Use `showLanguageTabs={false}` when only one language is available.'],
     },
     input: {
       anatomy: ['Input.Root', 'Input.Label', 'Input.Field', 'Input.Hint'],
@@ -256,6 +266,54 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
         <Tag>react 19</Tag>
         <Tag>{isPt ? 'ui premium' : 'premium ui'}</Tag>
       </div>
+    ),
+  },
+  {
+    id: 'code-block',
+    name: 'CodeBlock',
+    category: 'typography',
+    icon: <Code2 size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Bloco de codigo com abas de linguagem e toggle entre modo colorido e cor unica.' : 'Code block with language tabs and toggle between colorful and single-color mode.',
+    source: 'src/lib/components/code-block.tsx',
+    importCode: "import { CodeBlock } from '@/lib'",
+    snippet: isPt ? `<CodeBlock
+  snippets={[
+    { language: 'tsx', code: '<Button>Salvar</Button>' },
+    { language: 'css', code: '.btn { border-radius: 8px; }' },
+  ]}
+/>` : `<CodeBlock
+  snippets={[
+    { language: 'tsx', code: '<Button>Save</Button>' },
+    { language: 'css', code: '.btn { border-radius: 8px; }' },
+  ]}
+/>`,
+    href: '#components/code-block',
+    urlText: 'components/code-block',
+    preview: (
+      <CodeBlock
+        snippets={[
+          {
+            language: 'tsx',
+            code: isPt
+              ? `<Card>
+  <Input label="Email" />
+  <Button>Continuar</Button>
+</Card>`
+              : `<Card>
+  <Input label="Email" />
+  <Button>Continue</Button>
+</Card>`,
+          },
+          {
+            language: 'css',
+            code: `.stack {
+  display: grid;
+  gap: 8px;
+  border-radius: 8px;
+}`,
+          },
+        ]}
+      />
     ),
   },
   {

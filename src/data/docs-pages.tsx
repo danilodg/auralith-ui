@@ -1,6 +1,6 @@
 import { BookOpen, TerminalSquare } from 'lucide-react'
 
-import { Card, GlassPanel, SectionLabel, Tag } from '../lib'
+import { Card, CodeBlock, GlassPanel, SectionLabel, Tag } from '../lib'
 import { SectionHeader } from '../lib/components/section-header'
 import type { Language } from '../i18n'
 import type { DocPage } from '../types/docs'
@@ -35,18 +35,22 @@ export function createDocsPages(language: Language): DocPage[] {
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">
                     {isPt ? 'Instalar pacote' : 'Install package'}
                   </p>
-                  <pre className="mt-2 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
-                    <code>npm install auralith-ui</code>
-                  </pre>
+                  <CodeBlock
+                    className="mt-2"
+                    showLanguageTabs={false}
+                    snippets={[{ code: 'npm install auralith-ui', language: 'bash', label: 'Bash' }]}
+                  />
                 </div>
 
                 <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">
                     {isPt ? 'Incluir estilos' : 'Include styles'}
                   </p>
-                  <pre className="mt-2 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
-                    <code>{"@import 'auralith-ui/styles.css';"}</code>
-                  </pre>
+                  <CodeBlock
+                    className="mt-2"
+                    showLanguageTabs={false}
+                    snippets={[{ code: "@import 'auralith-ui/styles.css';", language: 'css', label: 'CSS' }]}
+                  />
                 </div>
               </div>
             </GlassPanel>
@@ -109,19 +113,23 @@ export function createDocsPages(language: Language): DocPage[] {
               <div className="mt-8 space-y-4">
                 <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{isPt ? 'Exemplo de import' : 'Example import'}</p>
-                  <pre className="mt-2 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
-                    <code>{"import { Button, Card, Input } from 'auralith-ui'"}</code>
-                  </pre>
+                  <CodeBlock
+                    className="mt-2"
+                    showLanguageTabs={false}
+                    snippets={[{ code: "import { Button, Card, Input } from 'auralith-ui'", language: 'ts', label: 'TS' }]}
+                  />
                 </div>
 
                 <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{isPt ? 'Compor patterns' : 'Compose patterns'}</p>
-                  <pre className="mt-2 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
-                    <code>{`<Card>
+                  <CodeBlock
+                    className="mt-2"
+                    showLanguageTabs={false}
+                    snippets={[{ code: `<Card>
   <Input label="Email" />
   <Button>Continue</Button>
-</Card>`}</code>
-                  </pre>
+</Card>`, language: 'tsx', label: 'TSX' }]}
+                  />
                 </div>
               </div>
             </GlassPanel>

@@ -1,4 +1,4 @@
-import { GlassPanel, Tag } from '../../lib'
+import { CodeBlock, GlassPanel, Tag } from '../../lib'
 import { ModalDetailView } from './modal-detail-view'
 import { SectionHeader } from '../../lib/components/section-header'
 import { useLocale } from '../../locale-context'
@@ -59,18 +59,14 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
 
             <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2 sm:p-2">
               <p className={sectionTitleClassName}>{strings.docs.basicUsageLabel}</p>
-              <pre className="mt-3 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
-                <code>{doc.snippet}</code>
-              </pre>
+              <CodeBlock className="mt-3" snippets={[{ code: doc.snippet, language: 'tsx' }]} />
             </div>
           </div>
 
           <div className="space-y-6">
             <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2 sm:p-2">
               <p className={sectionTitleClassName}>{strings.docs.importLabel}</p>
-              <pre className="mt-3 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--accent-soft)]">
-                <code>{doc.importCode}</code>
-              </pre>
+              <CodeBlock className="mt-3" snippets={[{ code: doc.importCode, language: 'ts' }]} />
             </div>
 
             {doc.anatomy?.length ? (
@@ -100,9 +96,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
               {examples.map((example, index) => (
                 <div className={index === 0 ? '' : 'border-t border-[color:var(--card-border)] pt-5'} key={example.title}>
                   <p className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-lg font-semibold text-[color:var(--text-main)]">{example.title}</p>
-                  <pre className="mt-3 overflow-x-auto rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
-                    <code>{example.code}</code>
-                  </pre>
+                  <CodeBlock className="mt-3" snippets={[{ code: example.code, language: 'tsx' }]} />
                 </div>
               ))}
             </div>

@@ -1,4 +1,4 @@
-import { Card, GlassPanel, Tag } from '../../lib'
+import { Card, CodeBlock, GlassPanel, Tag } from '../../lib'
 import { useLocale } from '../../locale-context'
 import type { ComponentDoc } from '../../types/docs'
 
@@ -42,9 +42,7 @@ export function ComponentDocCard({ doc }: ComponentDocCardProps) {
           </div>
           <div className="mt-4 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2">
             <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{strings.docs.snippetLabel}</p>
-            <pre className="mt-2 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
-              <code>{doc.snippet}</code>
-            </pre>
+            <CodeBlock className="mt-2" snippets={[{ code: doc.snippet, language: 'tsx' }]} />
           </div>
         </div>
 
