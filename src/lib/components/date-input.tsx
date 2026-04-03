@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { HTMLAttributes, LabelHTMLAttributes } from 'react'
+import { createPortal } from 'react-dom'
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 
 import { cn } from '../utils/cn'
@@ -110,11 +111,13 @@ function DateInputBase({
 }: DateInputProps) {
   const fieldId = id ?? label?.toLowerCase().replace(/\s+/g, '-') ?? 'date-input'
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const panelRef = useRef<HTMLDivElement | null>(null)
   const isControlled = value !== undefined
   const isPt = typeof document !== 'undefined' ? document.documentElement.lang.toLowerCase().startsWith('pt') : false
   const locale = isPt ? 'pt-BR' : 'en-US'
 
   const [open, setOpen] = useState(false)
+  const [panelPosition, setPanelPosition] = useState<{ left: number; top: number; width: number } | null>(null)
   const [internalSingleValue, setInternalSingleValue] = useState(typeof defaultValue === 'string' ? defaultValue : '')
   const [internalRangeValue, setInternalRangeValue] = useState<DateRangeValue>(normalizeRange(defaultValue))
   const [viewMonth, setViewMonth] = useState(() => {
@@ -135,9 +138,28 @@ function DateInputBase({
     ? (isControlled ? normalizeRange(value) : internalRangeValue)
     : RANGE_EMPTY
 
+  function updatePanelPosition() {
+    const trigger = containerRef.current
+    if (!trigger) return
+
+    const rect = trigger.getBoundingClientRect()
+    const viewportPadding = 8
+    const preferredWidth = mode === 'range' ? 576 : 288
+    const width = Math.min(preferredWidth, Math.max(280, window.innerWidth - viewportPadding * 2))
+    const maxLeft = window.innerWidth - width - viewportPadding
+    const left = Math.max(viewportPadding, Math.min(rect.left, maxLeft))
+
+    setPanelPosition({
+      left,
+      top: rect.bottom + 6,
+      width,
+    })
+  }
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (!containerRef.current || containerRef.current.contains(event.target as Node)) return
+      const target = event.target as Node
+      if (containerRef.current?.contains(target) || panelRef.current?.contains(target)) return
       setOpen(false)
     }
 
@@ -155,6 +177,24 @@ function DateInputBase({
       window.removeEventListener('keydown', handleEscape)
     }
   }, [])
+
+  useEffect(() => {
+    if (!open) return
+
+    updatePanelPosition()
+
+    function handleLayoutUpdate() {
+      updatePanelPosition()
+    }
+
+    window.addEventListener('resize', handleLayoutUpdate)
+    window.addEventListener('scroll', handleLayoutUpdate, true)
+
+    return () => {
+      window.removeEventListener('resize', handleLayoutUpdate)
+      window.removeEventListener('scroll', handleLayoutUpdate, true)
+    }
+  }, [mode, open])
 
   const singlePresets = useMemo(
     () => {
@@ -236,7 +276,7 @@ function DateInputBase({
     const weekdayLabels = isPt ? ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
     return (
-      <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] p-2">
+      <div className="w-[272px] max-w-full rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] p-2">
         <p className="mb-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-[color:var(--text-soft)]">{monthLabel}</p>
         <div className="mb-1 grid grid-cols-7 gap-1">
           {weekdayLabels.map((weekday) => (
@@ -309,14 +349,18 @@ function DateInputBase({
           <CalendarDays size={14} />
         </span>
 
-        {open ? (
-          <div
-            className={cn(
-              'absolute left-0 top-[calc(100%+0.4rem)] z-[120] overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(9,16,43,0.97)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]',
-              mode === 'range' ? 'w-[min(650px,calc(100vw-2rem))]' : 'w-[min(320px,calc(100vw-2rem))]',
-            )}
-            id={`${fieldId}-calendar`}
-          >
+        {open && panelPosition
+          ? createPortal(
+              <div
+                className="fixed z-[220] overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(9,16,43,0.97)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
+                id={`${fieldId}-calendar`}
+                ref={panelRef}
+                style={{
+                  left: `${panelPosition.left}px`,
+                  top: `${panelPosition.top}px`,
+                  width: `${panelPosition.width}px`,
+                }}
+              >
             <div className="mb-2 flex items-center justify-between">
               <p className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-[color:var(--text-muted)]">
                 {mode === 'single' ? (isPt ? 'Data unica' : 'Single date') : (isPt ? 'Periodo' : 'Date range')}
@@ -364,8 +408,10 @@ function DateInputBase({
               {renderCalendar(viewMonth)}
               {mode === 'range' ? renderCalendar(addMonths(viewMonth, 1)) : null}
             </div>
-          </div>
-        ) : null}
+              </div>,
+              document.body,
+            )
+          : null}
       </div>
       {hint ? <span className="text-sm text-[color:var(--text-muted)]">{hint}</span> : null}
     </label>
