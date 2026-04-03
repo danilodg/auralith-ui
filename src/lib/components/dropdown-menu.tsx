@@ -1,7 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 
 import { cloneElement, createContext, isValidElement, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactElement, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, HTMLAttributes, MutableRefObject, ReactElement, ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { ChevronDown } from 'lucide-react'
 
 import { cn } from '../utils/cn'
@@ -9,6 +10,7 @@ import { cn } from '../utils/cn'
 type DropdownMenuContextValue = {
   open: boolean
   setOpen: (nextOpen: boolean) => void
+  containerRef: MutableRefObject<HTMLDivElement | null>
 }
 
 const DropdownMenuContext = createContext<DropdownMenuContextValue | null>(null)
@@ -38,7 +40,7 @@ function DropdownMenuRoot({ children, defaultOpen = false }: { children: ReactNo
     return () => window.removeEventListener('mousedown', handlePointerDown)
   }, [])
 
-  const value = useMemo(() => ({ open, setOpen }), [open])
+  const value = useMemo(() => ({ open, setOpen, containerRef }), [open])
 
   return (
     <DropdownMenuContext.Provider value={value}>
@@ -95,20 +97,58 @@ function DropdownMenuTrigger({ asChild = false, children, className, onClick, ..
 }
 
 function DropdownMenuContent({ children, className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  const { open } = useDropdownMenuContext()
+  const { containerRef, open } = useDropdownMenuContext()
+  const [position, setPosition] = useState<{ left: number; top: number; width: number } | null>(null)
+
+  useEffect(() => {
+    if (!open) return
+
+    function updatePosition() {
+      const anchor = containerRef.current
+      if (!anchor) return
+
+      const rect = anchor.getBoundingClientRect()
+      const viewportPadding = 8
+      const width = Math.max(220, rect.width)
+      const maxLeft = window.innerWidth - width - viewportPadding
+
+      setPosition({
+        left: Math.max(viewportPadding, Math.min(rect.left, maxLeft)),
+        top: rect.bottom + 10,
+        width,
+      })
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition, true)
+
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition, true)
+    }
+  }, [containerRef, open])
 
   if (!open) return null
 
-  return (
+  if (!position) return null
+
+  return createPortal(
     <div
       className={cn(
-        'absolute left-0 top-[calc(100%+0.75rem)] z-[120] min-w-[260px] rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]',
+        'fixed z-[260] min-w-[260px] rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]',
         className,
       )}
+      style={{
+        left: `${position.left}px`,
+        top: `${position.top}px`,
+        width: `${position.width}px`,
+      }}
       {...props}
     >
       {children}
-    </div>
+    </div>,
+    document.body,
   )
 }
 

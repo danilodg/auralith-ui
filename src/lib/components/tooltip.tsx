@@ -1,13 +1,15 @@
 /* eslint-disable react-refresh/only-export-components */
 
-import { cloneElement, createContext, isValidElement, useContext, useMemo, useState } from 'react'
-import type { HTMLAttributes, ReactElement, ReactNode } from 'react'
+import { cloneElement, createContext, isValidElement, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import type { HTMLAttributes, MutableRefObject, ReactElement, ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 
 import { cn } from '../utils/cn'
 
 type TooltipContextValue = {
   open: boolean
   setOpen: (nextOpen: boolean) => void
+  anchorRef: MutableRefObject<HTMLSpanElement | null>
 }
 
 const TooltipContext = createContext<TooltipContextValue | null>(null)
@@ -24,9 +26,10 @@ function useTooltipContext() {
 
 function TooltipRoot({ children, defaultOpen = false }: { children: ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen)
-  const value = useMemo(() => ({ open, setOpen }), [open])
+  const anchorRef = useRef<HTMLSpanElement | null>(null)
+  const value = useMemo(() => ({ open, setOpen, anchorRef }), [open])
 
-  return <TooltipContext.Provider value={value}><span className="relative inline-flex">{children}</span></TooltipContext.Provider>
+  return <TooltipContext.Provider value={value}><span className="relative inline-flex" ref={anchorRef}>{children}</span></TooltipContext.Provider>
 }
 
 function TooltipTrigger({ asChild = false, children }: { asChild?: boolean; children: ReactNode }) {
@@ -64,20 +67,52 @@ function TooltipTrigger({ asChild = false, children }: { asChild?: boolean; chil
 }
 
 function TooltipContent({ children, className, ...props }: HTMLAttributes<HTMLSpanElement>) {
-  const { open } = useTooltipContext()
+  const { anchorRef, open } = useTooltipContext()
+  const [position, setPosition] = useState<{ left: number; top: number } | null>(null)
 
-  return (
+  useEffect(() => {
+    if (!open) return
+
+    function updatePosition() {
+      const anchor = anchorRef.current
+      if (!anchor) return
+
+      const rect = anchor.getBoundingClientRect()
+      setPosition({
+        left: rect.left + rect.width / 2,
+        top: rect.bottom + 10,
+      })
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition, true)
+
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition, true)
+    }
+  }, [anchorRef, open])
+
+  if (!position) return null
+
+  return createPortal(
     <span
       className={cn(
-        'pointer-events-none absolute left-1/2 top-[calc(100%+0.75rem)] z-[120] w-max max-w-[220px] -translate-x-1/2 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] px-3 py-2 text-xs leading-5 text-[color:var(--text-soft)] shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px] transition',
+        'pointer-events-none fixed z-[260] w-max max-w-[220px] -translate-x-1/2 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] px-3 py-2 text-xs leading-5 text-[color:var(--text-soft)] shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px] transition',
         open ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0',
         className,
       )}
       role="tooltip"
+      style={{
+        left: `${position.left}px`,
+        top: `${position.top}px`,
+      }}
       {...props}
     >
       {children}
-    </span>
+    </span>,
+    document.body,
   )
 }
 
