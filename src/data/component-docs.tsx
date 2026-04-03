@@ -1,0 +1,544 @@
+import {
+  BetweenHorizontalStart,
+  CaseSensitive,
+  ChevronDownSquare,
+  Mail,
+  MessageSquareQuote,
+  MousePointerClick,
+  PanelsTopLeft,
+  SquareStack,
+  Tags,
+  TextCursorInput,
+  Waypoints,
+} from 'lucide-react'
+
+import { Button, Card, DropdownMenu, GlassPanel, Input, SectionLabel, Tag, Textarea, Tooltip } from '../lib'
+import { ModalPreview } from '../features/docs/modal-preview'
+import type { Language } from '../i18n'
+import type { ComponentDoc } from '../types/docs'
+
+function getStructuredMeta(id: string, isPt: boolean) {
+  const map = {
+    button: {
+      anatomy: isPt ? ['Button'] : ['Button'],
+      parts: [
+        { name: isPt ? 'variant' : 'variant', description: isPt ? 'Define o estilo visual entre primario e secundario.' : 'Defines the visual style between primary and secondary.' },
+        { name: isPt ? 'children' : 'children', description: isPt ? 'Conteudo visivel do botao.' : 'Visible button content.' },
+      ],
+      notes: isPt ? ['Use para acoes principais e secundarias.', 'A API simples continua sendo a forma recomendada aqui.'] : ['Use for primary and secondary actions.', 'The simple API remains the recommended approach here.'],
+    },
+    'glass-panel': {
+      anatomy: ['GlassPanel.Root', 'GlassPanel.Header', 'GlassPanel.Title', 'GlassPanel.Description'],
+      parts: [
+        { name: 'GlassPanel.Root', description: isPt ? 'Container principal do painel.' : 'Main panel container.' },
+        { name: 'GlassPanel.Header', description: isPt ? 'Agrupa titulo e descricao.' : 'Groups title and description.' },
+        { name: 'GlassPanel.Title', description: isPt ? 'Titulo principal do painel.' : 'Primary panel title.' },
+        { name: 'GlassPanel.Description', description: isPt ? 'Texto de apoio do painel.' : 'Supporting panel copy.' },
+      ],
+      notes: isPt ? ['Prefira a API composta para blocos editoriais e hero surfaces.'] : ['Prefer the compositional API for editorial blocks and hero surfaces.'],
+    },
+    'section-label': {
+      anatomy: ['SectionLabel'],
+      parts: [{ name: 'SectionLabel', description: isPt ? 'Eyebrow tecnico simples.' : 'Simple technical eyebrow.' }],
+      notes: isPt ? ['Componente de uso direto, sem necessidade de subpartes.'] : ['Direct-use component, no subparts needed.'],
+    },
+    tag: {
+      anatomy: ['Tag'],
+      parts: [{ name: 'Tag', description: isPt ? 'Chip de rotulo curto.' : 'Short label chip.' }],
+      notes: isPt ? ['Ideal para stacks, categorias e estados leves.'] : ['Ideal for stacks, categories and lightweight states.'],
+    },
+    input: {
+      anatomy: ['Input.Root', 'Input.Label', 'Input.Field', 'Input.Hint'],
+      parts: [
+        { name: 'Input.Root', description: isPt ? 'Wrapper do campo.' : 'Field wrapper.' },
+        { name: 'Input.Label', description: isPt ? 'Legenda principal do campo.' : 'Primary field label.' },
+        { name: 'Input.Field', description: isPt ? 'Input com suporte a icon e adornment.' : 'Input element with icon and adornment support.' },
+        { name: 'Input.Hint', description: isPt ? 'Texto de apoio abaixo do campo.' : 'Supporting copy below the field.' },
+      ],
+      notes: isPt ? ['Use a composicao quando precisar de mais controle de estrutura.'] : ['Use composition when you need more structure control.'],
+    },
+    textarea: {
+      anatomy: ['Textarea.Root', 'Textarea.Label', 'Textarea.Field', 'Textarea.Hint', 'Textarea.Footer'],
+      parts: [
+        { name: 'Textarea.Root', description: isPt ? 'Wrapper do campo multilinha.' : 'Multiline field wrapper.' },
+        { name: 'Textarea.Label', description: isPt ? 'Legenda do textarea.' : 'Textarea label.' },
+        { name: 'Textarea.Field', description: isPt ? 'Area de texto principal.' : 'Primary textarea element.' },
+        { name: 'Textarea.Hint', description: isPt ? 'Texto de ajuda.' : 'Help copy.' },
+        { name: 'Textarea.Footer', description: isPt ? 'Area para contadores ou acoes.' : 'Area for counters or actions.' },
+      ],
+      notes: isPt ? ['Footer e opcional e ajuda em formularios mais ricos.'] : ['Footer is optional and helps with richer forms.'],
+    },
+    card: {
+      anatomy: ['Card.Root', 'Card.Header', 'Card.Title', 'Card.Description', 'Card.Content', 'Card.Footer'],
+      parts: [
+        { name: 'Card.Root', description: isPt ? 'Container do card.' : 'Card container.' },
+        { name: 'Card.Header', description: isPt ? 'Topo para titulo e descricao.' : 'Top area for title and description.' },
+        { name: 'Card.Content', description: isPt ? 'Corpo principal do card.' : 'Main card body.' },
+        { name: 'Card.Footer', description: isPt ? 'Rodape para acoes e metadados.' : 'Footer for actions and metadata.' },
+      ],
+      notes: isPt ? ['Use a API composta em blocos mais editoriais.', 'A API simples continua disponivel para casos rapidos.'] : ['Use the compositional API for more editorial layouts.', 'The simple API remains available for quick cases.'],
+    },
+    modal: {
+      anatomy: ['Modal.Root', 'Modal.Trigger', 'Modal.Content', 'Modal.Header', 'Modal.Title', 'Modal.Description', 'Modal.Body', 'Modal.Footer', 'Modal.Close'],
+      parts: [
+        { name: 'Modal.Root', description: isPt ? 'Controla estado e contexto do dialog.' : 'Controls dialog state and context.' },
+        { name: 'Modal.Trigger', description: isPt ? 'Elemento que abre o modal.' : 'Element that opens the modal.' },
+        { name: 'Modal.Content', description: isPt ? 'Janela renderizada em portal.' : 'Portal-rendered dialog window.' },
+        { name: 'Modal.Close', description: isPt ? 'Fecha o modal dentro da composicao.' : 'Closes the modal inside the composition.' },
+      ],
+      notes: isPt ? ['Use esse padrao para confirmacao, detalhes e fluxos focados.'] : ['Use this pattern for confirmation, details and focused flows.'],
+    },
+    'dropdown-menu': {
+      anatomy: ['DropdownMenu.Root', 'DropdownMenu.Trigger', 'DropdownMenu.Content', 'DropdownMenu.Item', 'DropdownMenu.Separator'],
+      parts: [
+        { name: 'DropdownMenu.Root', description: isPt ? 'Controla o estado aberto/fechado.' : 'Controls the open/closed state.' },
+        { name: 'DropdownMenu.Trigger', description: isPt ? 'Aciona a abertura do menu.' : 'Triggers the menu opening.' },
+        { name: 'DropdownMenu.Item', description: isPt ? 'Acao individual da lista.' : 'Individual list action.' },
+      ],
+      notes: isPt ? ['Prefira esse componente para acoes curtas e contextuais.'] : ['Prefer this component for short and contextual actions.'],
+    },
+    tooltip: {
+      anatomy: ['Tooltip.Root', 'Tooltip.Trigger', 'Tooltip.Content'],
+      parts: [
+        { name: 'Tooltip.Root', description: isPt ? 'Controla o estado do tooltip.' : 'Controls tooltip state.' },
+        { name: 'Tooltip.Trigger', description: isPt ? 'Elemento alvo do hover/focus.' : 'Hover/focus target element.' },
+        { name: 'Tooltip.Content', description: isPt ? 'Conteudo contextual exibido.' : 'Displayed contextual content.' },
+      ],
+      notes: isPt ? ['Use para ajuda curta e contexto adicional, nao para conteudo longo.'] : ['Use for short help and extra context, not for long content.'],
+    },
+  } as const
+
+  return map[id as keyof typeof map] ?? { anatomy: [], parts: [], notes: [] }
+}
+
+export function createComponentDocs(language: Language): ComponentDoc[] {
+  const isPt = language === 'pt'
+
+  return [
+  {
+    id: 'button',
+    name: 'Button',
+    category: 'primitive',
+    icon: <MousePointerClick size={16} strokeWidth={1.8} />,
+    description: isPt ? 'CTA principal e secundario com pill radius, gradiente e elevacao leve.' : 'Primary and secondary CTA with pill radius, gradient and soft elevation.',
+    source: 'src/lib/components/button.tsx',
+    importCode: "import { Button } from '@/lib'",
+    snippet: isPt ? '<Button>Iniciar fluxo</Button>' : '<Button>Launch flow</Button>',
+    href: '#components/button',
+    urlText: 'components/button',
+    preview: (
+      <div className="flex flex-wrap gap-3">
+        <Button>{isPt ? 'Iniciar fluxo' : 'Launch flow'}</Button>
+        <Button variant="secondary">{isPt ? 'Secundario' : 'Secondary'}</Button>
+        <Button disabled>{isPt ? 'Desabilitado' : 'Disabled'}</Button>
+        <Button className="w-full sm:w-auto">{isPt ? 'CTA em largura total' : 'Full width CTA'}</Button>
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Botao primario' : 'Primary button',
+        code: isPt ? '<Button>Iniciar fluxo</Button>' : '<Button>Launch flow</Button>',
+      },
+      {
+        title: isPt ? 'Botao secundario' : 'Secondary button',
+        code: isPt ? '<Button variant="secondary">Secundario</Button>' : '<Button variant="secondary">Secondary</Button>',
+      },
+      {
+        title: isPt ? 'Botao desabilitado' : 'Disabled button',
+        code: isPt ? '<Button disabled>Desabilitado</Button>' : '<Button disabled>Disabled</Button>',
+      },
+    ],
+  },
+  {
+    id: 'glass-panel',
+    name: 'GlassPanel',
+    category: 'surface',
+    icon: <PanelsTopLeft size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Painel base com glassmorphism e partes compostas para header, titulo e descricao.' : 'Base panel with glassmorphism and composable parts for header, title and description.',
+    source: 'src/lib/components/glass-panel.tsx',
+    importCode: "import { GlassPanel } from '@/lib'",
+    snippet: isPt ? `<GlassPanel.Root className="p-2">
+  <GlassPanel.Header>
+    <GlassPanel.Title>Titulo</GlassPanel.Title>
+    <GlassPanel.Description>Descricao</GlassPanel.Description>
+  </GlassPanel.Header>
+</GlassPanel.Root>` : `<GlassPanel.Root className="p-2">
+  <GlassPanel.Header>
+    <GlassPanel.Title>Title</GlassPanel.Title>
+    <GlassPanel.Description>Description</GlassPanel.Description>
+  </GlassPanel.Header>
+</GlassPanel.Root>`,
+    href: '#components/glass-panel',
+    urlText: 'components/glass-panel',
+    preview: (
+      <GlassPanel.Root className="p-2">
+        <GlassPanel.Header>
+          <SectionLabel>{isPt ? 'Preview do painel' : 'Panel preview'}</SectionLabel>
+          <GlassPanel.Title className="mt-4">{isPt ? 'Bloco premium' : 'Premium block'}</GlassPanel.Title>
+          <GlassPanel.Description>
+            {isPt ? 'Superficie principal para blocos premium, auth containers e hero cards.' : 'Primary surface for premium blocks, auth containers and hero cards.'}
+          </GlassPanel.Description>
+        </GlassPanel.Header>
+      </GlassPanel.Root>
+    ),
+  },
+  {
+    id: 'section-label',
+    name: 'SectionLabel',
+    category: 'typography',
+    icon: <CaseSensitive size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Eyebrow tecnico com linha decorativa e tracking alto.' : 'Technical eyebrow with decorative line and high tracking.',
+    source: 'src/lib/components/section-label.tsx',
+    importCode: "import { SectionLabel } from '@/lib'",
+    snippet: isPt ? '<SectionLabel>Direcao do sistema</SectionLabel>' : '<SectionLabel>System direction</SectionLabel>',
+    href: '#components/section-label',
+    urlText: 'components/section-label',
+    preview: <SectionLabel>{isPt ? 'Direcao do sistema' : 'System direction'}</SectionLabel>,
+  },
+  {
+    id: 'tag',
+    name: 'Tag',
+    category: 'feedback',
+    icon: <Tags size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Chip tecnico para stacks, categorias e highlights.' : 'Technical chip for stacks, categories and highlights.',
+    source: 'src/lib/components/tag.tsx',
+    importCode: "import { Tag } from '@/lib'",
+    snippet: '<Tag>tailwind v4</Tag>',
+    href: '#components/tag',
+    urlText: 'components/tag',
+    preview: (
+      <div className="flex flex-wrap gap-2.5">
+        <Tag>tailwind v4</Tag>
+        <Tag>react 19</Tag>
+        <Tag>{isPt ? 'ui premium' : 'premium ui'}</Tag>
+      </div>
+    ),
+  },
+  {
+    id: 'input',
+    name: 'Input',
+    category: 'form',
+    icon: <TextCursorInput size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Campo com anatomia composta para root, label, field e hint, mantendo suporte a icones.' : 'Field with composable anatomy for root, label, field and hint, keeping icon support.',
+    source: 'src/lib/components/input.tsx',
+    importCode: "import { Input } from '@/lib'",
+    snippet: isPt ? `<Input.Root>
+  <Input.Label>Email profissional</Input.Label>
+  <Input.Field icon={<Mail />} placeholder="name@company.com" />
+  <Input.Hint>Campo principal do formulario.</Input.Hint>
+</Input.Root>` : `<Input.Root>
+  <Input.Label>Work email</Input.Label>
+  <Input.Field icon={<Mail />} placeholder="name@company.com" />
+  <Input.Hint>Main form field.</Input.Hint>
+</Input.Root>`,
+    href: '#components/input',
+    urlText: 'components/input',
+    preview: (
+      <Input.Root>
+        <Input.Label>{isPt ? 'Email profissional' : 'Work email'}</Input.Label>
+        <Input.Field icon={<Mail size={18} />} placeholder="name@company.com" type="email" />
+        <Input.Hint>{isPt ? 'Campo principal do formulario.' : 'Main form field.'}</Input.Hint>
+      </Input.Root>
+    ),
+  },
+  {
+    id: 'textarea',
+    name: 'Textarea',
+    category: 'form',
+    icon: <BetweenHorizontalStart size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Area de texto com estrutura composta para label, field, hint e footer.' : 'Textarea with composable structure for label, field, hint and footer.',
+    source: 'src/lib/components/textarea.tsx',
+    importCode: "import { Textarea } from '@/lib'",
+    snippet: isPt ? `<Textarea.Root>
+  <Textarea.Label>Resumo do projeto</Textarea.Label>
+  <Textarea.Field placeholder="Descreva o contexto..." />
+  <Textarea.Hint>Mensagem inicial.</Textarea.Hint>
+</Textarea.Root>` : `<Textarea.Root>
+  <Textarea.Label>Project brief</Textarea.Label>
+  <Textarea.Field placeholder="Describe the context..." />
+  <Textarea.Hint>Initial message.</Textarea.Hint>
+</Textarea.Root>`,
+    href: '#components/textarea',
+    urlText: 'components/textarea',
+    preview: (
+      <Textarea.Root>
+        <Textarea.Label>{isPt ? 'Resumo do projeto' : 'Project brief'}</Textarea.Label>
+        <Textarea.Field placeholder={isPt ? 'Descreva produto, prazo e direcao visual...' : 'Describe the product, timeline and visual direction...'} />
+        <Textarea.Hint>{isPt ? 'Mensagem inicial.' : 'Initial message.'}</Textarea.Hint>
+      </Textarea.Root>
+    ),
+  },
+  {
+    id: 'card',
+    name: 'Card',
+    category: 'surface',
+    icon: <SquareStack size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Card com API composta para header, title, description, content e footer.' : 'Card with composable API for header, title, description, content and footer.',
+    source: 'src/lib/components/card.tsx',
+    importCode: "import { Card } from '@/lib'",
+    snippet: isPt ? `<Card.Root variant="subtle">
+  <Card.Header>
+    <Card.Title>Titulo</Card.Title>
+    <Card.Description>Descricao</Card.Description>
+  </Card.Header>
+</Card.Root>` : `<Card.Root variant="subtle">
+  <Card.Header>
+    <Card.Title>Title</Card.Title>
+    <Card.Description>Description</Card.Description>
+  </Card.Header>
+</Card.Root>`,
+    href: '#components/card',
+    urlText: 'components/card',
+    preview: (
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Card.Root className="p-2" variant="subtle">
+          <Card.Header>
+            <Card.Title>{isPt ? 'Suave' : 'Subtle'}</Card.Title>
+            <Card.Description>{isPt ? 'Para blocos internos com menos peso visual.' : 'For inner blocks with less visual weight.'}</Card.Description>
+          </Card.Header>
+        </Card.Root>
+        <Card.Root className="p-2" variant="elevated">
+          <Card.Header>
+            <Card.Title>{isPt ? 'Elevado' : 'Elevated'}</Card.Title>
+            <Card.Description>{isPt ? 'Para chamadas com mais profundidade.' : 'For calls with more depth.'}</Card.Description>
+          </Card.Header>
+        </Card.Root>
+      </div>
+    ),
+  },
+  {
+    id: 'modal',
+    name: 'Modal',
+    category: 'overlay',
+    icon: <Waypoints size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Dialog composicional para fluxos focados, confirmacoes e detalhes.' : 'Composable dialog for focused flows, confirmations and details.',
+    source: 'src/lib/components/modal.tsx',
+    importCode: "import { Modal } from '@/lib'",
+    snippet: isPt ? `<Modal.Root>
+  <Modal.Trigger>Abrir modal</Modal.Trigger>
+  <Modal.Content>
+    <Modal.Header>
+      <Modal.Title>Detalhes</Modal.Title>
+      <Modal.Description>Descricao do dialog.</Modal.Description>
+    </Modal.Header>
+    <Modal.Body>Conteudo</Modal.Body>
+  </Modal.Content>
+</Modal.Root>` : `<Modal.Root>
+  <Modal.Trigger>Open modal</Modal.Trigger>
+  <Modal.Content>
+    <Modal.Header>
+      <Modal.Title>Details</Modal.Title>
+      <Modal.Description>Dialog description.</Modal.Description>
+    </Modal.Header>
+    <Modal.Body>Content</Modal.Body>
+  </Modal.Content>
+</Modal.Root>`,
+    href: '#components/modal',
+    urlText: 'components/modal',
+    preview: (
+      <ModalPreview isPt={isPt} />
+    ),
+    examples: [
+      {
+        title: isPt ? 'Modal composicional' : 'Composable modal',
+        code: isPt ? `<Modal.Root>
+  <Modal.Trigger>Abrir modal</Modal.Trigger>
+  <Modal.Content>
+    <Modal.Header>
+      <Modal.Title>Detalhes</Modal.Title>
+      <Modal.Description>Descricao do dialog.</Modal.Description>
+    </Modal.Header>
+    <Modal.Body>Conteudo</Modal.Body>
+    <Modal.Footer>
+      <Modal.Close>Fechar</Modal.Close>
+    </Modal.Footer>
+  </Modal.Content>
+</Modal.Root>` : `<Modal.Root>
+  <Modal.Trigger>Open modal</Modal.Trigger>
+  <Modal.Content>
+    <Modal.Header>
+      <Modal.Title>Details</Modal.Title>
+      <Modal.Description>Dialog description.</Modal.Description>
+    </Modal.Header>
+    <Modal.Body>Content</Modal.Body>
+    <Modal.Footer>
+      <Modal.Close>Close</Modal.Close>
+    </Modal.Footer>
+  </Modal.Content>
+</Modal.Root>`,
+      },
+      {
+        title: isPt ? 'Modo controlado' : 'Controlled mode',
+        code: isPt ? `<Modal.Root open={open} onOpenChange={setOpen}>
+  <Modal.Trigger>Abrir</Modal.Trigger>
+  <Modal.Content>
+    <Modal.Header>
+      <Modal.Title>Detalhes controlados</Modal.Title>
+      <Modal.Description>Estado controlado por fora.</Modal.Description>
+    </Modal.Header>
+    <Modal.Body>Conteudo</Modal.Body>
+  </Modal.Content>
+</Modal.Root>` : `<Modal.Root open={open} onOpenChange={setOpen}>
+  <Modal.Trigger>Open</Modal.Trigger>
+  <Modal.Content>
+    <Modal.Header>
+      <Modal.Title>Controlled details</Modal.Title>
+      <Modal.Description>State controlled from outside.</Modal.Description>
+    </Modal.Header>
+    <Modal.Body>Content</Modal.Body>
+  </Modal.Content>
+</Modal.Root>`,
+      },
+      {
+        title: isPt ? 'Confirmacao destrutiva' : 'Destructive confirmation',
+        code: isPt ? `<Modal.Root>
+  <Modal.Trigger>Excluir item</Modal.Trigger>
+  <Modal.Content>
+    <Modal.Header>
+      <Modal.Title>Excluir projeto?</Modal.Title>
+      <Modal.Description>Essa acao nao pode ser desfeita.</Modal.Description>
+    </Modal.Header>
+    <Modal.Footer>
+      <Modal.Close>Cancelar</Modal.Close>
+      <Button>Confirmar</Button>
+    </Modal.Footer>
+  </Modal.Content>
+</Modal.Root>` : `<Modal.Root>
+  <Modal.Trigger>Delete item</Modal.Trigger>
+  <Modal.Content>
+    <Modal.Header>
+      <Modal.Title>Delete project?</Modal.Title>
+      <Modal.Description>This action cannot be undone.</Modal.Description>
+    </Modal.Header>
+    <Modal.Footer>
+      <Modal.Close>Cancel</Modal.Close>
+      <Button>Confirm</Button>
+    </Modal.Footer>
+  </Modal.Content>
+</Modal.Root>`,
+      },
+    ],
+    api: [
+      {
+        name: 'Modal.Root',
+        type: isPt ? 'container' : 'container',
+        description: isPt ? 'Aceita `defaultOpen`, `open` e `onOpenChange` para estado controlado ou nao controlado.' : 'Accepts `defaultOpen`, `open` and `onOpenChange` for controlled or uncontrolled state.',
+      },
+      {
+        name: 'Modal.Trigger',
+        type: isPt ? 'gatilho' : 'trigger',
+        description: isPt ? 'Abre o dialog. Pode usar `asChild` para envolver um botão customizado.' : 'Opens the dialog. Can use `asChild` to wrap a custom button.',
+      },
+      {
+        name: 'Modal.Content',
+        type: isPt ? 'conteudo' : 'content',
+        description: isPt ? 'Renderiza a janela em portal, fecha no overlay click e no `Escape`.' : 'Renders the window in a portal, closes on overlay click and `Escape`.',
+      },
+      {
+        name: 'Modal.Close',
+        type: isPt ? 'acao' : 'action',
+        description: isPt ? 'Fecha o modal dentro do footer ou em qualquer outra parte da composicao.' : 'Closes the modal inside the footer or anywhere else in the composition.',
+      },
+    ],
+  },
+  {
+    id: 'dropdown-menu',
+    name: 'DropdownMenu',
+    category: 'overlay',
+    icon: <ChevronDownSquare size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Menu dropdown composicional para acoes curtas, grupos e selecao contextual.' : 'Composable dropdown menu for short actions, groups and contextual selection.',
+    source: 'src/lib/components/dropdown-menu.tsx',
+    importCode: "import { DropdownMenu } from '@/lib'",
+    snippet: isPt ? `<DropdownMenu.Root>
+  <DropdownMenu.Trigger>Acoes</DropdownMenu.Trigger>
+  <DropdownMenu.Content>
+    <DropdownMenu.Item>Duplicar</DropdownMenu.Item>
+    <DropdownMenu.Item>Arquivar</DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu.Root>` : `<DropdownMenu.Root>
+  <DropdownMenu.Trigger>Actions</DropdownMenu.Trigger>
+  <DropdownMenu.Content>
+    <DropdownMenu.Item>Duplicate</DropdownMenu.Item>
+    <DropdownMenu.Item>Archive</DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu.Root>`,
+    href: '#components/dropdown-menu',
+    urlText: 'components/dropdown-menu',
+    preview: (
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>{isPt ? 'Acoes' : 'Actions'}</DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item description={isPt ? 'Criar uma copia do item atual.' : 'Create a copy of the current item.'}>
+            {isPt ? 'Duplicar' : 'Duplicate'}
+          </DropdownMenu.Item>
+          <DropdownMenu.Separator />
+          <DropdownMenu.Item description={isPt ? 'Mover item para o arquivo.' : 'Move item to archive.'}>
+            {isPt ? 'Arquivar' : 'Archive'}
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Dropdown composicional' : 'Composable dropdown',
+        code: isPt ? `<DropdownMenu.Root>
+  <DropdownMenu.Trigger>Acoes</DropdownMenu.Trigger>
+  <DropdownMenu.Content>
+    <DropdownMenu.Item>Duplicar</DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu.Root>` : `<DropdownMenu.Root>
+  <DropdownMenu.Trigger>Actions</DropdownMenu.Trigger>
+  <DropdownMenu.Content>
+    <DropdownMenu.Item>Duplicate</DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu.Root>`,
+      },
+    ],
+  },
+  {
+    id: 'tooltip',
+    name: 'Tooltip',
+    category: 'overlay',
+    icon: <MessageSquareQuote size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Tooltip composicional para contexto rapido, labels tecnicas e ajuda inline.' : 'Composable tooltip for quick context, technical labels and inline help.',
+    source: 'src/lib/components/tooltip.tsx',
+    importCode: "import { Tooltip } from '@/lib'",
+    snippet: isPt ? `<Tooltip.Root>
+  <Tooltip.Trigger>Passe o mouse</Tooltip.Trigger>
+  <Tooltip.Content>Ajuda</Tooltip.Content>
+</Tooltip.Root>` : `<Tooltip.Root>
+  <Tooltip.Trigger>Hover me</Tooltip.Trigger>
+  <Tooltip.Content>Help</Tooltip.Content>
+</Tooltip.Root>`,
+    href: '#components/tooltip',
+    urlText: 'components/tooltip',
+    preview: (
+      <div className="flex items-center gap-4">
+        <Tooltip.Root>
+          <Tooltip.Trigger asChild>
+            <button className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.04)] px-3 py-1.5 text-[0.78rem] text-[color:var(--text-main)]" type="button">
+              {isPt ? 'Passe o mouse' : 'Hover me'}
+            </button>
+          </Tooltip.Trigger>
+          <Tooltip.Content>{isPt ? 'Informacao contextual rapida.' : 'Quick contextual information.'}</Tooltip.Content>
+        </Tooltip.Root>
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Tooltip composicional' : 'Composable tooltip',
+        code: isPt ? `<Tooltip.Root>
+  <Tooltip.Trigger>Passe o mouse</Tooltip.Trigger>
+  <Tooltip.Content>Ajuda</Tooltip.Content>
+</Tooltip.Root>` : `<Tooltip.Root>
+  <Tooltip.Trigger>Hover me</Tooltip.Trigger>
+  <Tooltip.Content>Help</Tooltip.Content>
+</Tooltip.Root>`,
+      },
+    ],
+  },
+].map((doc) => ({
+  ...doc,
+  ...getStructuredMeta(doc.id, isPt),
+}))
+}

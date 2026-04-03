@@ -1,0 +1,66 @@
+{
+  "name": "auralith-ui",
+  "version": "0.1.0",
+  "description": "Premium React component library with Auralith visual system.",
+  "license": "MIT",
+  "homepage": "https://github.com/danilo-gomes/auralith-ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danilo-gomes/auralith-ui.git"
+  },
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/types/lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/lib/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/auralith-ui.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:lib": "vite build --mode lib && tsc -p tsconfig.lib.json",
+    "lint": "eslint .",
+    "pack:check": "npm run build:lib && npm pack --dry-run",
+    "prepublishOnly": "npm run build:lib",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^1.7.0"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/node": "^24.12.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@tailwindcss/vite": "^4.2.2",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.4.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.57.0",
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Lateral</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sidebar-collapsed: 64px;
+    --sidebar-expanded: 260px;
+    --bg-main: #0f1117;
+    --bg-sidebar: #16191f;
+    --bg-hover: #1e222b;
+    --bg-active: #1a2236;
+    --accent: #4f8ef7;
+    --accent-soft: rgba(79,142,247,0.12);
+    --text-primary: #e8eaf0;
+    --text-muted: #6b7280;
+    --border: rgba(255,255,255,0.06);
+    --radius: 10px;
+    --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ─── SIDEBAR ─── */
+  #sidebar {
+    width: var(--sidebar-collapsed);
+    min-width: var(--sidebar-collapsed);
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: width var(--transition);
+    overflow: hidden;
+    position: relative;
+    z-index: 100;
+  }
+
+  #sidebar.expanded {
+    width: var(--sidebar-expanded);
+  }
+
+  /* ─── LOGO / TOGGLE ─── */
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .toggle-btn {
+    width: 36px;
+    height: 36px;
+    background: var(--bg-hover);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex-shrink: 0;
+    transition: background var(--transition);
+  }
+  .toggle-btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .toggle-btn span {
+    display: block;
+    width: 16px;
+    height: 1.5px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: transform var(--transition), opacity var(--transition), width var(--transition);
+    transform-origin: center;
+  }
+  #sidebar.expanded .toggle-btn span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  #sidebar.expanded .toggle-btn span:nth-child(2) { opacity: 0; width: 0; }
+  #sidebar.expanded .toggle-btn span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  .logo-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity var(--transition), transform var(--transition);
+    letter-spacing: 0.04em;
+  }
+  #sidebar.expanded .logo-text { opacity: 1; transform: translateX(0); }
+
+  /* ─── NAV ─── */
+  .nav { flex: 1; padding: 10px 0; overflow-y: auto; overflow-x: hidden; }
+  .nav::-webkit-scrollbar { width: 3px; }
+  .nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ─── SECTION LABEL ─── */
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 14px 22px 4px;
+    white-space: nowrap;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity var(--transition), height var(--transition);
+  }
+  #sidebar.expanded .nav-section-label { opacity: 1; height: 32px; }
+
+  /* ─── NAV ITEM ─── */
+  .nav-item { position: relative; }
+
+  .nav-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px;
+    height: 44px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    text-align: left;
+    border-radius: var(--radius);
+    margin: 1px 6px;
+    width: calc(100% - 12px);
+    transition: background var(--transition), color var(--transition);
+    position: relative;
+  }
+  .nav-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .nav-btn.active { background: var(--bg-active); color: var(--accent); }
+  .nav-btn.active .icon-wrap { color: var(--accent); }
+
+  /* pill indicator */
+  .nav-btn::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 50%; transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    border-radius: 0 3px 3px 0;
+    transition: height var(--transition);
+  }
+  .nav-btn.active::before { height: 20px; }
+
+  .icon-wrap {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+    border-radius: 8px;
+    transition: background var(--transition);
+  }
+  .nav-btn:hover .icon-wrap { background: rgba(255,255,255,0.05); }
+  .nav-btn.active .icon-wrap { background: var(--accent-soft); }
+
+  .nav-label {
+    flex: 1;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity var(--transition), transform var(--transition);
+    pointer-events: none;
+  }
+  #sidebar.expanded .nav-label { opacity: 1; transform: translateX(0); }
+
+  .chevron {
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: opacity var(--transition), transform var(--transition);
+  }
+  #sidebar.expanded .chevron { opacity: 1; }
+  .nav-btn.open .chevron { transform: rotate(90deg); }
+
+  /* badge */
+  .badge {
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 20px;
+    padding: 1px 6px;
+    opacity: 0;
+    transition: opacity var(--transition);
+    flex-shrink: 0;
+  }
+  #sidebar.expanded .badge { opacity: 1; }
+
+  /* ─── SUBMENU (expanded sidebar) ─── */
+  .submenu {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .submenu.open { max-height: 400px; }
+
+  .sub-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: calc(100% - 12px);
+    margin: 1px 6px;
+    padding: 0 14px 0 54px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    text-align: left;
+    border-radius: var(--radius);
+    transition: background var(--transition), color var(--transition);
+    position: relative;
+    white-space: nowrap;
+  }
+  .sub-btn::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.4;
+    flex-shrink: 0;
+    margin-left: -2px;
+  }
+  .sub-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .sub-btn.active { color: var(--accent); }
+  .sub-btn.active::before { opacity: 1; background: var(--accent); }
+
+
+
+  /* ─── DIVIDER ─── */
+  .nav-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 14px;
+  }
+
+  /* ─── BOTTOM ─── */
+  .sidebar-footer {
+    padding: 10px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  #main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .topbar {
+    height: 60px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .topbar h1 {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  .breadcrumb {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+  .breadcrumb span { color: var(--text-primary); }
+
+  .content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+  }
+  .content h2 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .content p {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 560px;
+  }
+  .demo-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+    max-width: 700px;
+  }
+  .demo-card {
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .demo-card strong { display: block; color: var(--text-primary); margin-bottom: 4px; font-size: 14px; }
+
+  .hint {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    max-width: 460px;
+    line-height: 1.6;
+  }
+  .hint strong { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<nav id="sidebar">
+
+  <div class="sidebar-header">
+    <button class="toggle-btn" id="toggleBtn" title="Abrir/Fechar menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="logo-text">PAINEL</div>
+  </div>
+
+  <div class="nav" id="nav">
+
+    <div class="nav-section-label">Principal</div>
+
+    <!-- Item simples -->
+    <div class="nav-item">
+      <button class="nav-btn active" data-label="Dashboard" onclick="selectPage(this,'Dashboard')">
+        <div class="icon-wrap">🏠</div>
+        <span class="nav-label">Dashboard</span>
+      </button>
+    </div>
+
+    <!-- Item com submenu -->
+    <div class="nav-item">
+      <button class="nav-btn" data-label="Relatórios" onclick="toggleSub(this,'sub-relatorios')">
+        <div class="icon-wrap">📊</div>
+        <span class="nav-label">Relatórios</span>
+        <span class="badge">3</span>
+        <span class="chevron">›</span>
+      </button>
+      <div class="submenu" id="sub-relatorios">
+        <button class="sub-btn" onclick="selectPage(this,'Relatórios › Vendas')">Vendas</button>
+        <button class="sub-btn" onclick="selectPage(this,'Relatórios › Financeiro')">Financeiro</button>
+        <button class="sub-btn" onclick="selectPage(this,'Relatórios › Estoque')">Estoque</button>
+      </div>
+    </div>
+
+    <!-- Item com submenu -->
+    <div class="nav-item">
+      <button class="nav-btn" data-label="Clientes" onclick="toggleSub(this,'sub-clientes')">
+        <div class="icon-wrap">👥</div>
+        <span class="nav-label">Clientes</span>
+        <span class="chevron">›</span>
+      </button>
+      <div class="submenu" id="sub-clientes">
+        <button class="sub-btn" onclick="selectPage(this,'Clientes › Lista')">Lista</button>
+        <button class="sub-btn" onclick="selectPage(this,'Clientes › Segmentos')">Segmentos</button>
+        <button class="sub-btn" onclick="selectPage(this,'Clientes › Importar')">Importar</button>
+      </div>
+    </div>
+
+    <!-- Item com submenu -->
+    <div class="nav-item">
+      <button class="nav-btn" data-label="Produtos" onclick="toggleSub(this,'sub-produtos')">
+        <div class="icon-wrap">📦</div>
+        <span class="nav-label">Produtos</span>
+        <span class="chevron">›</span>
+      </button>
+      <div class="submenu" id="sub-produtos">
+        <button class="sub-btn" onclick="selectPage(this,'Produtos › Catálogo')">Catálogo</button>
+        <button class="sub-btn" onclick="selectPage(this,'Produtos › Categorias')">Categorias</button>
+        <button class="sub-btn" onclick="selectPage(this,'Produtos › Preços')">Preços</button>
+        <button class="sub-btn" onclick="selectPage(this,'Produtos › Estoque')">Estoque</button>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Sistema</div>
+
+    <div class="nav-item">
+      <button class="nav-btn" data-label="Configurações" onclick="toggleSub(this,'sub-config')">
+        <div class="icon-wrap">⚙️</div>
+        <span class="nav-label">Configurações</span>
+        <span class="chevron">›</span>
+      </button>
+      <div class="submenu" id="sub-config">
+        <button class="sub-btn" onclick="selectPage(this,'Configurações › Geral')">Geral</button>
+        <button class="sub-btn" onclick="selectPage(this,'Configurações › Permissões')">Permissões</button>
+        <button class="sub-btn" onclick="selectPage(this,'Configurações › Integrações')">Integrações</button>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <button class="nav-btn" data-label="Ajuda" onclick="selectPage(this,'Ajuda')">
+        <div class="icon-wrap">❓</div>
+        <span class="nav-label">Ajuda</span>
+      </button>
+    </div>
+
+  </div><!-- /nav -->
+
+  <div class="sidebar-footer">
+    <div class="nav-item">
+      <button class="nav-btn" data-label="Sair" onclick="selectPage(this,'Sair')">
+        <div class="icon-wrap">🚪</div>
+        <span class="nav-label">Sair</span>
+      </button>
+    </div>
+  </div>
+
+</nav>
+
+
+<!-- ═══ MAIN ═══ -->
+<div id="main">
+  <div class="topbar">
+    <h1 id="topbar-title">Dashboard</h1>
+    <div class="breadcrumb" id="breadcrumb">Início › <span>Dashboard</span></div>
+  </div>
+  <div class="content">
+    <h2 id="page-title">Dashboard</h2>
+    <p>Bem-vindo ao painel. Clique nos itens do menu lateral para navegar. <br>
+    No modo <strong>fechado</strong>, passe o mouse sobre um ícone para ver as subopções em um flyout. No modo <strong>aberto</strong>, clique para expandir o submenu inline.</p>
+
+    <div class="hint">
+      <strong>Dicas de uso:</strong><br>
+      • Clique no botão ☰ no topo para abrir/fechar o menu.<br>
+      • Fechado: passe o mouse sobre os ícones para ver as subopções.<br>
+      • Aberto: clique nos itens com ›  para expandir/recolher os submenus.
+    </div>
+
+    <div class="demo-cards" id="demo-cards">
+      <div class="demo-card"><strong>Vendas hoje</strong>R$ 12.480</div>
+      <div class="demo-card"><strong>Clientes</strong>4.312 ativos</div>
+      <div class="demo-card"><strong>Pedidos</strong>87 pendentes</div>
+      <div class="demo-card"><strong>Estoque</strong>2.901 itens</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const sidebar   = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('toggleBtn');
+
+  let expanded = false;
+
+  /* ── Toggle sidebar pelo botão ── */
+  toggleBtn.addEventListener('click', () => {
+    setExpanded(!expanded);
+  });
+
+  function setExpanded(state) {
+    expanded = state;
+    sidebar.classList.toggle('expanded', expanded);
+
+    // Ao fechar: recolhe todos os submenus
+    if (!expanded) {
+      closeAllSubmenus();
+    }
+  }
+
+  function closeAllSubmenus() {
+    document.querySelectorAll('.nav-btn.open').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.submenu.open').forEach(s => s.classList.remove('open'));
+  }
+
+  /* ── Clique num item com submenu ──
+     - Se o menu estiver fechado: abre o menu E abre o submenu
+     - Se estiver aberto: apenas abre/fecha o submenu
+  */
+  function toggleSub(btn, subId) {
+    const isOpen = btn.classList.contains('open');
+
+    // Se sidebar fechada, primeiro abre
+    if (!expanded) {
+      setExpanded(true);
+    }
+
+    // Fecha todos
+    closeAllSubmenus();
+
+    // Se não estava aberto (ou sidebar estava fechada), abre este
+    if (!isOpen || !expanded) {
+      btn.classList.add('open');
+      document.getElementById(subId).classList.add('open');
+    }
+  }
+
+  /* ── Selecionar página ── */
+  function selectPage(el, label) {
+    document.querySelectorAll('.nav-btn.active').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.sub-btn.active').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+
+    const parts = label.split(' › ');
+    document.getElementById('topbar-title').textContent = parts[parts.length - 1];
+    document.getElementById('page-title').textContent = parts[parts.length - 1];
+    document.getElementById('breadcrumb').innerHTML =
+      'Início › <span>' + label + '</span>';
+  }
+</script>
+</body>
+</html>

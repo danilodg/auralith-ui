@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+@import 'tailwindcss';
+
+@layer base {
+  :root {
+    --bg-base: #050916;
+    --text-main: #f8fbff;
+    --text-soft: #c5d0ef;
+    --text-muted: #94a3c7;
+    --accent-soft: #9be8ff;
+    --accent-line: #7ee7ff;
+    --accent-start: #6fe0ff;
+    --accent-mid: #687eff;
+    --accent-end: #8b66ff;
+    --accent-shadow: rgba(104, 126, 255, 0.34);
+    --panel-border: rgba(173, 208, 255, 0.18);
+    --panel-bg: linear-gradient(180deg, rgba(14, 23, 43, 0.8), rgba(7, 12, 26, 0.72));
+    --panel-shadow: 0 26px 80px rgba(3, 7, 18, 0.42);
+    --nav-border: rgba(173, 208, 255, 0.18);
+    --nav-bg: #111827;
+    --card-border: rgba(127, 160, 255, 0.24);
+    --card-bg: linear-gradient(180deg, rgba(29, 45, 108, 0.34), rgba(8, 14, 37, 0.18));
+    --input-bg: rgba(9, 16, 43, 0.52);
+    --input-border: rgba(255, 255, 255, 0.1);
+    --button-secondary-bg: rgba(8, 16, 34, 0.42);
+    --button-secondary-border: rgba(173, 208, 255, 0.18);
+    --button-secondary-text: #e7f0ff;
+    color-scheme: dark;
+    font-family: Outfit, 'Trebuchet MS', sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
+
+  ::selection {
+    background: rgba(111, 224, 255, 0.24);
+    color: var(--text-main);
+  }
+
+  .auralith-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(111, 224, 255, 0.34) rgba(255, 255, 255, 0.04);
+  }
+
+  .auralith-scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .auralith-scrollbar::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .auralith-scrollbar::-webkit-scrollbar-thumb {
+    border: 2px solid rgba(255, 255, 255, 0.04);
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(111, 224, 255, 0.62), rgba(104, 126, 255, 0.58));
+  }
+
+  .auralith-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(111, 224, 255, 0.78), rgba(139, 102, 255, 0.72));
+  }
+}
