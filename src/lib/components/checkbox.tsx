@@ -2,32 +2,49 @@
 
 import type { InputHTMLAttributes } from 'react'
 import type { HTMLAttributes, LabelHTMLAttributes } from 'react'
+import { Check } from 'lucide-react'
 
 import { cn } from '../utils/cn'
 
 export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string
+  framed?: boolean
   hint?: string
+  label?: string
 }
 
-function CheckboxBase({ className, hint, id, label, ...props }: CheckboxProps) {
+type CheckboxControlProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>
+
+function CheckboxControl({ className, ...props }: CheckboxControlProps) {
+  return (
+    <span className="relative mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center">
+      <input
+        className={cn(
+          'peer absolute inset-0 h-4 w-4 cursor-pointer appearance-none rounded-[6px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] outline-none transition focus:ring-1 focus:ring-cyan-300/20 checked:border-[color:var(--accent-line)] checked:bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))]',
+          className,
+        )}
+        type="checkbox"
+        {...props}
+      />
+      <Check className="pointer-events-none opacity-0 transition peer-checked:opacity-100" size={12} strokeWidth={2.4} />
+    </span>
+  )
+}
+
+function CheckboxBase({ className, framed = true, hint, id, label, ...props }: CheckboxProps) {
   const checkboxId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
 
   return (
-    <label className="grid gap-1.5" htmlFor={checkboxId}>
-      <span className="inline-flex items-start gap-2">
-        <input
-          className={cn(
-            'mt-0.5 h-4 w-4 rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] accent-[color:var(--accent-line)] outline-none transition focus:ring-1 focus:ring-cyan-300/20',
-            className,
-          )}
-          id={checkboxId}
-          type="checkbox"
-          {...props}
-        />
-        {label ? <span className="text-[0.85rem] text-[color:var(--text-main)]">{label}</span> : null}
+    <label className={cn('grid gap-1.5', className)} htmlFor={checkboxId}>
+      <span
+        className={cn(
+          'inline-flex items-center gap-2 rounded-[8px]',
+          framed ? 'border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] px-2 py-1.5' : 'px-0 py-0',
+        )}
+      >
+        <CheckboxControl id={checkboxId} {...props} />
+        {label ? <span className="text-[0.84rem] leading-5 text-[color:var(--text-main)]">{label}</span> : null}
       </span>
-      {hint ? <span className="pl-6 text-[0.78rem] text-[color:var(--text-muted)]">{hint}</span> : null}
+      {hint ? <span className={cn('text-[0.76rem] leading-5 text-[color:var(--text-muted)]', framed ? 'pl-2' : 'pl-0')}>{hint}</span> : null}
     </label>
   )
 }
@@ -40,22 +57,13 @@ function CheckboxRoot({ children, className, ...props }: LabelHTMLAttributes<HTM
   )
 }
 
-function CheckboxField({ className, ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      className={cn(
-        'h-4 w-4 rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] accent-[color:var(--accent-line)] outline-none transition focus:ring-1 focus:ring-cyan-300/20',
-        className,
-      )}
-      type="checkbox"
-      {...props}
-    />
-  )
+function CheckboxField({ className, ...props }: CheckboxControlProps) {
+  return <CheckboxControl className={className} {...props} />
 }
 
 function CheckboxLabel({ children, className, ...props }: HTMLAttributes<HTMLSpanElement>) {
   return (
-    <span className={cn('text-[0.85rem] text-[color:var(--text-main)]', className)} {...props}>
+    <span className={cn('text-[0.84rem] leading-5 text-[color:var(--text-main)]', className)} {...props}>
       {children}
     </span>
   )
@@ -63,17 +71,22 @@ function CheckboxLabel({ children, className, ...props }: HTMLAttributes<HTMLSpa
 
 function CheckboxHint({ children, className, ...props }: HTMLAttributes<HTMLSpanElement>) {
   return (
-    <span className={cn('text-[0.78rem] text-[color:var(--text-muted)]', className)} {...props}>
+    <span className={cn('text-[0.76rem] leading-5 text-[color:var(--text-muted)]', className)} {...props}>
       {children}
     </span>
   )
 }
 
+function CheckboxItem(props: CheckboxProps) {
+  return <CheckboxBase {...props} />
+}
+
 type CheckboxComponent = typeof CheckboxBase & {
-  Root: typeof CheckboxRoot
   Field: typeof CheckboxField
-  Label: typeof CheckboxLabel
   Hint: typeof CheckboxHint
+  Item: typeof CheckboxItem
+  Label: typeof CheckboxLabel
+  Root: typeof CheckboxRoot
 }
 
 export const Checkbox = Object.assign(CheckboxBase, {
@@ -81,4 +94,5 @@ export const Checkbox = Object.assign(CheckboxBase, {
   Field: CheckboxField,
   Label: CheckboxLabel,
   Hint: CheckboxHint,
+  Item: CheckboxItem,
 }) as CheckboxComponent

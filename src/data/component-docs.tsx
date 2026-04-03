@@ -84,17 +84,20 @@ function getStructuredMeta(id: string, isPt: boolean) {
       notes: isPt ? ['Defina `min`, `max` e `step` para reduzir erros de digitacao.'] : ['Set `min`, `max` and `step` to reduce typing errors.'],
     },
     checkbox: {
-      anatomy: ['Checkbox.Root', 'Checkbox.Field', 'Checkbox.Label', 'Checkbox.Hint'],
+      anatomy: ['Checkbox', 'Checkbox.Item', 'Checkbox.Root', 'Checkbox.Field', 'Checkbox.Label', 'Checkbox.Hint'],
       parts: [
-        { name: 'Checkbox.Field', description: isPt ? 'Controle booleano para aceite e preferencia.' : 'Boolean control for consent and preferences.' },
+        { name: 'Checkbox', description: isPt ? 'Forma mais simples para adicionar checkbox com label e hint.' : 'Simplest way to add a checkbox with label and hint.' },
+        { name: 'Checkbox.Item', description: isPt ? 'Alias composicional para listas e grupos de selecao.' : 'Compositional alias for lists and selection groups.' },
+        { name: 'framed', description: isPt ? 'Controla se o item renderiza com borda/fundo (`true`) ou visual limpo (`false`).' : 'Controls whether the item renders with bordered surface (`true`) or clean style (`false`).' },
+        { name: 'Checkbox.Field', description: isPt ? 'Controle visual customizado com checkmark e estados de foco/checked.' : 'Custom visual control with checkmark and focus/checked states.' },
       ],
-      notes: isPt ? ['Agrupe opcoes relacionadas em coluna para facilitar leitura no mobile.'] : ['Group related options in a column for better mobile readability.'],
+      notes: isPt ? ['Agrupe opcoes relacionadas em coluna para facilitar leitura no mobile.', 'Use `framed={false}` quando nao quiser bloco com borda.'] : ['Group related options in a column for better mobile readability.', 'Use `framed={false}` when you do not want a bordered container.'],
     },
     select: {
-      anatomy: ['Select.Root', 'Select.Label', 'Select.Field', 'Select.Option', 'Select.Hint'],
+      anatomy: ['Select', 'Select.Option'],
       parts: [
-        { name: 'Select.Field', description: isPt ? 'Lista de opcoes com trigger compacta e icone de dropdown.' : 'Options list with compact trigger and dropdown icon.' },
-        { name: 'Select.Option', description: isPt ? 'Cada item do menu como subcomponente composicional.' : 'Each menu item as a compositional subcomponent.' },
+        { name: 'Select', description: isPt ? 'Componente principal com props de `label`, `hint` e estado selecionado.' : 'Main component with `label`, `hint`, and selected-state props.' },
+        { name: 'Select.Option', description: isPt ? 'Cada item do menu como subcomponente simples.' : 'Each menu item as a simple subcomponent.' },
       ],
       notes: isPt ? ['Prefira opcoes curtas e objetivas para evitar quebra visual.'] : ['Prefer short objective options to avoid visual wrapping.'],
     },
@@ -290,25 +293,21 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     description: isPt ? 'Controle booleano compacto para consentimentos, filtros e preferencias.' : 'Compact boolean control for consent, filters and preferences.',
     source: 'src/lib/components/checkbox.tsx',
     importCode: "import { Checkbox } from '@/lib'",
-    snippet: isPt ? `<Checkbox.Root>
-  <span className="inline-flex items-center gap-2">
-    <Checkbox.Field />
-    <Checkbox.Label>Aceito os termos</Checkbox.Label>
-  </span>
-  <Checkbox.Hint>Voce pode remover esse aceite depois.</Checkbox.Hint>
-</Checkbox.Root>` : `<Checkbox.Root>
-  <span className="inline-flex items-center gap-2">
-    <Checkbox.Field />
-    <Checkbox.Label>I accept the terms</Checkbox.Label>
-  </span>
-  <Checkbox.Hint>You can remove this consent later.</Checkbox.Hint>
-</Checkbox.Root>`,
+    snippet: isPt ? `<Checkbox
+  label="Aceito os termos"
+  hint="Voce pode remover esse aceite depois."
+  framed={false}
+/>` : `<Checkbox
+  label="I accept the terms"
+  hint="You can remove this consent later."
+  framed={false}
+/>`,
     href: '#components/checkbox',
     urlText: 'components/checkbox',
     preview: (
       <div className="grid gap-2">
         <Checkbox label={isPt ? 'Aceito os termos de uso' : 'I accept the terms of use'} hint={isPt ? 'Consentimento obrigatorio para continuar.' : 'Required consent to continue.'} />
-        <Checkbox label={isPt ? 'Quero receber novidades por email' : 'Send me product updates by email'} defaultChecked />
+        <Checkbox.Item framed={false} label={isPt ? 'Quero receber novidades por email' : 'Send me product updates by email'} defaultChecked />
       </div>
     ),
   },
@@ -320,35 +319,27 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     description: isPt ? 'Campo de selecao para opcoes fechadas com gatilho compacto.' : 'Selection field for closed options with a compact trigger.',
     source: 'src/lib/components/select.tsx',
     importCode: "import { Select } from '@/lib'",
-    snippet: isPt ? `<Select.Root>
-  <Select.Label>Prioridade</Select.Label>
-  <Select.Field defaultValue="medium">
+    snippet: isPt ? `<Select label="Prioridade" hint="Use para listas curtas." defaultValue="medium">
     <Select.Option value="low" label="Baixa" />
     <Select.Option value="medium" label="Media" />
     <Select.Option value="high" label="Alta" />
-  </Select.Field>
-  <Select.Hint>Use para listas curtas.</Select.Hint>
-</Select.Root>` : `<Select.Root>
-  <Select.Label>Priority</Select.Label>
-  <Select.Field defaultValue="medium">
+</Select>` : `<Select label="Priority" hint="Use for short lists." defaultValue="medium">
     <Select.Option value="low" label="Low" />
     <Select.Option value="medium" label="Medium" />
     <Select.Option value="high" label="High" />
-  </Select.Field>
-  <Select.Hint>Use for short lists.</Select.Hint>
-</Select.Root>`,
+</Select>`,
     href: '#components/select',
     urlText: 'components/select',
     preview: (
-      <Select.Root>
-        <Select.Label>{isPt ? 'Nivel de prioridade' : 'Priority level'}</Select.Label>
-        <Select.Field defaultValue="medium">
-          <Select.Option label={isPt ? 'Baixa' : 'Low'} value="low" />
-          <Select.Option label={isPt ? 'Media' : 'Medium'} value="medium" />
-          <Select.Option label={isPt ? 'Alta' : 'High'} value="high" />
-        </Select.Field>
-        <Select.Hint>{isPt ? 'Use para listas curtas de opcoes pre-definidas.' : 'Use for short predefined option lists.'}</Select.Hint>
-      </Select.Root>
+      <Select
+        defaultValue="medium"
+        hint={isPt ? 'Use para listas curtas de opcoes pre-definidas.' : 'Use for short predefined option lists.'}
+        label={isPt ? 'Nivel de prioridade' : 'Priority level'}
+      >
+        <Select.Option label={isPt ? 'Baixa' : 'Low'} value="low" />
+        <Select.Option label={isPt ? 'Media' : 'Medium'} value="medium" />
+        <Select.Option label={isPt ? 'Alta' : 'High'} value="high" />
+      </Select>
     ),
   },
   {
