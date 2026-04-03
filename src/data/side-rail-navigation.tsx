@@ -28,8 +28,10 @@ export function createSideRailItems(
       title: isPt ? 'Inputs' : 'Inputs',
       description: isPt ? 'Email, checkbox, select, textarea, data, hora e numero.' : 'Email, checkbox, select, textarea, date, time and number.',
       icon: <ListFilter className="h-4 w-4" strokeWidth={1.8} />,
+      href: '#components/inputs',
       urlText: 'components/inputs',
-      isActive: componentId ? inputDocIds.has(componentId) : false,
+      isActive: componentId === 'inputs' || (componentId ? inputDocIds.has(componentId) : false),
+      onClick: () => navigate('#components/inputs'),
       items: inputDocs.map((doc) => ({
         id: doc.id,
         title: doc.name,
@@ -72,7 +74,7 @@ export function createSideRailItems(
       urlText: 'docs',
       icon: <FileText className="h-5 w-5" strokeWidth={1.8} />,
       isActive: page === 'docs',
-      onClick: () => navigate('#docs/installation'),
+      onClick: () => navigate('#docs'),
       items: docPages.map((docPage) => ({
         id: docPage.id,
         title: docPage.title,
@@ -92,7 +94,7 @@ export function createSideRailItems(
       urlText: 'components',
       icon: <FileText className="h-5 w-5" strokeWidth={1.8} />,
       isActive: page === 'components',
-      onClick: () => navigate('#components/button'),
+      onClick: () => navigate('#components'),
       items: componentItems,
     },
   ]

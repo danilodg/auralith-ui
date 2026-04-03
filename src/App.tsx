@@ -42,7 +42,7 @@ function getRouteFromHash(hash: string): AppRoute {
 
     return {
       page: 'docs',
-      docPageId: docPageId ?? 'installation',
+      docPageId: docPageId || null,
       componentId: null,
     }
   }
@@ -53,7 +53,7 @@ function getRouteFromHash(hash: string): AppRoute {
     return {
       page: 'components',
       docPageId: null,
-      componentId: componentId ?? 'button',
+      componentId: componentId || null,
     }
   }
 
@@ -124,9 +124,11 @@ function App() {
     ? docsPages.find((docPage) => docPage.id === route.docPageId) ?? null
     : null
 
-  const selectedDoc = route.componentId
+  const selectedDoc = route.componentId && route.componentId !== 'inputs'
     ? componentDocs.find((doc) => doc.id === route.componentId) ?? null
     : null
+
+  const selectedComponentGroup = route.componentId === 'inputs' ? 'inputs' : null
 
   const sideRailItems = useMemo(
     () => createSideRailItems(language, route.page, route.docPageId, route.componentId, docsPages, componentDocs, navigateToHash),
@@ -270,9 +272,17 @@ function App() {
           <div className="mx-auto w-full max-w-[1560px] p-2">
             <div className="flex min-h-[calc(100vh-2rem)] flex-col">
               {route.page === 'landing' ? (
-                <LandingPage onOpenDocs={() => navigateToHash('#docs/installation')} />
+                <LandingPage onOpenDocs={() => navigateToHash('#docs')} />
               ) : (
-                <DocsPage docs={componentDocs} docPage={selectedDocPage} onBackHome={() => navigateToHash('#landing')} selectedDoc={selectedDoc} />
+                <DocsPage
+                  docs={componentDocs}
+                  docPage={selectedDocPage}
+                  docPages={docsPages}
+                  onBackHome={() => navigateToHash('#landing')}
+                  page={route.page}
+                  selectedComponentGroup={selectedComponentGroup}
+                  selectedDoc={selectedDoc}
+                />
               )}
             </div>
           </div>

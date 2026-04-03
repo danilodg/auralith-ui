@@ -93,13 +93,12 @@ function ChildLink({
   }, [hasChildren, isActive])
 
   function handleClick() {
-    onItemClick?.(item.id)
-
     if (hasChildren) {
       setOpen((current) => !current)
       return
     }
 
+    onItemClick?.(item.id)
     item.onClick?.()
   }
 
@@ -414,25 +413,25 @@ export function SideRail({
   }
 
   function handleDesktopItemClick(item: SideRailItem) {
-    setFocusedNavId(item.id)
-
     if (item.items?.length) {
       setExpanded(true)
       setOpenGroupIds((current) => (current.includes(item.id) ? current.filter((id) => id !== item.id) : [...current, item.id]))
+      item.onClick?.()
       return
     }
 
+    setFocusedNavId(item.id)
     item.onClick?.()
   }
 
   function handleMobileItemClick(item: SideRailItem) {
-    setFocusedNavId(item.id)
-
     if (item.items?.length) {
       setOpenGroupIds((current) => (current.includes(item.id) ? current.filter((id) => id !== item.id) : [...current, item.id]))
+      item.onClick?.()
       return
     }
 
+    setFocusedNavId(item.id)
     item.onClick?.()
   }
 
@@ -563,7 +562,7 @@ export function SideRail({
 
           {items.map((item) => {
             const hasChildren = Boolean(item.items?.length)
-            const isHighlighted = item.isActive || item.items?.some((child) => childIsActive(child)) || openGroupIds.includes(item.id)
+            const isHighlighted = item.isActive || item.items?.some((child) => childIsActive(child))
 
             return item.href && !hasChildren ? (
               <a
