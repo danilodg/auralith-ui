@@ -276,7 +276,7 @@ function DateInputBase({
     const weekdayLabels = isPt ? ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
     return (
-      <div className="w-[272px] max-w-full rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] p-2">
+      <div className="w-[272px] max-w-full rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-2">
         <p className="mb-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-[color:var(--text-soft)]">{monthLabel}</p>
         <div className="mb-1 grid grid-cols-7 gap-1">
           {weekdayLabels.map((weekday) => (
@@ -302,7 +302,7 @@ function DateInputBase({
                 className={cn(
                   'h-7 rounded-[8px] text-[0.74rem] transition',
                   inCurrentMonth ? 'text-[color:var(--text-main)]' : 'text-[color:var(--text-muted)] opacity-65',
-                  isRangeMiddle ? 'bg-[rgba(111,224,255,0.1)]' : 'hover:bg-[rgba(255,255,255,0.04)]',
+                  isRangeMiddle ? 'bg-[rgba(111,224,255,0.1)]' : 'hover:bg-[color:var(--surface-hover)]',
                   isSingleSelected || isRangeStart || isRangeEnd
                     ? 'bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] text-white shadow-[0_0_16px_var(--accent-shadow)]'
                     : '',
@@ -352,7 +352,7 @@ function DateInputBase({
         {open && panelPosition
           ? createPortal(
               <div
-                className="fixed z-[220] overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(9,16,43,0.97)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
+                className="fixed z-[220] overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
                 id={`${fieldId}-calendar`}
                 ref={panelRef}
                 style={{
@@ -367,14 +367,14 @@ function DateInputBase({
               </p>
               <div className="flex items-center gap-1">
                 <button
-                  className="inline-flex h-7 w-7 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.04)]"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)]"
                   onClick={() => setViewMonth((current) => addMonths(current, -1))}
                   type="button"
                 >
                   <ChevronLeft size={14} />
                 </button>
                 <button
-                  className="inline-flex h-7 w-7 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.04)]"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)]"
                   onClick={() => setViewMonth((current) => addMonths(current, 1))}
                   type="button"
                 >
@@ -386,7 +386,7 @@ function DateInputBase({
             <div className="mb-2 flex flex-wrap gap-1.5">
               {(mode === 'single' ? singlePresets : rangePresets).map((preset) => (
                 <button
-                  className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] px-2 py-1 text-[0.68rem] uppercase tracking-[0.08em] text-[color:var(--text-soft)] transition hover:bg-[rgba(111,224,255,0.12)]"
+                  className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] px-2 py-1 text-[0.68rem] uppercase tracking-[0.08em] text-[color:var(--text-soft)] transition hover:bg-[rgba(111,224,255,0.12)]"
                   key={preset.label}
                   onClick={() => {
                     if (mode === 'single') {

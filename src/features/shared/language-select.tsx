@@ -10,7 +10,7 @@ export function LanguageSelect() {
         {strings.languageLabel}
       </span>
 
-      <div className="relative grid grid-cols-2 items-center rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] p-2">
+      <div className="relative grid grid-cols-2 items-center rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] p-2">
         <span
           aria-hidden="true"
           className="pointer-events-none absolute bottom-1 top-1 w-[calc(50%-0.125rem)] rounded-[8px] bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] shadow-[0_0_18px_var(--accent-shadow)] transition-transform duration-300 ease-out"

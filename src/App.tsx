@@ -164,7 +164,7 @@ function App() {
                   </span>
 
                   <button
-                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.05)] hover:text-[color:var(--text-main)]"
+                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover-strong)] hover:text-[color:var(--text-main)]"
                     onClick={() => setAccountMenuOpen((current) => !current)}
                     title={language === 'pt' ? 'Configuracoes' : 'Settings'}
                     type="button"
@@ -180,7 +180,7 @@ function App() {
                     </p>
 
                     <div className="space-y-2">
-                      <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] p-1">
+                      <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-1">
                         <p className="px-1 pb-1 text-[0.64rem] uppercase tracking-[0.12em] text-[color:var(--text-muted)]">
                           {language === 'pt' ? 'Tema' : 'Theme'}
                         </p>
@@ -190,7 +190,7 @@ function App() {
                               'inline-flex items-center justify-center gap-1 rounded-[8px] px-2 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.1em] transition',
                               theme === 'dark'
                                 ? 'bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] text-white'
-                                : 'text-[color:var(--text-soft)] hover:bg-[rgba(255,255,255,0.04)]',
+                                : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-hover)]',
                             ].join(' ')}
                             onClick={() => setTheme('dark')}
                             type="button"
@@ -203,7 +203,7 @@ function App() {
                               'inline-flex items-center justify-center gap-1 rounded-[8px] px-2 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.1em] transition',
                               theme === 'light'
                                 ? 'bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] text-white'
-                                : 'text-[color:var(--text-soft)] hover:bg-[rgba(255,255,255,0.04)]',
+                                : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-hover)]',
                             ].join(' ')}
                             onClick={() => setTheme('light')}
                             type="button"
@@ -214,7 +214,7 @@ function App() {
                         </div>
                       </div>
 
-                      <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] p-1">
+                      <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-1">
                         <p className="px-1 pb-1 text-[0.64rem] uppercase tracking-[0.12em] text-[color:var(--text-muted)]">
                           {language === 'pt' ? 'Idioma' : 'Language'}
                         </p>
@@ -224,7 +224,7 @@ function App() {
                               'inline-flex items-center justify-center gap-1 rounded-[8px] px-2 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.1em] transition',
                               language === 'pt'
                                 ? 'bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] text-white'
-                                : 'text-[color:var(--text-soft)] hover:bg-[rgba(255,255,255,0.04)]',
+                                : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-hover)]',
                             ].join(' ')}
                             onClick={() => setLanguage('pt')}
                             type="button"
@@ -237,7 +237,7 @@ function App() {
                               'inline-flex items-center justify-center gap-1 rounded-[8px] px-2 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.1em] transition',
                               language === 'en'
                                 ? 'bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] text-white'
-                                : 'text-[color:var(--text-soft)] hover:bg-[rgba(255,255,255,0.04)]',
+                                : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-hover)]',
                             ].join(' ')}
                             onClick={() => setLanguage('en')}
                             type="button"
@@ -249,7 +249,7 @@ function App() {
                       </div>
 
                       <button
-                        className="inline-flex w-full items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] px-2 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.1em] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.05)] hover:text-[color:var(--text-main)]"
+                        className="inline-flex w-full items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] px-2 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.1em] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover-strong)] hover:text-[color:var(--text-main)]"
                         onClick={() => {
                           navigateToHash('#components/auth-shell')
                           setAccountMenuOpen(false)

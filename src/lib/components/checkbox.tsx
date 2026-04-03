@@ -38,7 +38,7 @@ function CheckboxBase({ className, framed = true, hint, id, label, ...props }: C
       <span
         className={cn(
           'inline-flex items-center gap-2 rounded-[8px]',
-          framed ? 'border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] px-2 py-1.5' : 'px-0 py-0',
+          framed ? 'border border-[color:var(--card-border)] bg-[color:var(--surface-base)] px-2 py-1.5' : 'px-0 py-0',
         )}
       >
         <CheckboxControl id={checkboxId} {...props} />

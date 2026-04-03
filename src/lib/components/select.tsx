@@ -116,7 +116,7 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
 
         {open ? (
           <div
-            className="absolute left-0 top-[calc(100%+0.4rem)] z-[120] w-full overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(9,16,43,0.97)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
+            className="absolute left-0 top-[calc(100%+0.4rem)] z-[120] w-full overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
             id={selectId ? `${selectId}-content` : undefined}
             role="listbox"
           >
@@ -130,7 +130,7 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
                       'flex w-full items-start justify-between gap-2 rounded-[8px] px-2 py-1.5 text-left transition',
                       isSelected
                         ? 'bg-[rgba(111,224,255,0.12)] text-[color:var(--accent-soft)]'
-                        : 'text-[color:var(--text-soft)] hover:bg-[rgba(255,255,255,0.04)]',
+                        : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-hover)]',
                     )}
                     key={option.value}
                     onClick={() => applyValue(option.value)}

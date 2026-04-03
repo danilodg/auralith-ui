@@ -31,7 +31,7 @@ export function createDocsPages(language: Language): DocPage[] {
               />
 
               <div className="mt-8 space-y-4">
-                <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.75)] p-2">
+                <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">
                     {isPt ? 'Instalar pacote' : 'Install package'}
                   </p>
@@ -40,7 +40,7 @@ export function createDocsPages(language: Language): DocPage[] {
                   </pre>
                 </div>
 
-                <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.55)] p-2">
+                <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">
                     {isPt ? 'Incluir estilos' : 'Include styles'}
                   </p>
@@ -107,14 +107,14 @@ export function createDocsPages(language: Language): DocPage[] {
               />
 
               <div className="mt-8 space-y-4">
-                <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.75)] p-2">
+                <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{isPt ? 'Exemplo de import' : 'Example import'}</p>
                   <pre className="mt-2 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
                     <code>{"import { Button, Card, Input } from 'auralith-ui'"}</code>
                   </pre>
                 </div>
 
-                <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.55)] p-2">
+                <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{isPt ? 'Compor patterns' : 'Compose patterns'}</p>
                   <pre className="mt-2 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
                     <code>{`<Card>

@@ -63,9 +63,9 @@ function NumberInputBase({ className, defaultValue = 0, hint, id, label, max, mi
           value={String(currentValue)}
           {...props}
         />
-        <span className="mr-1 inline-flex items-center gap-1 rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] p-0.5">
+        <span className="mr-1 inline-flex items-center gap-1 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-0.5">
           <button
-            className="inline-flex h-7 w-7 items-center justify-center rounded-[6px] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.04)] disabled:opacity-40"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-[6px] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)] disabled:opacity-40"
             disabled={!canDecrease}
             onClick={() => applyValue(currentValue - numericStep)}
             type="button"
@@ -73,7 +73,7 @@ function NumberInputBase({ className, defaultValue = 0, hint, id, label, max, mi
             <Minus size={14} />
           </button>
           <button
-            className="inline-flex h-7 w-7 items-center justify-center rounded-[6px] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.04)] disabled:opacity-40"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-[6px] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)] disabled:opacity-40"
             disabled={!canIncrease}
             onClick={() => applyValue(currentValue + numericStep)}
             type="button"

@@ -120,7 +120,7 @@ function ModalContent({ children, className, ...props }: ModalContentProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2">
       <button
         aria-label="Close modal"
-        className="absolute inset-0 bg-[rgba(3,7,18,0.72)] backdrop-blur-sm"
+        className="absolute inset-0 bg-[color:var(--overlay-backdrop)] backdrop-blur-sm"
         onClick={() => setOpen(false)}
         type="button"
       />
@@ -133,7 +133,7 @@ function ModalContent({ children, className, ...props }: ModalContentProps) {
         {...props}
       >
         <button
-          className="absolute right-6 top-6 inline-flex h-10 w-10 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] text-[color:var(--text-soft)] transition hover:text-[color:var(--text-main)]"
+          className="absolute right-6 top-6 inline-flex h-10 w-10 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] text-[color:var(--text-soft)] transition hover:text-[color:var(--text-main)]"
           onClick={() => setOpen(false)}
           type="button"
         >

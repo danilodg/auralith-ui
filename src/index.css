@@ -25,7 +25,12 @@
     --button-secondary-bg: rgba(8, 16, 34, 0.42);
     --button-secondary-border: rgba(173, 208, 255, 0.18);
     --button-secondary-text: #e7f0ff;
+    --surface-base: rgba(255, 255, 255, 0.02);
+    --surface-hover: rgba(255, 255, 255, 0.04);
+    --surface-hover-strong: rgba(255, 255, 255, 0.05);
     --surface-soft: rgba(255, 255, 255, 0.03);
+    --surface-menu: rgba(9, 16, 43, 0.96);
+    --overlay-backdrop: rgba(3, 7, 18, 0.72);
     --surface-panel-1: rgba(5, 10, 24, 0.55);
     --surface-panel-2: rgba(5, 10, 24, 0.7);
     --surface-panel-3: rgba(5, 10, 24, 0.75);
@@ -63,7 +68,12 @@
     --button-secondary-bg: rgba(255, 255, 255, 0.82);
     --button-secondary-border: rgba(55, 108, 193, 0.22);
     --button-secondary-text: #1f3768;
+    --surface-base: rgba(255, 255, 255, 0.78);
+    --surface-hover: rgba(15, 42, 88, 0.08);
+    --surface-hover-strong: rgba(15, 42, 88, 0.12);
     --surface-soft: rgba(255, 255, 255, 0.7);
+    --surface-menu: rgba(236, 244, 255, 0.97);
+    --overlay-backdrop: rgba(26, 55, 101, 0.28);
     --surface-panel-1: rgba(229, 239, 255, 0.75);
     --surface-panel-2: rgba(220, 233, 253, 0.84);
     --surface-panel-3: rgba(212, 228, 252, 0.9);

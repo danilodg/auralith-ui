@@ -76,7 +76,7 @@ function ChildLink({ expanded, item, level = 0 }: { expanded: boolean; item: Sid
             : 'mx-auto w-11 justify-center gap-0 px-0 py-2',
           isActive
             ? 'text-[color:var(--accent-line)]'
-            : 'text-[color:var(--text-muted)] hover:bg-[rgba(255,255,255,0.04)] hover:text-[color:var(--text-main)]',
+            : 'text-[color:var(--text-muted)] hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]',
         )}
         onClick={handleClick}
         title={[item.title, item.description, item.urlText].filter(Boolean).join('\n')}
@@ -87,7 +87,7 @@ function ChildLink({ expanded, item, level = 0 }: { expanded: boolean; item: Sid
               'flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] transition',
               isActive
                 ? 'bg-[linear-gradient(135deg,rgba(111,224,255,0.18),rgba(104,126,255,0.2)_55%,rgba(139,102,255,0.22))] text-[color:var(--accent-line)]'
-                : 'bg-[rgba(255,255,255,0.04)] group-hover:bg-[rgba(255,255,255,0.05)]',
+                : 'bg-[color:var(--surface-hover)] group-hover:bg-[color:var(--surface-hover-strong)]',
             )}
           >
             {item.icon}
@@ -95,7 +95,7 @@ function ChildLink({ expanded, item, level = 0 }: { expanded: boolean; item: Sid
         ) : (
           <span
             className={cn(
-              'flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)]',
+              'flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)]',
               isActive ? 'text-[color:var(--accent-line)]' : 'text-[color:var(--text-muted)]',
             )}
           >
@@ -149,7 +149,7 @@ function DesktopNavItem({
           expanded ? 'w-full gap-3 px-3' : 'mx-auto w-11 justify-center px-0',
           isActive
             ? 'bg-[linear-gradient(135deg,rgba(111,224,255,0.18),rgba(104,126,255,0.18)_55%,rgba(139,102,255,0.2))] text-[color:var(--accent-line)] shadow-[0_0_0_1px_rgba(111,224,255,0.1)]'
-            : 'text-[color:var(--text-muted)] hover:bg-[rgba(255,255,255,0.04)] hover:text-[color:var(--text-main)]',
+            : 'text-[color:var(--text-muted)] hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]',
         )}
         title={expanded ? undefined : getTooltipText(item)}
       >
@@ -158,7 +158,7 @@ function DesktopNavItem({
             'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition',
             isActive
               ? 'bg-[rgba(111,224,255,0.16)] text-[color:var(--accent-line)]'
-              : 'group-hover:bg-[rgba(255,255,255,0.05)]',
+              : 'group-hover:bg-[color:var(--surface-hover-strong)]',
           )}
         >
           {item.icon}
@@ -350,7 +350,7 @@ export function SideRail({
                     'ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] border transition',
                     pinned
                       ? 'border-[color:var(--accent-line)] bg-[rgba(111,224,255,0.12)] text-[color:var(--accent-line)]'
-                      : 'border-[color:var(--card-border)] bg-[rgba(255,255,255,0.04)] text-[color:var(--text-muted)] hover:text-[color:var(--text-main)]',
+                      : 'border-[color:var(--card-border)] bg-[color:var(--surface-hover)] text-[color:var(--text-muted)] hover:text-[color:var(--text-main)]',
                   )}
                   onClick={togglePinnedSidebar}
                   title={pinned ? 'Desafixar menu lateral' : 'Fixar menu lateral'}

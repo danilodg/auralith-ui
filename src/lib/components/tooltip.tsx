@@ -69,7 +69,7 @@ function TooltipContent({ children, className, ...props }: HTMLAttributes<HTMLSp
   return (
     <span
       className={cn(
-        'pointer-events-none absolute left-1/2 top-[calc(100%+0.75rem)] z-[120] w-max max-w-[220px] -translate-x-1/2 rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(9,16,43,0.96)] px-3 py-2 text-xs leading-5 text-[color:var(--text-soft)] shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px] transition',
+        'pointer-events-none absolute left-1/2 top-[calc(100%+0.75rem)] z-[120] w-max max-w-[220px] -translate-x-1/2 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] px-3 py-2 text-xs leading-5 text-[color:var(--text-soft)] shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px] transition',
         open ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0',
         className,
       )}
