@@ -91,9 +91,10 @@ function getStructuredMeta(id: string, isPt: boolean) {
       notes: isPt ? ['Agrupe opcoes relacionadas em coluna para facilitar leitura no mobile.'] : ['Group related options in a column for better mobile readability.'],
     },
     select: {
-      anatomy: ['Select.Root', 'Select.Label', 'Select.Field', 'Select.Hint'],
+      anatomy: ['Select.Root', 'Select.Label', 'Select.Field', 'Select.Option', 'Select.Hint'],
       parts: [
         { name: 'Select.Field', description: isPt ? 'Lista de opcoes com trigger compacta e icone de dropdown.' : 'Options list with compact trigger and dropdown icon.' },
+        { name: 'Select.Option', description: isPt ? 'Cada item do menu como subcomponente composicional.' : 'Each menu item as a compositional subcomponent.' },
       ],
       notes: isPt ? ['Prefira opcoes curtas e objetivas para evitar quebra visual.'] : ['Prefer short objective options to avoid visual wrapping.'],
     },
@@ -319,38 +320,35 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     description: isPt ? 'Campo de selecao para opcoes fechadas com gatilho compacto.' : 'Selection field for closed options with a compact trigger.',
     source: 'src/lib/components/select.tsx',
     importCode: "import { Select } from '@/lib'",
-    snippet: isPt ? `<Select
-  label="Prioridade"
-  options={[
-    { value: 'low', label: 'Baixa' },
-    { value: 'high', label: 'Alta' },
-  ]}
-/>` : `<Select
-  label="Priority"
-  options={[
-    { value: 'low', label: 'Low' },
-    { value: 'high', label: 'High' },
-  ]}
-/>`,
+    snippet: isPt ? `<Select.Root>
+  <Select.Label>Prioridade</Select.Label>
+  <Select.Field defaultValue="medium">
+    <Select.Option value="low" label="Baixa" />
+    <Select.Option value="medium" label="Media" />
+    <Select.Option value="high" label="Alta" />
+  </Select.Field>
+  <Select.Hint>Use para listas curtas.</Select.Hint>
+</Select.Root>` : `<Select.Root>
+  <Select.Label>Priority</Select.Label>
+  <Select.Field defaultValue="medium">
+    <Select.Option value="low" label="Low" />
+    <Select.Option value="medium" label="Medium" />
+    <Select.Option value="high" label="High" />
+  </Select.Field>
+  <Select.Hint>Use for short lists.</Select.Hint>
+</Select.Root>`,
     href: '#components/select',
     urlText: 'components/select',
     preview: (
-      <Select
-        defaultValue="medium"
-        hint={isPt ? 'Use para listas curtas de opcoes pre-definidas.' : 'Use for short predefined option lists.'}
-        label={isPt ? 'Nivel de prioridade' : 'Priority level'}
-        options={isPt
-          ? [
-              { value: 'low', label: 'Baixa' },
-              { value: 'medium', label: 'Media' },
-              { value: 'high', label: 'Alta' },
-            ]
-          : [
-              { value: 'low', label: 'Low' },
-              { value: 'medium', label: 'Medium' },
-              { value: 'high', label: 'High' },
-            ]}
-      />
+      <Select.Root>
+        <Select.Label>{isPt ? 'Nivel de prioridade' : 'Priority level'}</Select.Label>
+        <Select.Field defaultValue="medium">
+          <Select.Option label={isPt ? 'Baixa' : 'Low'} value="low" />
+          <Select.Option label={isPt ? 'Media' : 'Medium'} value="medium" />
+          <Select.Option label={isPt ? 'Alta' : 'High'} value="high" />
+        </Select.Field>
+        <Select.Hint>{isPt ? 'Use para listas curtas de opcoes pre-definidas.' : 'Use for short predefined option lists.'}</Select.Hint>
+      </Select.Root>
     ),
   },
   {
