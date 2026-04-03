@@ -12,9 +12,9 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const variantClassName: Record<CardVariant, string> = {
-  default: 'bg-[color:var(--card-bg)] shadow-[0_20px_60px_rgba(8,14,37,0.2)]',
-  subtle: 'bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))]',
-  elevated: 'bg-[color:var(--card-bg)] shadow-[0_24px_70px_rgba(7,12,32,0.24)]',
+  default: 'bg-[color:var(--card-bg)] shadow-[var(--card-shadow-default)]',
+  subtle: 'bg-[var(--card-subtle-bg)]',
+  elevated: 'bg-[color:var(--card-bg)] shadow-[var(--card-shadow-elevated)]',
 }
 
 function CardBase({ children, className, variant = 'default', ...props }: CardProps) {

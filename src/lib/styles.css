@@ -25,12 +25,52 @@
     --button-secondary-bg: rgba(8, 16, 34, 0.42);
     --button-secondary-border: rgba(173, 208, 255, 0.18);
     --button-secondary-text: #e7f0ff;
+    --surface-soft: rgba(255, 255, 255, 0.03);
+    --surface-panel-1: rgba(5, 10, 24, 0.55);
+    --surface-panel-2: rgba(5, 10, 24, 0.7);
+    --surface-panel-3: rgba(5, 10, 24, 0.75);
+    --card-shadow-default: 0 20px 60px rgba(8, 14, 37, 0.2);
+    --card-shadow-elevated: 0 24px 70px rgba(7, 12, 32, 0.24);
+    --card-subtle-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
     color-scheme: dark;
     font-family: Outfit, 'Trebuchet MS', sans-serif;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  :root[data-theme='light'] {
+    --bg-base: #f3f7ff;
+    --text-main: #0f1c3d;
+    --text-soft: #364b78;
+    --text-muted: #5f7096;
+    --accent-soft: #146487;
+    --accent-line: #0f7aa8;
+    --accent-start: #0ca4d9;
+    --accent-mid: #2e75d8;
+    --accent-end: #2864b8;
+    --accent-shadow: rgba(46, 117, 216, 0.24);
+    --panel-border: rgba(50, 101, 184, 0.2);
+    --panel-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(243, 249, 255, 0.85));
+    --panel-shadow: 0 26px 80px rgba(15, 29, 65, 0.14);
+    --nav-border: rgba(50, 101, 184, 0.2);
+    --nav-bg: #e9f1ff;
+    --card-border: rgba(49, 98, 177, 0.24);
+    --card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(240, 247, 255, 0.72));
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --input-border: rgba(41, 76, 131, 0.22);
+    --button-secondary-bg: rgba(255, 255, 255, 0.82);
+    --button-secondary-border: rgba(55, 108, 193, 0.22);
+    --button-secondary-text: #1f3768;
+    --surface-soft: rgba(255, 255, 255, 0.7);
+    --surface-panel-1: rgba(229, 239, 255, 0.75);
+    --surface-panel-2: rgba(220, 233, 253, 0.84);
+    --surface-panel-3: rgba(212, 228, 252, 0.9);
+    --card-shadow-default: 0 18px 42px rgba(22, 51, 98, 0.14);
+    --card-shadow-elevated: 0 24px 52px rgba(18, 46, 93, 0.18);
+    --card-subtle-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(236, 244, 255, 0.82));
+    color-scheme: light;
   }
 
   * {

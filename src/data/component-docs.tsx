@@ -81,7 +81,7 @@ function getStructuredMeta(id: string, isPt: boolean) {
       parts: [
         { name: 'NumberInput', description: isPt ? 'Campo numerico customizado com controles de incremento e decremento.' : 'Custom numeric field with increment and decrement controls.' },
       ],
-      notes: isPt ? ['Defina `min`, `max` e `step` para reduzir erros de digitacao.'] : ['Set `min`, `max` and `step` to reduce typing errors.'],
+      notes: isPt ? ['Defina `min`, `max` e `step` para reduzir erros de digitacao.', 'O valor fica alinhado a esquerda e os controles +/- ficam no canto direito.'] : ['Set `min`, `max` and `step` to reduce typing errors.', 'The value is left-aligned and +/- controls stay on the right corner.'],
     },
     checkbox: {
       anatomy: ['Checkbox', 'Checkbox.Item', 'Checkbox.Root', 'Checkbox.Field', 'Checkbox.Label', 'Checkbox.Hint'],

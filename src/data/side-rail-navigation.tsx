@@ -1,4 +1,4 @@
-import { FileText, Home } from 'lucide-react'
+import { FileText, Home, ListFilter } from 'lucide-react'
 
 import type { Language } from '../i18n'
 import { localeStrings } from '../i18n'
@@ -21,28 +21,26 @@ export function createSideRailItems(
   const inputDocIds = new Set(['input', 'checkbox', 'select', 'textarea', 'input-date', 'input-time', 'input-number'])
   const inputDocs = docs.filter((doc) => inputDocIds.has(doc.id))
   const otherDocs = docs.filter((doc) => !inputDocIds.has(doc.id))
-  const firstInputId = inputDocs[0]?.id ?? 'input'
 
   const componentItems = [
     {
       id: 'components-inputs',
       title: isPt ? 'Inputs' : 'Inputs',
       description: isPt ? 'Email, checkbox, select, textarea, data, hora e numero.' : 'Email, checkbox, select, textarea, date, time and number.',
-      href: `#components/${firstInputId}`,
-      urlText: `components/${firstInputId}`,
+      icon: <ListFilter className="h-4 w-4" strokeWidth={1.8} />,
+      urlText: 'components/inputs',
       isActive: componentId ? inputDocIds.has(componentId) : false,
-      onClick: () => navigate(`#components/${firstInputId}`),
+      items: inputDocs.map((doc) => ({
+        id: doc.id,
+        title: doc.name,
+        description: doc.description,
+        icon: doc.icon,
+        href: `#components/${doc.id}`,
+        urlText: `components/${doc.id}`,
+        isActive: componentId === doc.id,
+        onClick: () => navigate(`#components/${doc.id}`),
+      })),
     },
-    ...inputDocs.map((doc) => ({
-      id: doc.id,
-      title: `- ${doc.name}`,
-      description: doc.description,
-      icon: doc.icon,
-      href: `#components/${doc.id}`,
-      urlText: `components/${doc.id}`,
-      isActive: componentId === doc.id,
-      onClick: () => navigate(`#components/${doc.id}`),
-    })),
     ...otherDocs.map((doc) => ({
       id: doc.id,
       title: doc.name,

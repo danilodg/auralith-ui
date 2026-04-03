@@ -52,12 +52,12 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
 
         <div className="mt-8 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
           <div className="space-y-6">
-            <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.55)] p-2 sm:p-2">
+            <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2 sm:p-2">
               <p className={sectionTitleClassName}>{strings.docs.livePreviewLabel}</p>
               <div className="mt-5">{doc.preview}</div>
             </div>
 
-            <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.75)] p-2 sm:p-2">
+            <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2 sm:p-2">
               <p className={sectionTitleClassName}>{strings.docs.basicUsageLabel}</p>
               <pre className="mt-3 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
                 <code>{doc.snippet}</code>
@@ -66,7 +66,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
           </div>
 
           <div className="space-y-6">
-            <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.55)] p-2 sm:p-2">
+            <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2 sm:p-2">
               <p className={sectionTitleClassName}>{strings.docs.importLabel}</p>
               <pre className="mt-3 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--accent-soft)]">
                 <code>{doc.importCode}</code>
@@ -74,7 +74,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
             </div>
 
             {doc.anatomy?.length ? (
-              <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.55)] p-2 sm:p-2">
+              <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2 sm:p-2">
                 <p className={sectionTitleClassName}>{isPt ? 'Anatomia' : 'Anatomy'}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {doc.anatomy.map((part) => (
@@ -84,7 +84,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
               </div>
             ) : null}
 
-            <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.55)] p-2 sm:p-2">
+            <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2 sm:p-2">
               <p className={sectionTitleClassName}>{strings.docs.sourceLabel}</p>
               <p className="mt-3 break-all font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--accent-soft)]">{doc.source}</p>
             </div>
@@ -100,7 +100,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
               {examples.map((example, index) => (
                 <div className={index === 0 ? '' : 'border-t border-[color:var(--card-border)] pt-5'} key={example.title}>
                   <p className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-lg font-semibold text-[color:var(--text-main)]">{example.title}</p>
-                  <pre className="mt-3 overflow-x-auto rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.55)] p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
+                  <pre className="mt-3 overflow-x-auto rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
                     <code>{example.code}</code>
                   </pre>
                 </div>

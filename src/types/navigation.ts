@@ -9,6 +9,7 @@ export type SideRailChildItem = {
   urlText?: string
   onClick?: () => void
   isActive?: boolean
+  items?: SideRailChildItem[]
 }
 
 export type SideRailItem = SideRailChildItem & {

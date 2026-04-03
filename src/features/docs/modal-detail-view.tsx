@@ -43,7 +43,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
             />
           </div>
 
-          <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] px-4 py-3">
+          <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] px-4 py-3">
             <p className={sectionLabelClass}>{strings.docs.importLabel}</p>
             <p className="mt-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs text-[color:var(--accent-soft)]">{doc.importCode}</p>
           </div>
@@ -70,7 +70,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
               <p className={sectionLabelClass}>{strings.docs.basicUsageLabel}</p>
             </div>
             <div className="px-6 py-5 sm:px-7">
-              <pre className="overflow-x-auto rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.7)] p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
+              <pre className="overflow-x-auto rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-2)] p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
                 <code>{doc.snippet}</code>
               </pre>
             </div>
@@ -87,7 +87,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
                 <div className="space-y-2">
                   {doc.anatomy.map((part, index) => (
                     <div
-                      className="flex items-center gap-3 rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] px-3 py-2.5 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs text-[color:var(--text-soft)]"
+                      className="flex items-center gap-3 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] px-3 py-2.5 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs text-[color:var(--text-soft)]"
                       key={part}
                       style={{ paddingLeft: `${12 + Math.min(index, 4) * 10}px` }}
                     >
@@ -105,7 +105,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
               <p className={sectionLabelClass}>{strings.docs.sourceLabel}</p>
             </div>
             <div className="px-5 py-4">
-              <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] px-3 py-3 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--accent-soft)]">
+              <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] px-3 py-3 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--accent-soft)]">
                 {doc.source}
               </div>
             </div>
@@ -138,7 +138,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
             {examples.map((example) => (
               <div key={example.title}>
                 <p className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-lg font-semibold text-[color:var(--text-main)]">{example.title}</p>
-                <pre className="mt-3 overflow-x-auto rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.55)] p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
+                <pre className="mt-3 overflow-x-auto rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
                   <code>{example.code}</code>
                 </pre>
               </div>
@@ -154,7 +154,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
           </div>
           <div className="grid gap-4 px-6 py-5 sm:px-7 lg:grid-cols-2">
             {doc.api.map((item) => (
-              <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] p-2" key={item.name}>
+              <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] p-2" key={item.name}>
                 <div className="flex items-center justify-between gap-3">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs text-[color:var(--accent-soft)]">{item.name}</p>
                   <Tag className="px-2.5 py-1 text-[0.62rem]">{item.type}</Tag>
@@ -173,7 +173,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
           </div>
           <div className="grid gap-4 px-6 py-5 sm:px-7 lg:grid-cols-2">
             {doc.parts.map((part) => (
-              <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.03)] p-2" key={part.name}>
+              <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] p-2" key={part.name}>
                 <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs text-[color:var(--accent-soft)]">{part.name}</p>
                 <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">{part.description}</p>
               </div>

@@ -36,11 +36,11 @@ export function ComponentDocCard({ doc }: ComponentDocCardProps) {
           </div>
           <h3 className="mt-4 font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[1.7rem] font-bold tracking-[-0.04em] text-[color:var(--text-main)]">{doc.name}</h3>
           <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">{doc.description}</p>
-          <div className="mt-5 rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.55)] p-2">
+          <div className="mt-5 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2">
             <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{strings.docs.sourceLabel}</p>
             <p className="mt-2 break-all font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--accent-soft)]">{doc.source}</p>
           </div>
-          <div className="mt-4 rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(5,10,24,0.75)] p-2">
+          <div className="mt-4 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2">
             <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{strings.docs.snippetLabel}</p>
             <pre className="mt-2 overflow-x-auto font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--text-soft)]">
               <code>{doc.snippet}</code>

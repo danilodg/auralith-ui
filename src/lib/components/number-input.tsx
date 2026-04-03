@@ -50,16 +50,8 @@ function NumberInputBase({ className, defaultValue = 0, hint, id, label, max, mi
           className,
         )}
       >
-        <button
-          className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.04)] disabled:opacity-40"
-          disabled={!canDecrease}
-          onClick={() => applyValue(currentValue - numericStep)}
-          type="button"
-        >
-          <Minus size={14} />
-        </button>
         <input
-          className="w-full bg-transparent px-2 py-1.5 text-center text-[0.88rem] text-[color:var(--text-main)] outline-none"
+          className="w-full bg-transparent px-3 py-1.5 text-left text-[0.88rem] text-[color:var(--text-main)] outline-none"
           id={fieldId}
           inputMode="numeric"
           onChange={(event) => {
@@ -71,14 +63,24 @@ function NumberInputBase({ className, defaultValue = 0, hint, id, label, max, mi
           value={String(currentValue)}
           {...props}
         />
-        <button
-          className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.04)] disabled:opacity-40"
-          disabled={!canIncrease}
-          onClick={() => applyValue(currentValue + numericStep)}
-          type="button"
-        >
-          <Plus size={14} />
-        </button>
+        <span className="mr-1 inline-flex items-center gap-1 rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] p-0.5">
+          <button
+            className="inline-flex h-7 w-7 items-center justify-center rounded-[6px] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.04)] disabled:opacity-40"
+            disabled={!canDecrease}
+            onClick={() => applyValue(currentValue - numericStep)}
+            type="button"
+          >
+            <Minus size={14} />
+          </button>
+          <button
+            className="inline-flex h-7 w-7 items-center justify-center rounded-[6px] text-[color:var(--text-soft)] transition hover:bg-[rgba(255,255,255,0.04)] disabled:opacity-40"
+            disabled={!canIncrease}
+            onClick={() => applyValue(currentValue + numericStep)}
+            type="button"
+          >
+            <Plus size={14} />
+          </button>
+        </span>
       </div>
       {hint ? <span className="text-sm text-[color:var(--text-muted)]">{hint}</span> : null}
     </label>
