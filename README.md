@@ -1,14 +1,21 @@
 # Auralith UI
 
-Biblioteca React para interfaces premium com a identidade visual Auralith.
+React component library for premium product interfaces, with an integrated visual system and responsive behavior tuned for small screens.
 
-## Instalar
+## What is included
+
+- Reusable UI components for forms, layout, overlays, and navigation.
+- Shared design tokens (color, blur, border, glow, typography).
+- Built-in styles via the library entrypoint.
+- Interactive local showcase for documentation and previews.
+
+## Installation
 
 ```bash
 npm install auralith-ui
 ```
 
-## Uso basico
+## Quick usage
 
 ```tsx
 import { Button, Card } from 'auralith-ui'
@@ -22,13 +29,28 @@ export function Example() {
 }
 ```
 
-Os estilos da biblioteca sao importados automaticamente pelo entrypoint principal. Se preferir importar manualmente, use:
+Styles are imported automatically from the main entrypoint. If you need manual control:
 
 ```ts
 import 'auralith-ui/styles.css'
 ```
 
-## Stack inicial
+## Core components
+
+- `Button`
+- `Tag`
+- `Input`
+- `Textarea`
+- `Card`
+- `GlassPanel`
+- `Modal`
+- `Tooltip`
+- `DropdownMenu`
+- `AuthShell`
+- `SideRail`
+- `SectionLabel`
+
+## Tech stack
 
 - React 19
 - TypeScript
@@ -36,55 +58,30 @@ import 'auralith-ui/styles.css'
 - Tailwind CSS v4
 - Lucide React
 
-## Direcao visual
+## Local development
 
-- atmosfera tecnologica e premium
-- superfices glass com blur e borda suave
-- gradientes frios com glow controlado
-- tipografia com `Space Grotesk`, `Outfit` e `IBM Plex Mono`
-- componentes pensados para portfolio, auth flows, landing pages e produtos digitais
-
-## Estrutura inicial
-
-```text
-src/
-  App.tsx              # Showcase inicial da biblioteca
-  index.css            # Tokens globais e base visual
-  lib/
-    components/
-      button.tsx
-      glass-panel.tsx
-      section-label.tsx
-      tag.tsx
-    tokens/
-      theme.ts
-    utils/
-      cn.ts
-    index.ts
+```bash
+npm install
+npm run dev
 ```
 
-## Primeiros componentes
+## Build and validation
 
-- `Button`
-- `GlassPanel`
-- `SectionLabel`
-- `Tag`
-- `Input`
-- `Textarea`
-- `Card`
-- `SectionHeader`
-- `ProjectCard`
-- `AuthShell`
-- `SideRail`
+```bash
+# Build showcase app
+npm run build
 
-## Proximos passos naturais
+# Build package for distribution
+npm run build:lib
 
-1. extrair estados adicionais de formulario, como erro, sucesso e loading
-2. criar variantes de `ProjectCard` com media, metricas e CTA configuravel
-3. adicionar temas claro/escuro controlados por provider
-4. decidir se a biblioteca vai publicar pacote npm ou funcionar primeiro como monorepo interno
+# Validate publish contents
+npm run pack:check
 
-## Publicando no npm
+# Lint
+npm run lint
+```
+
+## Publish to npm
 
 ```bash
 npm login
@@ -92,15 +89,29 @@ npm run build:lib
 npm publish
 ```
 
-Para revisar o conteudo do pacote antes de publicar:
+## Project structure
 
-```bash
-npm run pack:check
+```text
+src/
+  App.tsx
+  index.css
+  lib/
+    components/
+    tokens/
+    utils/
+    index.ts
+  features/
+  data/
+  pages/
 ```
 
-## Rodando localmente
+## Design direction
 
-```bash
-npm install
-npm run dev
-```
+- Premium, technical look and feel.
+- Glass-like surfaces with controlled glow.
+- Clear visual hierarchy with compact spacing.
+- Typography using `Space Grotesk`, `Outfit`, and `IBM Plex Mono`.
+
+## License
+
+MIT
