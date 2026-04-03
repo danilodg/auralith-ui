@@ -127,7 +127,7 @@ function ModalContent({ children, className, ...props }: ModalContentProps) {
 
       <div
         className={cn(
-          'relative z-10 w-full max-w-2xl rounded-[8px] border border-[color:var(--panel-border)] bg-[var(--panel-bg)] p-2 shadow-[var(--panel-shadow)] backdrop-blur-[22px] sm:p-2',
+          'relative z-10 w-full max-w-2xl rounded-[8px] border border-[color:var(--panel-border)] bg-[color:var(--modal-bg)] p-2 shadow-[var(--panel-shadow)] sm:p-2',
           className,
         )}
         {...props}
