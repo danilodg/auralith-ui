@@ -1,7 +1,12 @@
 import {
   BetweenHorizontalStart,
+  CalendarDays,
   CaseSensitive,
+  CheckSquare,
   ChevronDownSquare,
+  Clock3,
+  Hash,
+  ListFilter,
   Mail,
   MessageSquareQuote,
   MousePointerClick,
@@ -12,7 +17,7 @@ import {
   Waypoints,
 } from 'lucide-react'
 
-import { Button, Card, DropdownMenu, GlassPanel, Input, SectionLabel, Tag, Textarea, Tooltip } from '../lib'
+import { Button, Card, Checkbox, DateInput, DropdownMenu, GlassPanel, Input, NumberInput, SectionLabel, Select, Tag, Textarea, TimeInput, Tooltip } from '../lib'
 import { ModalPreview } from '../features/docs/modal-preview'
 import type { Language } from '../i18n'
 import type { ComponentDoc } from '../types/docs'
@@ -56,6 +61,41 @@ function getStructuredMeta(id: string, isPt: boolean) {
         { name: 'Input.Hint', description: isPt ? 'Texto de apoio abaixo do campo.' : 'Supporting copy below the field.' },
       ],
       notes: isPt ? ['Use a composicao quando precisar de mais controle de estrutura.'] : ['Use composition when you need more structure control.'],
+    },
+    'input-date': {
+      anatomy: ['DateInput'],
+      parts: [
+        { name: 'DateInput', description: isPt ? 'Campo customizado para data em formato `YYYY-MM-DD`.' : 'Custom date field using `YYYY-MM-DD` format.' },
+      ],
+      notes: isPt ? ['Use para datas unicas e mantenha a validacao no submit.'] : ['Use for single dates and keep validation at submit time.'],
+    },
+    'input-time': {
+      anatomy: ['TimeInput'],
+      parts: [
+        { name: 'TimeInput', description: isPt ? 'Campo customizado para hora em formato `HH:MM`.' : 'Custom time field using `HH:MM` format.' },
+      ],
+      notes: isPt ? ['Bom para agendas, horarios de atendimento e janelas de disponibilidade.'] : ['Good for schedules, support windows and availability slots.'],
+    },
+    'input-number': {
+      anatomy: ['NumberInput'],
+      parts: [
+        { name: 'NumberInput', description: isPt ? 'Campo numerico customizado com controles de incremento e decremento.' : 'Custom numeric field with increment and decrement controls.' },
+      ],
+      notes: isPt ? ['Defina `min`, `max` e `step` para reduzir erros de digitacao.'] : ['Set `min`, `max` and `step` to reduce typing errors.'],
+    },
+    checkbox: {
+      anatomy: ['Checkbox.Root', 'Checkbox.Field', 'Checkbox.Label', 'Checkbox.Hint'],
+      parts: [
+        { name: 'Checkbox.Field', description: isPt ? 'Controle booleano para aceite e preferencia.' : 'Boolean control for consent and preferences.' },
+      ],
+      notes: isPt ? ['Agrupe opcoes relacionadas em coluna para facilitar leitura no mobile.'] : ['Group related options in a column for better mobile readability.'],
+    },
+    select: {
+      anatomy: ['Select.Root', 'Select.Label', 'Select.Field', 'Select.Hint'],
+      parts: [
+        { name: 'Select.Field', description: isPt ? 'Lista de opcoes com trigger compacta e icone de dropdown.' : 'Options list with compact trigger and dropdown icon.' },
+      ],
+      notes: isPt ? ['Prefira opcoes curtas e objetivas para evitar quebra visual.'] : ['Prefer short objective options to avoid visual wrapping.'],
     },
     textarea: {
       anatomy: ['Textarea.Root', 'Textarea.Label', 'Textarea.Field', 'Textarea.Hint', 'Textarea.Footer'],
@@ -239,6 +279,144 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
         <Input.Field icon={<Mail size={18} />} placeholder="name@company.com" type="email" />
         <Input.Hint>{isPt ? 'Campo principal do formulario.' : 'Main form field.'}</Input.Hint>
       </Input.Root>
+    ),
+  },
+  {
+    id: 'checkbox',
+    name: 'Checkbox',
+    category: 'form',
+    icon: <CheckSquare size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Controle booleano compacto para consentimentos, filtros e preferencias.' : 'Compact boolean control for consent, filters and preferences.',
+    source: 'src/lib/components/checkbox.tsx',
+    importCode: "import { Checkbox } from '@/lib'",
+    snippet: isPt ? `<Checkbox.Root>
+  <span className="inline-flex items-center gap-2">
+    <Checkbox.Field />
+    <Checkbox.Label>Aceito os termos</Checkbox.Label>
+  </span>
+  <Checkbox.Hint>Voce pode remover esse aceite depois.</Checkbox.Hint>
+</Checkbox.Root>` : `<Checkbox.Root>
+  <span className="inline-flex items-center gap-2">
+    <Checkbox.Field />
+    <Checkbox.Label>I accept the terms</Checkbox.Label>
+  </span>
+  <Checkbox.Hint>You can remove this consent later.</Checkbox.Hint>
+</Checkbox.Root>`,
+    href: '#components/checkbox',
+    urlText: 'components/checkbox',
+    preview: (
+      <div className="grid gap-2">
+        <Checkbox label={isPt ? 'Aceito os termos de uso' : 'I accept the terms of use'} hint={isPt ? 'Consentimento obrigatorio para continuar.' : 'Required consent to continue.'} />
+        <Checkbox label={isPt ? 'Quero receber novidades por email' : 'Send me product updates by email'} defaultChecked />
+      </div>
+    ),
+  },
+  {
+    id: 'select',
+    name: 'Select',
+    category: 'form',
+    icon: <ListFilter size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Campo de selecao para opcoes fechadas com gatilho compacto.' : 'Selection field for closed options with a compact trigger.',
+    source: 'src/lib/components/select.tsx',
+    importCode: "import { Select } from '@/lib'",
+    snippet: isPt ? `<Select
+  label="Prioridade"
+  options={[
+    { value: 'low', label: 'Baixa' },
+    { value: 'high', label: 'Alta' },
+  ]}
+/>` : `<Select
+  label="Priority"
+  options={[
+    { value: 'low', label: 'Low' },
+    { value: 'high', label: 'High' },
+  ]}
+/>`,
+    href: '#components/select',
+    urlText: 'components/select',
+    preview: (
+      <Select
+        defaultValue="medium"
+        hint={isPt ? 'Use para listas curtas de opcoes pre-definidas.' : 'Use for short predefined option lists.'}
+        label={isPt ? 'Nivel de prioridade' : 'Priority level'}
+        options={isPt
+          ? [
+              { value: 'low', label: 'Baixa' },
+              { value: 'medium', label: 'Media' },
+              { value: 'high', label: 'Alta' },
+            ]
+          : [
+              { value: 'low', label: 'Low' },
+              { value: 'medium', label: 'Medium' },
+              { value: 'high', label: 'High' },
+            ]}
+      />
+    ),
+  },
+  {
+    id: 'input-date',
+    name: isPt ? 'Input Date' : 'Input Date',
+    category: 'form',
+    icon: <CalendarDays size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Campo de data customizado com calendario, presets e modo range.' : 'Custom date field with calendar, presets and range mode.',
+    source: 'src/lib/components/date-input.tsx',
+    importCode: "import { DateInput } from '@/lib'",
+    snippet: isPt ? `<DateInput label="Data" />
+<DateInput label="Periodo" mode="range" />` : `<DateInput label="Date" />
+<DateInput label="Range" mode="range" />`,
+    href: '#components/input-date',
+    urlText: 'components/input-date',
+    preview: (
+      <div className="grid gap-2">
+        <DateInput
+          hint={isPt ? 'Inclui atalhos: hoje, amanha, ontem e anteontem.' : 'Includes shortcuts: today, tomorrow, yesterday and day before yesterday.'}
+          label={isPt ? 'Data de entrega' : 'Delivery date'}
+        />
+        <DateInput
+          hint={isPt ? 'Modo range abre dois calendarios lado a lado no desktop.' : 'Range mode opens two calendars side by side on desktop.'}
+          label={isPt ? 'Periodo de analise' : 'Analysis range'}
+          mode="range"
+        />
+      </div>
+    ),
+  },
+  {
+    id: 'input-time',
+    name: isPt ? 'Input Time' : 'Input Time',
+    category: 'form',
+    icon: <Clock3 size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Campo de hora customizado, sem seletor nativo do browser.' : 'Custom time field without the browser native picker.',
+    source: 'src/lib/components/time-input.tsx',
+    importCode: "import { TimeInput } from '@/lib'",
+    snippet: isPt ? '<TimeInput label="Horario" />' : '<TimeInput label="Time" />',
+    href: '#components/input-time',
+    urlText: 'components/input-time',
+    preview: (
+      <TimeInput
+        hint={isPt ? 'Ideal para agendas e janelas de atendimento.' : 'Ideal for schedules and support windows.'}
+        label={isPt ? 'Horario da reuniao' : 'Meeting time'}
+      />
+    ),
+  },
+  {
+    id: 'input-number',
+    name: isPt ? 'Input Number' : 'Input Number',
+    category: 'form',
+    icon: <Hash size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Campo numerico customizado com controles de + e -.' : 'Custom numeric field with + and - controls.',
+    source: 'src/lib/components/number-input.tsx',
+    importCode: "import { NumberInput } from '@/lib'",
+    snippet: isPt ? '<NumberInput label="Quantidade" min={1} step={1} />' : '<NumberInput label="Quantity" min={1} step={1} />',
+    href: '#components/input-number',
+    urlText: 'components/input-number',
+    preview: (
+      <NumberInput
+        defaultValue={1}
+        hint={isPt ? 'Use min/max e step para restringir valores.' : 'Use min/max and step to constrain values.'}
+        label={isPt ? 'Quantidade de licencas' : 'License quantity'}
+        min={1}
+        step={1}
+      />
     ),
   },
   {

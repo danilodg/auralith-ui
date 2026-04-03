@@ -102,7 +102,7 @@ function DropdownMenuContent({ children, className, ...props }: HTMLAttributes<H
   return (
     <div
       className={cn(
-        'absolute left-0 top-[calc(100%+0.75rem)] z-40 min-w-[260px] rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(9,16,43,0.96)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]',
+        'absolute left-0 top-[calc(100%+0.75rem)] z-[120] min-w-[260px] rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(9,16,43,0.96)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]',
         className,
       )}
       {...props}

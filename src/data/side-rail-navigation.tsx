@@ -17,6 +17,43 @@ export function createSideRailItems(
   navigate: (href: string) => void,
 ): SideRailItem[] {
   const strings = localeStrings[language]
+  const isPt = language === 'pt'
+  const inputDocIds = new Set(['input', 'checkbox', 'select', 'textarea', 'input-date', 'input-time', 'input-number'])
+  const inputDocs = docs.filter((doc) => inputDocIds.has(doc.id))
+  const otherDocs = docs.filter((doc) => !inputDocIds.has(doc.id))
+  const firstInputId = inputDocs[0]?.id ?? 'input'
+
+  const componentItems = [
+    {
+      id: 'components-inputs',
+      title: isPt ? 'Inputs' : 'Inputs',
+      description: isPt ? 'Email, checkbox, select, textarea, data, hora e numero.' : 'Email, checkbox, select, textarea, date, time and number.',
+      href: `#components/${firstInputId}`,
+      urlText: `components/${firstInputId}`,
+      isActive: componentId ? inputDocIds.has(componentId) : false,
+      onClick: () => navigate(`#components/${firstInputId}`),
+    },
+    ...inputDocs.map((doc) => ({
+      id: doc.id,
+      title: `- ${doc.name}`,
+      description: doc.description,
+      icon: doc.icon,
+      href: `#components/${doc.id}`,
+      urlText: `components/${doc.id}`,
+      isActive: componentId === doc.id,
+      onClick: () => navigate(`#components/${doc.id}`),
+    })),
+    ...otherDocs.map((doc) => ({
+      id: doc.id,
+      title: doc.name,
+      description: doc.description,
+      icon: doc.icon,
+      href: `#components/${doc.id}`,
+      urlText: `components/${doc.id}`,
+      isActive: componentId === doc.id,
+      onClick: () => navigate(`#components/${doc.id}`),
+    })),
+  ]
 
   return [
     {
@@ -58,16 +95,7 @@ export function createSideRailItems(
       icon: <FileText className="h-5 w-5" strokeWidth={1.8} />,
       isActive: page === 'components',
       onClick: () => navigate('#components/button'),
-      items: docs.map((doc) => ({
-        id: doc.id,
-        title: doc.name,
-        description: doc.description,
-        icon: doc.icon,
-        href: `#components/${doc.id}`,
-        urlText: `components/${doc.id}`,
-        isActive: componentId === doc.id,
-        onClick: () => navigate(`#components/${doc.id}`),
-      })),
+      items: componentItems,
     },
   ]
 }

@@ -5,6 +5,19 @@ import { ChevronDown, Pin, PinOff } from 'lucide-react'
 import type { SideRailChildItem, SideRailItem } from '../../types/navigation'
 import { cn } from '../utils/cn'
 
+const SIDE_RAIL_PINNED_STORAGE_KEY = 'auralith-ui:side-rail:pinned'
+
+function getInitialPinnedState() {
+  if (typeof window === 'undefined') return false
+
+  try {
+    return window.localStorage.getItem(SIDE_RAIL_PINNED_STORAGE_KEY) === '1'
+  }
+  catch {
+    return false
+  }
+}
+
 interface SideRailProps {
   brandTitle: string
   brandSubtitle: string
@@ -131,8 +144,8 @@ export function SideRail({
   onPinnedChange,
   onLayoutOffsetChange,
 }: SideRailProps) {
-  const [expanded, setExpanded] = useState(false)
-  const [pinned, setPinned] = useState(false)
+  const [pinned, setPinned] = useState(getInitialPinnedState)
+  const [expanded, setExpanded] = useState(() => getInitialPinnedState())
   const [openGroupId, setOpenGroupId] = useState<string | null>(null)
   const [mobileIndicatorStyle, setMobileIndicatorStyle] = useState<{ left: number; width: number; opacity: number }>({ left: 0, width: 0, opacity: 0 })
   const mobileNavRef = useRef<HTMLElement | null>(null)
@@ -146,6 +159,15 @@ export function SideRail({
     onPinnedChange?.(pinned)
     onLayoutOffsetChange?.(pinned ? (expanded ? 280 : 64) : 0)
   }, [expanded, onLayoutOffsetChange, onPinnedChange, pinned])
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(SIDE_RAIL_PINNED_STORAGE_KEY, pinned ? '1' : '0')
+    }
+    catch {
+      // Ignore localStorage write failures (private mode, denied storage, etc)
+    }
+  }, [pinned])
 
   useLayoutEffect(() => {
     let frameId: number | null = null
