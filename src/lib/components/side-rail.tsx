@@ -38,7 +38,49 @@ function childIsActive(item: SideRailChildItem): boolean {
   return item.items.some((child) => childIsActive(child))
 }
 
-function ChildLink({ expanded, item, level = 0 }: { expanded: boolean; item: SideRailChildItem; level?: number }) {
+function findActiveChildId(items: SideRailChildItem[]): string | null {
+  for (const item of items) {
+    if (item.items?.length) {
+      const nested = findActiveChildId(item.items)
+      if (nested) return nested
+    }
+
+    if (item.isActive) {
+      return item.id
+    }
+  }
+
+  return null
+}
+
+function findActiveItemId(items: SideRailItem[]): string | null {
+  for (const item of items) {
+    if (item.items?.length) {
+      const nested = findActiveChildId(item.items)
+      if (nested) return nested
+    }
+
+    if (item.isActive) {
+      return item.id
+    }
+  }
+
+  return null
+}
+
+function ChildLink({
+  expanded,
+  item,
+  level = 0,
+  onItemClick,
+  registerRef,
+}: {
+  expanded: boolean
+  item: SideRailChildItem
+  level?: number
+  onItemClick?: (id: string) => void
+  registerRef?: (id: string, node: HTMLElement | null) => void
+}) {
   const hasChildren = Boolean(item.items?.length)
   const isActive = childIsActive(item)
   const [open, setOpen] = useState(() => hasChildren && isActive)
@@ -51,6 +93,8 @@ function ChildLink({ expanded, item, level = 0 }: { expanded: boolean; item: Sid
   }, [hasChildren, isActive])
 
   function handleClick() {
+    onItemClick?.(item.id)
+
     if (hasChildren) {
       setOpen((current) => !current)
       return
@@ -64,6 +108,7 @@ function ChildLink({ expanded, item, level = 0 }: { expanded: boolean; item: Sid
       <Component
         {...(item.href && !hasChildren ? { href: item.href } : { type: 'button' as const })}
         aria-current={isActive ? 'page' : undefined}
+        ref={(node: HTMLAnchorElement | HTMLButtonElement | null) => registerRef?.(item.id, node)}
         className={cn(
           'group flex h-10 min-w-0 items-center rounded-[8px] text-sm transition',
           expanded
@@ -116,7 +161,16 @@ function ChildLink({ expanded, item, level = 0 }: { expanded: boolean; item: Sid
       {hasChildren ? (
         <div className={cn('overflow-hidden transition-[max-height] duration-300 ease-out', expanded && open ? 'max-h-[1200px]' : 'max-h-0')}>
           <div className="pb-1 pt-1">
-            {item.items?.map((child) => <ChildLink expanded={expanded} item={child} key={child.id} level={level + 1} />)}
+            {item.items?.map((child) => (
+              <ChildLink
+                expanded={expanded}
+                item={child}
+                key={child.id}
+                level={level + 1}
+                onItemClick={onItemClick}
+                registerRef={registerRef}
+              />
+            ))}
           </div>
         </div>
       ) : null}
@@ -129,37 +183,47 @@ function DesktopNavItem({
   item,
   onClick,
   open,
+  onItemClick,
+  registerRef,
 }: {
   expanded: boolean
   item: SideRailItem
   onClick: () => void
   open: boolean
+  onItemClick?: (id: string) => void
+  registerRef?: (id: string, node: HTMLElement | null) => void
 }) {
   const hasChildren = Boolean(item.items?.length)
   const Component = item.href && !hasChildren ? 'a' : 'button'
   const isActive = item.isActive || item.items?.some((child) => childIsActive(child))
 
+  function handleClick() {
+    onItemClick?.(item.id)
+    onClick()
+  }
+
   return (
     <div className="nav-item">
       <Component
-        {...(item.href && !hasChildren ? { href: item.href, onClick } : { onClick, type: 'button' as const })}
+        {...(item.href && !hasChildren ? { href: item.href, onClick: handleClick } : { onClick: handleClick, type: 'button' as const })}
         aria-current={isActive ? 'page' : undefined}
+        ref={(node: HTMLAnchorElement | HTMLButtonElement | null) => registerRef?.(item.id, node)}
         className={cn(
           'group relative flex h-11 items-center rounded-[8px] text-left transition',
           expanded ? 'w-full gap-3 px-3' : 'mx-auto w-11 justify-center px-0',
           isActive
-            ? 'bg-[linear-gradient(135deg,rgba(111,224,255,0.18),rgba(104,126,255,0.18)_55%,rgba(139,102,255,0.2))] text-[color:var(--accent-line)] shadow-[0_0_0_1px_rgba(111,224,255,0.1)]'
+            ? 'text-[color:var(--accent-line)]'
             : 'text-[color:var(--text-muted)] hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]',
         )}
         title={expanded ? undefined : getTooltipText(item)}
       >
         <span
-          className={cn(
-            'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition',
-            isActive
-              ? 'bg-[rgba(111,224,255,0.16)] text-[color:var(--accent-line)]'
-              : 'group-hover:bg-[color:var(--surface-hover-strong)]',
-          )}
+            className={cn(
+              'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition',
+              isActive
+                ? 'bg-[rgba(111,224,255,0.16)] text-[color:var(--accent-line)]'
+                : 'group-hover:bg-[color:var(--surface-hover-strong)]',
+            )}
         >
           {item.icon}
         </span>
@@ -179,7 +243,14 @@ function DesktopNavItem({
       <div className={cn('overflow-hidden transition-[max-height] duration-300 ease-out', expanded && open ? 'max-h-[1200px]' : 'max-h-0')}>
         <div className="pb-1 pt-1">
           {item.items?.map((child) => (
-            <ChildLink expanded={expanded} item={child} key={child.id} level={1} />
+            <ChildLink
+              expanded={expanded}
+              item={child}
+              key={child.id}
+              level={1}
+              onItemClick={onItemClick}
+              registerRef={registerRef}
+            />
           ))}
         </div>
       </div>
@@ -199,11 +270,20 @@ export function SideRail({
   const [pinned, setPinned] = useState(getInitialPinnedState)
   const [expanded, setExpanded] = useState(() => getInitialPinnedState())
   const [openGroupIds, setOpenGroupIds] = useState<string[]>([])
+  const [focusedNavId, setFocusedNavId] = useState<string | null>(null)
+  const [desktopIndicatorStyle, setDesktopIndicatorStyle] = useState<{ height: number; opacity: number; top: number }>({
+    top: 0,
+    height: 0,
+    opacity: 0,
+  })
   const [mobileIndicatorStyle, setMobileIndicatorStyle] = useState<{ left: number; width: number; opacity: number }>({ left: 0, width: 0, opacity: 0 })
+  const desktopNavRef = useRef<HTMLElement | null>(null)
+  const desktopItemRefs = useRef<Record<string, HTMLElement | null>>({})
   const mobileNavRef = useRef<HTMLElement | null>(null)
   const mobileItemRefs = useRef<Record<string, HTMLElement | null>>({})
 
   const activeItem = items.find((item) => item.isActive || item.items?.some((child) => childIsActive(child))) ?? null
+  const activeNavId = findActiveItemId(items)
   const activeChildGroupId = items.find((item) => item.items?.some((child) => childIsActive(child)))?.id ?? null
 
   useEffect(() => {
@@ -272,6 +352,53 @@ export function SideRail({
     }
   }, [activeItem, items])
 
+  useLayoutEffect(() => {
+    let frameId: number | null = null
+    let timeoutId: number | null = null
+
+    const updateDesktopIndicator = () => {
+      const nav = desktopNavRef.current
+      const targetId = focusedNavId ?? activeNavId ?? openGroupIds[openGroupIds.length - 1] ?? activeItem?.id ?? null
+      const currentItem = targetId ? desktopItemRefs.current[targetId] : null
+
+      if (!expanded || !nav || !currentItem) {
+        setDesktopIndicatorStyle((current) => (current.opacity === 0 ? current : { ...current, opacity: 0 }))
+        return
+      }
+
+      setDesktopIndicatorStyle({
+        top: currentItem.offsetTop,
+        height: currentItem.offsetHeight,
+        opacity: 1,
+      })
+    }
+
+    const requestDesktopIndicatorUpdate = () => {
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId)
+      }
+
+      frameId = window.requestAnimationFrame(() => {
+        frameId = null
+        updateDesktopIndicator()
+      })
+    }
+
+    requestDesktopIndicatorUpdate()
+    timeoutId = window.setTimeout(requestDesktopIndicatorUpdate, 180)
+    window.addEventListener('resize', requestDesktopIndicatorUpdate)
+
+    return () => {
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId)
+      }
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId)
+      }
+      window.removeEventListener('resize', requestDesktopIndicatorUpdate)
+    }
+  }, [activeItem, activeNavId, expanded, focusedNavId, items, openGroupIds])
+
   function toggleDesktopSidebar() {
     setExpanded((current) => !current)
   }
@@ -287,6 +414,8 @@ export function SideRail({
   }
 
   function handleDesktopItemClick(item: SideRailItem) {
+    setFocusedNavId(item.id)
+
     if (item.items?.length) {
       setExpanded(true)
       setOpenGroupIds((current) => (current.includes(item.id) ? current.filter((id) => id !== item.id) : [...current, item.id]))
@@ -297,6 +426,8 @@ export function SideRail({
   }
 
   function handleMobileItemClick(item: SideRailItem) {
+    setFocusedNavId(item.id)
+
     if (item.items?.length) {
       setOpenGroupIds((current) => (current.includes(item.id) ? current.filter((id) => id !== item.id) : [...current, item.id]))
       return
@@ -371,14 +502,31 @@ export function SideRail({
                 Navigation
               </div>
 
-              <nav aria-label="Side rail navigation" className={cn('space-y-1', expanded ? '' : 'px-1.5')}>
+              <nav
+                aria-label="Side rail navigation"
+                className={cn('relative space-y-1', expanded ? '' : 'px-1.5')}
+                ref={desktopNavRef}
+              >
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-2 right-2 z-0 rounded-[8px] border border-[color:var(--accent-line)]/25 bg-[color:var(--surface-hover)] shadow-[0_0_0_1px_rgba(111,224,255,0.08)] transition-[transform,height,opacity] duration-300 ease-out"
+                  style={{
+                    height: `${desktopIndicatorStyle.height}px`,
+                    opacity: desktopIndicatorStyle.opacity,
+                    transform: `translateY(${desktopIndicatorStyle.top}px)`,
+                  }}
+                />
                 {items.map((item) => (
                   <DesktopNavItem
                     expanded={expanded}
                     item={item}
                     key={item.id}
                     onClick={() => handleDesktopItemClick(item)}
+                    onItemClick={setFocusedNavId}
                     open={openGroupIds.includes(item.id)}
+                    registerRef={(id, node) => {
+                      desktopItemRefs.current[id] = node
+                    }}
                   />
                 ))}
               </nav>
@@ -405,7 +553,7 @@ export function SideRail({
         <nav ref={mobileNavRef} className="fixed inset-x-3 bottom-3 z-30 flex flex-wrap gap-2 overflow-hidden rounded-[8px] border border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.18)] max-[420px]:gap-1.5 max-[420px]:p-2 [view-transition-name:none]" aria-label="Side rail navigation mobile">
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute bottom-2 left-0 top-2 rounded-[8px] bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] shadow-[0_0_22px_var(--accent-shadow)] transition-[transform,width,opacity] duration-300 ease-out max-[420px]:bottom-1.5 max-[420px]:top-1.5"
+            className="pointer-events-none absolute bottom-2 left-0 top-2 rounded-[8px] border border-[color:var(--accent-line)]/25 bg-[color:var(--surface-hover)] shadow-[0_0_0_1px_rgba(111,224,255,0.08)] transition-[transform,width,opacity] duration-300 ease-out max-[420px]:bottom-1.5 max-[420px]:top-1.5"
             style={{
               opacity: mobileIndicatorStyle.opacity,
               width: `${mobileIndicatorStyle.width}px`,
@@ -466,7 +614,14 @@ export function SideRail({
                       {item.title}
                     </p>
                     <div className="grid gap-2 sm:grid-cols-2">
-                      {item.items?.map((child) => <ChildLink expanded item={child} key={child.id} level={1} />)}
+                      {item.items?.map((child) => (
+                        <ChildLink
+                          expanded
+                          item={child}
+                          key={child.id}
+                          level={1}
+                        />
+                      ))}
                     </div>
                   </div>
                 ))}
