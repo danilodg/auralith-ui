@@ -24,7 +24,7 @@ export function SectionHeader({
       {...props}
     >
       {eyebrow ? <SectionLabel className={align === 'center' ? 'justify-center' : ''}>{eyebrow}</SectionLabel> : null}
-      <h2 className="mt-4 font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(1.7rem,5.4vw,2.75rem)] font-bold leading-[1.04] tracking-[-0.03em] text-[color:var(--text-main)]">
+      <h2 className="mt-4 font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(1.3rem,4.1vw,2.06rem)] font-bold leading-[1.06] tracking-[-0.02em] text-[color:var(--text-main)]">
         {heading}
       </h2>
       {description ? (

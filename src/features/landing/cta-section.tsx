@@ -12,10 +12,10 @@ export function CtaSection({ onOpenDocs }: CtaSectionProps) {
 
   return (
     <section>
-      <GlassPanel className="flex flex-col gap-6 p-2 sm:flex-row sm:items-end sm:justify-between sm:p-2">
+      <GlassPanel className="flex flex-col gap-3 p-3 sm:flex-row sm:items-end sm:justify-between sm:p-3">
         <div>
           <SectionLabel>{strings.landing.nextStep}</SectionLabel>
-          <h2 className="mt-4 max-w-2xl font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(1.9rem,5vw,3rem)] font-bold leading-[0.98] tracking-[-0.04em]">
+          <h2 className="mt-3 max-w-2xl font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(1.45rem,3.8vw,2.25rem)] font-bold leading-[1.02] tracking-[-0.03em]">
             {strings.landing.nextStepTitle}
           </h2>
         </div>

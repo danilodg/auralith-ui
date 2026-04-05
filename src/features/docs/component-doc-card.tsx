@@ -27,7 +27,7 @@ export function ComponentDocCard({ doc }: ComponentDocCardProps) {
 
   return (
     <GlassPanel className="p-2 sm:p-2 lg:p-2">
-      <div className="grid gap-6 lg:grid-cols-[0.42fr_0.58fr]">
+      <div className="grid gap-6 lg:grid-cols-2">
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <Tag>{getCategoryLabel(doc.category, isPt)}</Tag>

@@ -21,18 +21,18 @@ interface AuthShellProps {
 
 export function AuthShell({ children, description, eyebrow, highlights, stats, title }: AuthShellProps) {
   return (
-    <GlassPanel className="overflow-hidden p-2">
+    <GlassPanel className="overflow-hidden">
       <div className="grid lg:grid-cols-[1.08fr_0.92fr]">
-        <div className="border-b border-[color:var(--panel-border)] p-2 sm:p-2 lg:border-b-0 lg:border-r lg:p-2">
+        <div className="border-b border-[color:var(--panel-border)] p-3 sm:p-3 lg:border-b-0 lg:border-r lg:p-3">
           <SectionLabel>{eyebrow}</SectionLabel>
-          <h3 className="mt-4 max-w-lg font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(1.8rem,5vw,3.2rem)] font-bold leading-[0.96] tracking-[-0.05em] text-[color:var(--text-main)]">
+          <h3 className="mt-3 max-w-lg font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(1.35rem,3.75vw,2.4rem)] font-bold leading-[0.98] tracking-[-0.03em] text-[color:var(--text-main)]">
             {title}
           </h3>
-          <p className="mt-4 max-w-md text-sm leading-6 text-[color:var(--text-muted)] sm:text-[0.95rem]">
+          <p className="mt-3 max-w-md text-sm leading-6 text-[color:var(--text-muted)] sm:text-[0.95rem]">
             {description}
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-3 flex flex-wrap gap-3">
             {highlights.map((item) => (
               <span
                 key={item}
@@ -43,9 +43,9 @@ export function AuthShell({ children, description, eyebrow, highlights, stats, t
             ))}
           </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="mt-3 grid gap-3 sm:grid-cols-3">
             {stats.map((item) => (
-              <Card key={item.label} className="p-2" variant="subtle">
+              <Card key={item.label} className="p-3" variant="subtle">
                 <p className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[1.45rem] font-bold tracking-[-0.04em] text-[color:var(--text-main)] sm:text-2xl">
                   {item.value}
                 </p>
@@ -54,7 +54,7 @@ export function AuthShell({ children, description, eyebrow, highlights, stats, t
             ))}
           </div>
 
-          <Card className="mt-6" variant="default">
+          <Card className="mt-3 p-3" variant="default">
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[8px] bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] text-white">
                 <ShieldCheck size={18} />
@@ -69,8 +69,8 @@ export function AuthShell({ children, description, eyebrow, highlights, stats, t
           </Card>
         </div>
 
-        <div className="flex items-center justify-center p-2 sm:p-2 lg:p-2 xl:p-2">
-          <Card className="w-full max-w-xl p-2 sm:p-2" variant="elevated">
+        <div className="flex items-center justify-center p-3 sm:p-3 lg:p-3 xl:p-3">
+          <Card className="w-full max-w-xl p-3 sm:p-3" variant="elevated">
             {children}
           </Card>
         </div>

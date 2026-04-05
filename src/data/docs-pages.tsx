@@ -20,17 +20,20 @@ export function createDocsPages(language: Language): DocPage[] {
         <div className="flex flex-col gap-6">
           <section className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
             <GlassPanel className="p-2 sm:p-2 lg:p-2">
+              <div className="flex flex-wrap gap-3">
+                <Tag>docs</Tag>
+                <Tag>{isPt ? 'Instalacao' : 'Installation'}</Tag>
+                <Tag>docs/installation</Tag>
+              </div>
+
               <SectionHeader
-                eyebrow="Docs"
+                className="mt-6"
+                eyebrow={isPt ? 'Pagina de documentacao' : 'Documentation page'}
                 heading={isPt ? 'Instalacao' : 'Installation'}
-                description={
-                  isPt
-                    ? 'Passos iniciais para usar a Auralith UI no seu projeto React com TypeScript e Tailwind CSS.'
-                    : 'First steps to use Auralith UI in your React project with TypeScript and Tailwind CSS.'
-                }
+                description={isPt ? 'Como instalar a biblioteca e preparar o ambiente no seu projeto.' : 'How to install the library and prepare the environment in your project.'}
               />
 
-              <div className="mt-8 space-y-4">
+              <div className="mt-6 space-y-4">
                 <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">
                     {isPt ? 'Instalar pacote' : 'Install package'}
@@ -100,17 +103,20 @@ export function createDocsPages(language: Language): DocPage[] {
         <div className="flex flex-col gap-6">
           <section className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
             <GlassPanel className="p-2 sm:p-2 lg:p-2">
+              <div className="flex flex-wrap gap-3">
+                <Tag>docs</Tag>
+                <Tag>{isPt ? 'Uso' : 'Usage'}</Tag>
+                <Tag>docs/usage</Tag>
+              </div>
+
               <SectionHeader
-                eyebrow="Docs"
+                className="mt-6"
+                eyebrow={isPt ? 'Pagina de documentacao' : 'Documentation page'}
                 heading={isPt ? 'Uso' : 'Usage'}
-                description={
-                  isPt
-                    ? 'Boas praticas para compor interfaces com primitives, surfaces e patterns da Auralith UI.'
-                    : 'Best practices to compose interfaces with Auralith UI primitives, surfaces and patterns.'
-                }
+                description={isPt ? 'Como importar, combinar e escalar os componentes no seu projeto.' : 'How to import, combine and scale the components in your project.'}
               />
 
-              <div className="mt-8 space-y-4">
+              <div className="mt-6 space-y-4">
                 <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{isPt ? 'Exemplo de import' : 'Example import'}</p>
                   <CodeBlock

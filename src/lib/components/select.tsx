@@ -2,6 +2,7 @@
 
 import { Children, isValidElement, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { Check, ChevronDown } from 'lucide-react'
 
 import { cn } from '../utils/cn'
@@ -52,16 +53,37 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
   const selectId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
   const options = useMemo(() => parseOptions(children), [children])
   const [open, setOpen] = useState(false)
+  const [panelPosition, setPanelPosition] = useState<{ left: number; top: number; width: number } | null>(null)
   const [internalValue, setInternalValue] = useState(defaultValue ?? '')
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
+  const panelRef = useRef<HTMLDivElement | null>(null)
   const isControlled = value !== undefined
   const currentValue = isControlled ? value : internalValue
 
   const selectedOption = useMemo(() => options.find((option) => option.value === currentValue), [currentValue, options])
 
+  function updatePanelPosition() {
+    const trigger = triggerRef.current
+    if (!trigger) return
+
+    const rect = trigger.getBoundingClientRect()
+    const viewportPadding = 8
+    const width = rect.width
+    const maxLeft = window.innerWidth - width - viewportPadding
+    const left = Math.max(viewportPadding, Math.min(rect.left, maxLeft))
+
+    setPanelPosition({
+      left,
+      top: rect.bottom + 6,
+      width,
+    })
+  }
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (!containerRef.current || containerRef.current.contains(event.target as Node)) return
+      const target = event.target as Node
+      if (containerRef.current?.contains(target) || panelRef.current?.contains(target)) return
       setOpen(false)
     }
 
@@ -79,6 +101,27 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
       window.removeEventListener('keydown', handleEscape)
     }
   }, [])
+
+  useEffect(() => {
+    if (!open) {
+      setPanelPosition(null)
+      return
+    }
+
+    updatePanelPosition()
+
+    function handleLayoutUpdate() {
+      updatePanelPosition()
+    }
+
+    window.addEventListener('resize', handleLayoutUpdate)
+    window.addEventListener('scroll', handleLayoutUpdate, true)
+
+    return () => {
+      window.removeEventListener('resize', handleLayoutUpdate)
+      window.removeEventListener('scroll', handleLayoutUpdate, true)
+    }
+  }, [open])
 
   function applyValue(nextValue: string) {
     if (!isControlled) {
@@ -104,6 +147,7 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
           disabled={disabled}
           id={selectId}
           onClick={() => setOpen((current) => !current)}
+          ref={triggerRef}
           type="button"
         >
           <span className={cn('block text-left', selectedOption ? 'text-[color:var(--text-main)]' : 'text-[color:var(--text-muted)]')}>
@@ -114,40 +158,49 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
           <ChevronDown className={cn('transition-transform duration-200', open ? 'rotate-180' : '')} size={14} />
         </span>
 
-        {open ? (
-          <div
-            className="absolute left-0 top-[calc(100%+0.4rem)] z-[120] w-full overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
-            id={selectId ? `${selectId}-content` : undefined}
-            role="listbox"
-          >
-            <div className="max-h-56 space-y-1 overflow-y-auto">
-              {options.map((option) => {
-                const isSelected = option.value === currentValue
+        {open && panelPosition && typeof document !== 'undefined'
+          ? createPortal(
+              <div
+                className="fixed z-[220] overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
+                id={selectId ? `${selectId}-content` : undefined}
+                ref={panelRef}
+                role="listbox"
+                style={{
+                  left: `${panelPosition.left}px`,
+                  top: `${panelPosition.top}px`,
+                  width: `${panelPosition.width}px`,
+                }}
+              >
+                <div className="max-h-56 space-y-1 overflow-y-auto">
+                  {options.map((option) => {
+                    const isSelected = option.value === currentValue
 
-                return (
-                  <button
-                    className={cn(
-                      'flex w-full items-start justify-between gap-2 rounded-[8px] px-2 py-1.5 text-left transition',
-                      isSelected
-                        ? 'bg-[rgba(111,224,255,0.12)] text-[color:var(--accent-soft)]'
-                        : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-hover)]',
-                    )}
-                    key={option.value}
-                    onClick={() => applyValue(option.value)}
-                    role="option"
-                    type="button"
-                  >
-                    <span>
-                      <span className="block text-[0.84rem] font-medium">{option.label}</span>
-                      {option.description ? <span className="mt-0.5 block text-[0.74rem] text-[color:var(--text-muted)]">{option.description}</span> : null}
-                    </span>
-                    <span className="pt-0.5">{isSelected ? <Check size={14} /> : null}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        ) : null}
+                    return (
+                      <button
+                        className={cn(
+                          'flex w-full items-start justify-between gap-2 rounded-[8px] px-2 py-1.5 text-left transition',
+                          isSelected
+                            ? 'bg-[rgba(111,224,255,0.12)] text-[color:var(--accent-soft)]'
+                            : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-hover)]',
+                        )}
+                        key={option.value}
+                        onClick={() => applyValue(option.value)}
+                        role="option"
+                        type="button"
+                      >
+                        <span>
+                          <span className="block text-[0.84rem] font-medium">{option.label}</span>
+                          {option.description ? <span className="mt-0.5 block text-[0.74rem] text-[color:var(--text-muted)]">{option.description}</span> : null}
+                        </span>
+                        <span className="pt-0.5">{isSelected ? <Check size={14} /> : null}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>,
+              document.body,
+            )
+          : null}
       </div>
       {hint ? <span className="text-sm text-[color:var(--text-muted)]">{hint}</span> : null}
     </label>

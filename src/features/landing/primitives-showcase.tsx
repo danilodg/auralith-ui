@@ -8,14 +8,14 @@ export function PrimitivesShowcase() {
   const { strings } = useLocale()
 
   return (
-    <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-      <GlassPanel className="p-2 sm:p-2">
+    <section className="grid gap-3 lg:grid-cols-[0.95fr_1.05fr]">
+      <GlassPanel className="p-3 sm:p-3">
         <SectionHeader
           eyebrow={strings.landing.featuredPrimitives}
           heading={strings.landing.featuredPrimitivesTitle}
           description={strings.landing.featuredPrimitivesDescription}
         />
-        <div className="mt-8 grid gap-4">
+        <div className="mt-3 grid gap-3">
           <Input label={strings.landing.workEmail} type="email" placeholder="name@company.com" icon={<Mail size={18} />} hint={strings.landing.workEmailHint} />
           <Textarea label={strings.landing.projectBrief} placeholder={strings.landing.projectBriefHint} hint={strings.landing.projectBriefHint} />
           <div className="flex flex-wrap gap-3">
@@ -25,8 +25,8 @@ export function PrimitivesShowcase() {
         </div>
       </GlassPanel>
 
-      <div className="grid gap-6">
-        <Card className="p-2 sm:p-2" variant="subtle">
+      <div className="grid gap-3">
+        <Card className="p-3 sm:p-3" variant="subtle">
           <SectionHeader
             eyebrow={strings.landing.whyLibrary}
             heading={strings.landing.whyLibraryTitle}

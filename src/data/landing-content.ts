@@ -7,9 +7,9 @@ export function createLandingContent(language: Language) {
 
   return {
     metrics: [
-      { value: '10', label: isPt ? 'componentes iniciais' : 'initial components' },
-      { value: '3', label: isPt ? 'camadas do sistema' : 'system layers' },
-      { value: '2', label: isPt ? 'telas de showcase' : 'showcase screens' },
+      { value: '17', label: isPt ? 'componentes documentados' : 'documented components' },
+      { value: '7', label: isPt ? 'categorias de interface' : 'interface categories' },
+      { value: '2', label: isPt ? 'patterns principais' : 'core patterns' },
     ] as const,
     pillars: [
       {
@@ -34,7 +34,24 @@ export function createLandingContent(language: Language) {
           : 'Auth shell, project cards and editorial blocks speed up composition.',
       },
     ] as const,
-    componentNames: ['Button', 'GlassPanel', 'SectionLabel', 'Tag', 'Input', 'Textarea', 'Card', 'Modal', 'DropdownMenu', 'Tooltip'] as const,
+    componentNames: [
+      'Button',
+      'GlassPanel',
+      'SectionLabel',
+      'Tag',
+      'CodeBlock',
+      'Input',
+      'Checkbox',
+      'Select',
+      'DateInput',
+      'TimeInput',
+      'NumberInput',
+      'Textarea',
+      'Card',
+      'Modal',
+      'DropdownMenu',
+      'Tooltip',
+    ] as const,
     stackItems: ['react 19', 'typescript', 'vite 8', 'tailwind v4', 'lucide react'] as const,
   }
 }

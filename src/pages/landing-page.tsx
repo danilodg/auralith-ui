@@ -16,8 +16,8 @@ export function LandingPage({ onOpenDocs }: LandingPageProps) {
   const content = createLandingContent(language)
 
   return (
-    <div className="flex min-h-full flex-1 flex-col gap-6">
-      <section className="grid gap-6 lg:grid-cols-[1.12fr_0.88fr]">
+    <div className="flex min-h-full flex-1 flex-col gap-3">
+      <section className="grid gap-3 lg:grid-cols-[1.12fr_0.88fr]">
         <HeroSection metrics={content.metrics} onOpenDocs={onOpenDocs} />
         <StackSection componentNames={content.componentNames} stackItems={content.stackItems} />
       </section>

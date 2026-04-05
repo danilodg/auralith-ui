@@ -160,6 +160,15 @@ function getStructuredMeta(id: string, isPt: boolean) {
       ],
       notes: isPt ? ['Use para ajuda curta e contexto adicional, nao para conteudo longo.'] : ['Use for short help and extra context, not for long content.'],
     },
+    'side-rail': {
+      anatomy: ['SideRail'],
+      parts: [
+        { name: 'items', description: isPt ? 'Estrutura principal de navegacao com suporte a niveis.' : 'Main navigation structure with nested levels.' },
+        { name: 'bottomSlot', description: isPt ? 'Area opcional para conta, acoes e atalhos.' : 'Optional area for account, actions, and shortcuts.' },
+        { name: 'onLayoutOffsetChange', description: isPt ? 'Callback para ajustar o padding do layout principal.' : 'Callback to adjust the main layout padding.' },
+      ],
+      notes: isPt ? ['Componente de layout raiz: prefira usar no app shell, nao dentro de cards locais.'] : ['Root layout component: prefer using it in the app shell, not inside local cards.'],
+    },
   } as const
 
   return map[id as keyof typeof map] ?? { anatomy: [], parts: [], notes: [] }
@@ -528,6 +537,56 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
             <Card.Description>{isPt ? 'Para chamadas com mais profundidade.' : 'For calls with more depth.'}</Card.Description>
           </Card.Header>
         </Card.Root>
+      </div>
+    ),
+  },
+  {
+    id: 'side-rail',
+    name: 'SideRail',
+    category: 'navigation',
+    icon: <BetweenHorizontalStart size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Navegacao lateral completa para app shell com estados de pin, colapso, mobile e area inferior customizavel.' : 'Complete side navigation for app shells with pin, collapse, mobile states, and custom bottom area.',
+    source: 'src/lib/components/side-rail.tsx',
+    importCode: "import { SideRail } from '@/lib'",
+    snippet: isPt ? `<SideRail
+  brandTitle="Auralith UI"
+  brandSubtitle="premium component library"
+  items={items}
+  bottomSlot={<div>Conta</div>}
+/>` : `<SideRail
+  brandTitle="Auralith UI"
+  brandSubtitle="premium component library"
+  items={items}
+  bottomSlot={<div>Account</div>}
+/>`,
+    href: '#components/side-rail',
+    urlText: 'components/side-rail',
+    preview: (
+      <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-3">
+        <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.14em] text-[color:var(--text-muted)]">
+          {isPt ? 'Componente de layout' : 'Layout-level component'}
+        </p>
+        <p className="mt-2 text-sm leading-6 text-[color:var(--text-soft)]">
+          {isPt
+            ? 'O SideRail controla o shell principal da aplicacao e deve ser usado na raiz do layout. Nesta docs voce encontra API, snippet e source para implementacao.'
+            : 'SideRail controls the main app shell and should be used at the layout root. In docs you get API, snippet, and source for implementation.'}
+        </p>
+        <div className="mt-3 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-2">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-hover)] p-2">
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-[8px] bg-[color:var(--surface-panel-1)] text-[color:var(--accent-line)]">
+                <PanelsTopLeft size={14} />
+              </span>
+              <span className="text-sm text-[color:var(--text-main)]">{isPt ? 'Landing' : 'Landing'}</span>
+            </div>
+            <div className="flex items-center gap-2 rounded-[8px] border border-[color:var(--card-border)] p-2 text-[color:var(--text-soft)]">
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-[8px] bg-[color:var(--surface-panel-1)]">
+                <SquareStack size={14} />
+              </span>
+              <span className="text-sm">{isPt ? 'Componentes' : 'Components'}</span>
+            </div>
+          </div>
+        </div>
       </div>
     ),
   },

@@ -5,7 +5,7 @@ import { createComponentDocs } from './data/component-docs'
 import { createDocsPages } from './data/docs-pages'
 import { createSideRailItems } from './data/side-rail-navigation'
 import { buildLanguageUrl, getInitialLanguage, localeStrings } from './i18n'
-import { GlassPanel, SideRail } from './lib'
+import { SideRail } from './lib'
 import { LocaleProvider } from './locale-context'
 import { DocsPage } from './pages/docs-page'
 import { LandingPage } from './pages/landing-page'
@@ -149,8 +149,7 @@ function App() {
           onPinnedChange={setIsSidebarPinned}
           onLayoutOffsetChange={setSidebarOffset}
           bottomSlot={
-            <GlassPanel className="p-2">
-              <div className="relative" ref={accountMenuRef}>
+            <div className="relative px-1 py-1" ref={accountMenuRef}>
                 <div className="flex items-center gap-2 px-1 py-1">
                   <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] text-white shadow-[0_0_16px_var(--accent-shadow)]">
                     <User2 size={14} />
@@ -263,13 +262,12 @@ function App() {
                     </div>
                   </div>
                 ) : null}
-              </div>
-            </GlassPanel>
+            </div>
           }
         />
 
         <div className="relative min-h-screen w-full transition-[padding] duration-200" style={{ paddingLeft: isSidebarPinned ? `${sidebarOffset}px` : undefined }}>
-          <div className="mx-auto w-full max-w-[1560px] p-2">
+          <div className="mx-auto w-full max-w-[1000px] p-2">
             <div className="flex min-h-[calc(100vh-2rem)] flex-col">
               {route.page === 'landing' ? (
                 <LandingPage onOpenDocs={() => navigateToHash('#docs')} />
