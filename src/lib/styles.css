@@ -100,27 +100,33 @@
     color: var(--text-main);
   }
 
-  .auralith-scrollbar {
+  .auralith-scrollbar,
+  * {
     scrollbar-width: thin;
     scrollbar-color: rgba(111, 224, 255, 0.34) rgba(255, 255, 255, 0.04);
   }
 
-  .auralith-scrollbar::-webkit-scrollbar {
+  .auralith-scrollbar::-webkit-scrollbar,
+  *::-webkit-scrollbar {
     width: 10px;
+    height: 10px;
   }
 
-  .auralith-scrollbar::-webkit-scrollbar-track {
+  .auralith-scrollbar::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-track {
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.04);
   }
 
-  .auralith-scrollbar::-webkit-scrollbar-thumb {
+  .auralith-scrollbar::-webkit-scrollbar-thumb,
+  *::-webkit-scrollbar-thumb {
     border: 2px solid rgba(255, 255, 255, 0.04);
     border-radius: 999px;
     background: linear-gradient(180deg, rgba(111, 224, 255, 0.62), rgba(104, 126, 255, 0.58));
   }
 
-  .auralith-scrollbar::-webkit-scrollbar-thumb:hover {
+  .auralith-scrollbar::-webkit-scrollbar-thumb:hover,
+  *::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, rgba(111, 224, 255, 0.78), rgba(139, 102, 255, 0.72));
   }
 }
