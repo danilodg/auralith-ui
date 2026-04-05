@@ -19,6 +19,7 @@ npm install auralith-ui
 
 ```tsx
 import { Button, Card } from 'auralith-ui'
+import 'auralith-ui/styles.css'
 
 export function Example() {
   return (
@@ -29,7 +30,7 @@ export function Example() {
 }
 ```
 
-Styles are imported automatically from the main entrypoint. If you need manual control:
+Always import the stylesheet once in your app entrypoint (for example `main.tsx` or `App.tsx`):
 
 ```ts
 import 'auralith-ui/styles.css'
