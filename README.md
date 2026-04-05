@@ -1,63 +1,40 @@
 # Auralith UI
 
-React component library for premium product interfaces, with an integrated visual system and responsive behavior tuned for small screens.
+React component library focused on premium, glass-inspired interfaces with reusable primitives and patterns.
 
-## What is included
-
-- Reusable UI components for forms, layout, overlays, and navigation.
-- Shared design tokens (color, blur, border, glow, typography).
-- Built-in styles via the library entrypoint.
-- Interactive local showcase for documentation and previews.
-
-## Installation
+## Install
 
 ```bash
 npm install auralith-ui
 ```
 
-## Quick usage
-
-```tsx
-import { Button, Card } from 'auralith-ui'
-import 'auralith-ui/styles.css'
-
-export function Example() {
-  return (
-    <Card>
-      <Button>Launch flow</Button>
-    </Card>
-  )
-}
-```
-
-Always import the stylesheet once in your app entrypoint (for example `main.tsx` or `App.tsx`):
+Import styles once in your app entrypoint:
 
 ```ts
 import 'auralith-ui/styles.css'
 ```
 
-## Core components
+## Quick usage
 
-- `Button`
-- `Tag`
-- `Input`
-- `Textarea`
-- `Card`
-- `GlassPanel`
-- `Modal`
-- `Tooltip`
-- `DropdownMenu`
-- `AuthShell`
-- `SideRail`
-- `SectionLabel`
+```tsx
+import { Button, Card, Input } from 'auralith-ui'
 
-## Tech stack
+export function Example() {
+  return (
+    <Card className="p-4">
+      <Input label="Email" placeholder="you@email.com" />
+      <Button className="mt-3">Continue</Button>
+    </Card>
+  )
+}
+```
 
-- React 19
-- TypeScript
-- Vite 8
-- Tailwind CSS v4
-- Lucide React
+## Included components
+
+- `Button`, `Tag`, `SectionLabel`
+- `Input`, `Textarea`, `Checkbox`, `Select`, date/time/number inputs
+- `Card`, `GlassPanel`, `Modal`, `Tooltip`, `DropdownMenu`
+- `SideRail`, `AuthShell`, `CodeBlock`
 
 ## Local development
 
@@ -66,52 +43,27 @@ npm install
 npm run dev
 ```
 
-## Build and validation
+## Validation and build
 
 ```bash
-# Build showcase app
-npm run build
-
-# Build package for distribution
-npm run build:lib
-
-# Validate publish contents
-npm run pack:check
-
-# Lint
 npm run lint
+npm run build
+npm run build:lib
+npm run pack:check
 ```
 
-## Publish to npm
+## Publish
 
 ```bash
-npm login
 npm run build:lib
 npm publish
 ```
 
-## Project structure
+## Tech stack
 
-```text
-src/
-  App.tsx
-  index.css
-  lib/
-    components/
-    tokens/
-    utils/
-    index.ts
-  features/
-  data/
-  pages/
-```
-
-## Design direction
-
-- Premium, technical look and feel.
-- Glass-like surfaces with controlled glow.
-- Clear visual hierarchy with compact spacing.
-- Typography using `Space Grotesk`, `Outfit`, and `IBM Plex Mono`.
+- React + TypeScript
+- Vite
+- Tailwind CSS v4
 
 ## License
 
