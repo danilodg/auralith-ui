@@ -23,8 +23,9 @@ import {
   Bell
 } from 'lucide-react'
 
-import { Accordion, AccordionItem, Avatar, AvatarGroup, Button, Card, Checkbox, CodeBlock, DateInput, DropdownMenu, GlassPanel, Input, NumberInput, SectionLabel, Select, Switch, Tabs, TabsContent, TabsList, TabsTrigger, Tag, Textarea, TimeInput, Toast, ToastProvider, Tooltip, useToast } from '../lib'
+import { Accordion, AccordionItem, Avatar, AvatarGroup, Button, Card, Checkbox, CodeBlock, DateInput, DropdownMenu, GlassPanel, Input, NumberInput, SectionLabel, Select, Switch, Tabs, TabsContent, TabsList, TabsTrigger, Tag, Textarea, TimeInput, ToastProvider, Tooltip } from '../lib'
 import { ModalPreview } from '../features/docs/modal-preview'
+import { ToastPreview } from '../features/docs/toast-preview'
 import type { Language } from '../i18n'
 import type { ComponentDoc } from '../types/docs'
 
@@ -1022,9 +1023,9 @@ toast({ title: 'Success!', variant: 'success' })`,
     href: '#components/toast',
     urlText: 'components/toast',
     preview: (
-      <div className="flex border border-dashed border-[color:var(--card-border)] rounded-xl p-6 items-center justify-center bg-[rgba(255,255,255,0.01)] text-[color:var(--text-soft)] text-sm italic">
-        {isPt ? 'Vá ate a pagina do componente para testar os alertas!' : 'Go to the component page to test the alerts!'}
-      </div>
+      <ToastProvider>
+        <ToastPreview isPt={isPt} />
+      </ToastProvider>
     ),
   },
   {

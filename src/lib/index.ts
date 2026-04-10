@@ -22,6 +22,7 @@ export { Tag } from './components/tag'
 export { Textarea } from './components/textarea'
 export { TimeInput } from './components/time-input'
 export { Toast, ToastProvider, useToast } from './components/toast'
+export type { ToastPosition, ToastVariant } from './components/toast'
 export { Tooltip } from './components/tooltip'
 
 export { auralithTheme } from './tokens/theme'

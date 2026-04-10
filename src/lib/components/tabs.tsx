@@ -22,6 +22,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
         if (!isControlled) {
           setUncontrolledValue(newValue)
         }
+
         onValueChange?.(newValue)
       },
       [isControlled, onValueChange]
@@ -40,12 +41,82 @@ Tabs.displayName = 'Tabs'
 
 export const TabsList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, children, ...props }, ref) => {
+    const ctx = React.useContext(TabsContext)
+    const localRef = React.useRef<HTMLDivElement | null>(null)
+    const [indicatorStyle, setIndicatorStyle] = React.useState<{ width: number; left: number; opacity: number }>({
+      left: 0,
+      width: 0,
+      opacity: 0,
+    })
+
+    React.useLayoutEffect(() => {
+      if (!ctx) {
+        return
+      }
+
+      const container = localRef.current
+      if (!container) {
+        return
+      }
+
+      const updateIndicator = () => {
+        const activeTrigger = container.querySelector<HTMLButtonElement>(`[data-tabs-trigger-value="${ctx.value}"]`)
+        if (!activeTrigger) {
+          setIndicatorStyle((current) => (current.opacity === 0 ? current : { ...current, opacity: 0 }))
+          return
+        }
+
+        setIndicatorStyle({
+          left: activeTrigger.offsetLeft,
+          width: activeTrigger.offsetWidth,
+          opacity: 1,
+        })
+      }
+
+      updateIndicator()
+      const timeoutId = window.setTimeout(updateIndicator, 140)
+      const resizeObserver = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(() => updateIndicator()) : null
+
+      resizeObserver?.observe(container)
+      Array.from(container.querySelectorAll('[data-tabs-trigger-value]')).forEach((element) => {
+        resizeObserver?.observe(element)
+      })
+
+      window.addEventListener('resize', updateIndicator)
+
+      return () => {
+        window.clearTimeout(timeoutId)
+        window.removeEventListener('resize', updateIndicator)
+        resizeObserver?.disconnect()
+      }
+    }, [ctx])
+
     return (
       <div
-        ref={ref}
-        className={`inline-flex h-11 items-center justify-center rounded-[10px] border border-[rgba(255,255,255,0.06)] bg-[rgba(0,0,0,0.25)] p-1 text-sm text-[color:var(--text-muted)] shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] backdrop-blur-sm ${className || ''}`}
+        ref={(node) => {
+          localRef.current = node
+
+          if (typeof ref === 'function') {
+            ref(node)
+            return
+          }
+
+          if (ref) {
+            ref.current = node
+          }
+        }}
+        className={`relative inline-flex h-11 items-center justify-center rounded-[10px] border border-[rgba(255,255,255,0.06)] bg-[rgba(0,0,0,0.25)] p-1 text-sm text-[color:var(--text-muted)] shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] backdrop-blur-sm ${className || ''}`}
         {...props}
       >
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0.5 left-0 h-0.5 rounded-full bg-[color:var(--accent-line)] shadow-[0_0_14px_var(--accent-shadow)] transition-[transform,width,opacity] duration-300 ease-out"
+          style={{
+            opacity: indicatorStyle.opacity,
+            transform: `translate3d(${indicatorStyle.left}px, 0, 0)`,
+            width: `${indicatorStyle.width}px`,
+          }}
+        />
         {children}
       </div>
     )
@@ -69,11 +140,12 @@ export const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>
         ref={ref}
         type="button"
         role="tab"
+        data-tabs-trigger-value={value}
         aria-selected={isActive}
         onClick={() => ctx.onValueChange(value)}
-        className={`inline-flex items-center justify-center whitespace-nowrap rounded-[7px] px-4 py-1.5 font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-line)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--page-bg)] disabled:pointer-events-none disabled:opacity-50
-        ${isActive ? 'bg-[color:var(--surface-panel-2)] text-[color:var(--text-main)] shadow-[0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] translate-y-0' : 'hover:bg-[rgba(255,255,255,0.02)] hover:text-[color:var(--text-soft)] active:scale-95'
-        } ${className || ''}`}
+        className={`relative z-10 inline-flex items-center justify-center whitespace-nowrap rounded-[7px] px-4 py-1.5 font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-line)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--page-bg)] disabled:pointer-events-none disabled:opacity-50
+         ${isActive ? 'text-[color:var(--accent-line)]' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text-soft)] active:scale-95'
+         } ${className || ''}`}
         {...props}
       >
         {children}
@@ -98,7 +170,7 @@ export const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
       <div
         ref={ref}
         role="tabpanel"
-        className={`mt-4 ring-offset-[color:var(--page-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 animate-in fade-in zoom-in-95 duration-200 ease-out ${className || ''}`}
+        className={`mt-4 ring-offset-[color:var(--page-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 ${className || ''}`}
         {...props}
       >
         {children}
