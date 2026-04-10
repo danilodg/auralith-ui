@@ -22,6 +22,7 @@ interface SideRailProps {
   brandTitle: string
   brandSubtitle: string
   brandHref?: string
+  brandIconSrc?: string
   items: SideRailItem[]
   bottomSlot?: ReactNode
   onPinnedChange?: (isPinned: boolean) => void
@@ -260,6 +261,7 @@ function DesktopNavItem({
 export function SideRail({
   bottomSlot,
   brandHref = '#',
+  brandIconSrc,
   brandSubtitle,
   brandTitle,
   items,
@@ -285,6 +287,9 @@ export function SideRail({
   const activeItem = items.find((item) => item.isActive || item.items?.some((child) => childIsActive(child))) ?? null
   const activeNavId = findActiveItemId(items)
   const activeChildGroupId = items.find((item) => item.items?.some((child) => childIsActive(child)))?.id ?? null
+  const brandIcon = brandIconSrc
+    ? <img alt="" className="h-full w-full object-cover" src={brandIconSrc} />
+    : <Sparkles size={16} strokeWidth={2.1} />
 
   useEffect(() => {
     if (!activeChildGroupId) return
@@ -458,12 +463,17 @@ export function SideRail({
           >
             <div className="flex h-[60px] items-center gap-3 border-b border-[color:var(--card-border)] px-[14px]">
               <button
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[linear-gradient(145deg,var(--accent-start),color-mix(in_srgb,var(--accent-mid)_55%,transparent))] text-white shadow-[0_0_20px_var(--accent-shadow)] transition hover:shadow-[0_0_24px_var(--accent-shadow)]"
+                className={cn(
+                  'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] border transition',
+                  brandIconSrc
+                    ? 'overflow-hidden border-[color:var(--card-border)] bg-transparent p-0'
+                    : 'border-[color:var(--card-border)] bg-[linear-gradient(145deg,var(--accent-start),color-mix(in_srgb,var(--accent-mid)_55%,transparent))] text-white shadow-[0_0_20px_var(--accent-shadow)] hover:shadow-[0_0_24px_var(--accent-shadow)]',
+                )}
                 onClick={toggleDesktopSidebar}
                 title={expanded ? 'Collapse sidebar' : 'Expand sidebar'}
                 type="button"
               >
-                <Sparkles size={16} strokeWidth={2.1} />
+                {brandIcon}
               </button>
 
               <a className="min-w-0 overflow-hidden" href={brandHref}>
@@ -542,8 +552,15 @@ export function SideRail({
       <header className="lg:hidden">
         <div className="mb-6 flex items-center justify-between gap-3 rounded-[8px] border border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] px-4 py-3 shadow-[0_18px_46px_rgba(0,0,0,0.16)] [view-transition-name:none]">
           <a className="inline-flex min-w-0 flex-1 items-center gap-3 text-[color:var(--text-main)] no-underline" href={brandHref}>
-            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-[linear-gradient(145deg,var(--accent-start),color-mix(in_srgb,var(--accent-mid)_55%,transparent))] text-white shadow-[0_0_22px_var(--accent-shadow)]">
-              <Sparkles size={18} strokeWidth={2.1} />
+            <span
+              className={cn(
+                'inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px]',
+                brandIconSrc
+                  ? 'overflow-hidden border border-[color:var(--card-border)] bg-transparent p-0'
+                  : 'bg-[linear-gradient(145deg,var(--accent-start),color-mix(in_srgb,var(--accent-mid)_55%,transparent))] text-white shadow-[0_0_22px_var(--accent-shadow)]',
+              )}
+            >
+              {brandIconSrc ? <img alt="" className="h-full w-full object-cover" src={brandIconSrc} /> : <Sparkles size={18} strokeWidth={2.1} />}
             </span>
             <span className="min-w-0 pr-1">
               <strong className="block text-sm font-semibold">{brandTitle}</strong>
@@ -570,8 +587,15 @@ export function SideRail({
 
             <div className="relative flex w-[280px] max-w-[calc(100vw-3rem)] flex-col border-r border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] shadow-xl transition-transform duration-300">
               <div className="flex h-[60px] shrink-0 items-center gap-3 border-b border-[color:var(--card-border)] px-[14px]">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[linear-gradient(145deg,var(--accent-start),color-mix(in_srgb,var(--accent-mid)_55%,transparent))] text-white shadow-[0_0_20px_var(--accent-shadow)]">
-                  <Sparkles size={16} strokeWidth={2.1} />
+                <span
+                  className={cn(
+                    'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px]',
+                    brandIconSrc
+                      ? 'overflow-hidden border border-[color:var(--card-border)] bg-transparent p-0'
+                      : 'bg-[linear-gradient(145deg,var(--accent-start),color-mix(in_srgb,var(--accent-mid)_55%,transparent))] text-white shadow-[0_0_20px_var(--accent-shadow)]',
+                  )}
+                >
+                  {brandIcon}
                 </span>
                 <span className="min-w-0 overflow-hidden whitespace-nowrap font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-sm font-medium tracking-[0.04em] text-[color:var(--accent-line)]">
                   {brandTitle}

@@ -38,18 +38,27 @@ export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedCo
 
     return (
       <div className="mx-auto flex min-h-full w-full max-w-[1000px] flex-1 flex-col gap-6">
-        <GlassPanel className="p-2 sm:p-2 lg:p-2">
-          <div className="flex flex-wrap gap-3">
-            <Tag>docs</Tag>
-            <Tag>{isPt ? 'documentacao da biblioteca' : 'library documentation'}</Tag>
-            <Tag>{docPages.length} {isPt ? 'secoes' : 'sections'}</Tag>
+        <GlassPanel className="relative p-8 sm:p-16 overflow-hidden flex flex-col items-center justify-center text-center border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(111,224,255,0.06)_0%,transparent_60%)] pointer-events-none" />
+          <div className="absolute inset-0 max-w-4xl mx-auto rounded-[100%] bg-[color:var(--accent-line)] opacity-[0.03] blur-[80px] pointer-events-none" />
+
+          <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center w-full">
+            <Tag className="mb-6 border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)]">
+              {strings.docs.heroEyebrow}
+            </Tag>
+            <h1 className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(2.2rem,4.5vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-[color:var(--text-main)] drop-shadow-sm max-w-3xl">
+              {isPt ? 'Fundamentos e Guias' : 'Foundations & Guides'}
+            </h1>
+            <p className="mt-4 max-w-2xl text-[1.05rem] leading-7 text-[color:var(--text-soft)] sm:text-[1.15rem]">
+              {isPt ? 'Guia completo de instalacao e os fundamentos base para aplicar os patterns no seu projeto.' : 'Complete installation guide and baseline foundations for applying patterns in your project.'}
+            </p>
+
+            <div className="mt-10 flex flex-wrap justify-center gap-3 w-full">
+              <Tag className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">{isPt ? 'Setup' : 'Setup'}</Tag>
+              <Tag className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">{isPt ? 'Guias' : 'Guides'}</Tag>
+              <Tag className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">{docPages.length} {isPt ? 'Secoes' : 'Sections'}</Tag>
+            </div>
           </div>
-          <SectionHeader
-            className="mt-6"
-            eyebrow={strings.docs.heroEyebrow}
-            heading={isPt ? 'Documentacao da biblioteca' : 'Library documentation'}
-            description={isPt ? 'Guia completo com seções de instalacao e uso para aplicar os componentes no projeto.' : 'Complete guide with installation and usage sections to apply the components in your project.'}
-          />
         </GlassPanel>
 
         <div className="grid gap-6">
@@ -67,7 +76,7 @@ export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedCo
 
   return (
     <div className="mx-auto flex min-h-full w-full max-w-[1000px] flex-1 flex-col gap-6">
-      <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+      <section className="flex flex-col gap-8 w-full">
         <DocsHero categories={categories} onBackHome={onBackHome} totalComponents={filteredDocs.length} />
         <DocsOverview />
       </section>

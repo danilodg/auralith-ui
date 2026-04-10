@@ -77,7 +77,7 @@ export const localeStrings: Record<Language, LocaleStrings> = {
     languageOptions: { pt: 'PT', en: 'EN' },
     nav: {
       landing: { title: 'Landing', description: 'Visao geral da biblioteca, showcases e proposta visual.' },
-      docs: { title: 'Docs', description: 'Instalacao, uso e fundamentos para aplicar a biblioteca no seu projeto.' },
+      docs: { title: 'Fundamentos', description: 'Instalacao, uso e fundamentos para aplicar a biblioteca no seu projeto.' },
       components: { title: 'Components', description: 'Catalogo completo dos componentes com preview, exemplos e codigo.' },
     },
     landing: {
@@ -152,7 +152,7 @@ export const localeStrings: Record<Language, LocaleStrings> = {
     languageOptions: { pt: 'PT', en: 'EN' },
     nav: {
       landing: { title: 'Landing', description: 'Library overview, showcases and visual direction.' },
-      docs: { title: 'Docs', description: 'Installation, usage and foundations to apply the library in your project.' },
+      docs: { title: 'Foundations', description: 'Installation, usage and foundations to apply the library in your project.' },
       components: { title: 'Components', description: 'Full component catalog with preview, examples and code.' },
     },
     landing: {

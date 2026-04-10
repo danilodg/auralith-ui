@@ -1,4 +1,4 @@
-import { FileText, Home, ListFilter } from 'lucide-react'
+import { BookOpen, Home, Layers, ListFilter } from 'lucide-react'
 
 import type { Language } from '../i18n'
 import { localeStrings } from '../i18n'
@@ -72,7 +72,7 @@ export function createSideRailItems(
       description: strings.nav.docs.description,
       href: '#docs',
       urlText: 'docs',
-      icon: <FileText className="h-5 w-5" strokeWidth={1.8} />,
+      icon: <BookOpen className="h-5 w-5" strokeWidth={1.8} />,
       isActive: page === 'docs',
       onClick: () => navigate('#docs'),
       items: docPages.map((docPage) => ({
@@ -92,7 +92,7 @@ export function createSideRailItems(
       description: strings.nav.components.description,
       href: '#components',
       urlText: 'components',
-      icon: <FileText className="h-5 w-5" strokeWidth={1.8} />,
+      icon: <Layers className="h-5 w-5" strokeWidth={1.8} />,
       isActive: page === 'components',
       onClick: () => navigate('#components'),
       items: componentItems,

@@ -1,7 +1,7 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ChevronRight } from 'lucide-react'
 
 import { useLocale } from '../../locale-context'
-import { Button, Card, GlassPanel, SectionLabel } from '../../lib'
+import { Button, Card, GlassPanel, Tag } from '../../lib'
 
 interface HeroSectionProps {
   metrics: ReadonlyArray<{ value: string; label: string }>
@@ -12,30 +12,48 @@ export function HeroSection({ metrics, onOpenDocs }: HeroSectionProps) {
   const { strings } = useLocale()
 
   return (
-    <GlassPanel className="p-3 sm:p-3 lg:p-3">
-      <SectionLabel>{strings.landing.heroEyebrow}</SectionLabel>
-      <h1 className="mt-3 max-w-3xl font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(1.8rem,5vw,3.8rem)] font-bold leading-[0.96] tracking-[-0.04em]">
-        {strings.landing.heroTitle}
-      </h1>
-      <p className="mt-3 max-w-2xl text-[1rem] leading-8 text-[color:var(--text-soft)] sm:text-[1.06rem]">
-        {strings.landing.heroDescription}
-      </p>
+    <GlassPanel className="relative p-0 overflow-hidden flex flex-col items-center justify-center w-full min-h-[380px] text-center border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
+      {/* Background Radiance */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_0%,rgba(111,224,255,0.08)_0%,transparent_70%),repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px),repeating-linear-gradient(90deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px)] pointer-events-none" />
+      <div className="absolute inset-0 max-w-4xl mx-auto rounded-[100%] bg-[color:var(--accent-line)] opacity-[0.03] blur-[80px] pointer-events-none" />
 
-      <div className="mt-3 flex flex-wrap gap-3">
-        <Button onClick={onOpenDocs}>
-          {strings.landing.exploreDocs}
-          <ArrowRight size={16} />
-        </Button>
-        <Button variant="secondary">React 19 + Tailwind v4</Button>
-      </div>
+      <div className="relative z-10 p-6 py-12 sm:py-16 max-w-5xl mx-auto flex flex-col items-center w-full">
+        <Tag className="mb-6 border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)]">
+          {strings.landing.heroEyebrow}
+        </Tag>
+        <h1 className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-[color:var(--text-main)] drop-shadow-sm max-w-3xl">
+          {strings.landing.heroTitle}
+        </h1>
+        <p className="mt-4 max-w-2xl text-[1.05rem] leading-7 text-[color:var(--text-soft)] sm:text-[1.1rem]">
+          {strings.landing.heroDescription}
+        </p>
 
-      <div className="mt-3 grid gap-3 sm:grid-cols-3">
-        {metrics.map((item) => (
-          <Card key={item.label} className="p-3" variant="subtle">
-            <p className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[2rem] font-bold tracking-[-0.05em] text-[color:var(--text-main)]">{item.value}</p>
-            <p className="mt-1 text-sm leading-6 text-[color:var(--text-muted)]">{item.label}</p>
-          </Card>
-        ))}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <Button onClick={onOpenDocs} className="px-5 py-2 text-[0.9rem] shadow-lg shadow-[rgba(111,224,255,0.2)]">
+            {strings.landing.exploreDocs}
+            <ArrowRight size={16} />
+          </Button>
+          <Button variant="secondary" className="px-5 py-2 text-[0.9rem] shadow-sm bg-[rgba(255,255,255,0.02)] border-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.04)] group">
+            React 19 + Tailwind v4
+            <ChevronRight size={14} className="text-[color:var(--text-muted)] group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </div>
+
+        <div className="mt-12 grid w-full max-w-3xl gap-4 sm:grid-cols-3">
+          {metrics.map((item) => (
+            <Card key={item.label} className="p-4 border-[color:var(--card-border)] bg-[rgba(0,0,0,0.15)] backdrop-blur-md shadow-[inset_0_1px_3px_rgba(255,255,255,0.02)] text-center relative overflow-hidden group" variant="subtle">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_0%,rgba(111,224,255,0.04)_0%,transparent_70%)] pointer-events-none group-hover:opacity-100 opacity-50 transition-opacity" />
+              <div className="relative z-10">
+                 <p className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[1.8rem] font-bold tracking-[-0.05em] text-[color:var(--text-main)] drop-shadow-md">
+                   {item.value}
+                 </p>
+                 <p className="mt-1 font-[IBM_Plex_Mono,monospace] uppercase tracking-[0.12em] text-[0.65rem] text-[color:var(--accent-soft)]">
+                   {item.label}
+                 </p>
+              </div>
+            </Card>
+          ))}
+        </div>
       </div>
     </GlassPanel>
   )

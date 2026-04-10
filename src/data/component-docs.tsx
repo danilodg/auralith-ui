@@ -16,9 +16,14 @@ import {
   Tags,
   TextCursorInput,
   Waypoints,
+  Users,
+  ToggleLeft,
+  Layers,
+  Columns,
+  Bell
 } from 'lucide-react'
 
-import { Button, Card, Checkbox, CodeBlock, DateInput, DropdownMenu, GlassPanel, Input, NumberInput, SectionLabel, Select, Tag, Textarea, TimeInput, Tooltip } from '../lib'
+import { Accordion, AccordionItem, Avatar, AvatarGroup, Button, Card, Checkbox, CodeBlock, DateInput, DropdownMenu, GlassPanel, Input, NumberInput, SectionLabel, Select, Switch, Tabs, TabsContent, TabsList, TabsTrigger, Tag, Textarea, TimeInput, Toast, ToastProvider, Tooltip, useToast } from '../lib'
 import { ModalPreview } from '../features/docs/modal-preview'
 import type { Language } from '../i18n'
 import type { ComponentDoc } from '../types/docs'
@@ -169,6 +174,43 @@ function getStructuredMeta(id: string, isPt: boolean) {
       ],
       notes: isPt ? ['Componente de layout raiz: prefira usar no app shell, nao dentro de cards locais.'] : ['Root layout component: prefer using it in the app shell, not inside local cards.'],
     },
+    avatar: {
+      anatomy: ['Avatar', 'AvatarGroup'],
+      parts: [
+        { name: 'Avatar', description: isPt ? 'Componente visual para representar perfil.' : 'Visual component to represent profile.' },
+        { name: 'AvatarGroup', description: isPt ? 'Empilha multiplos avatares.' : 'Stacks multiple avatars.' },
+      ],
+      notes: isPt ? ['Inclui suporte nativo a fallback usando as primeiras letras do nome.'] : ['Includes native fallback support using first name letters.'],
+    },
+    switch: {
+      anatomy: ['Switch'],
+      parts: [{ name: 'Switch', description: isPt ? 'Interruptor animado de selecao.' : 'Animated selection switch.' }],
+      notes: isPt ? ['Utilize para alternar preferencias e configuracoes imediatas.'] : ['Use to toggle preferences and immediate settings.'],
+    },
+    accordion: {
+      anatomy: ['Accordion', 'AccordionItem'],
+      parts: [
+        { name: 'Accordion', description: isPt ? 'Container do grupo sanfona.' : 'Accordion group container.' },
+        { name: 'AccordionItem', description: isPt ? 'Item individual com titulo e subtitulo.' : 'Individual item with title and subtitle.' },
+      ],
+      notes: isPt ? ['Suporta multipla expansao (type="multiple") ou unica (type="single").'] : ['Supports multiple expansion (type="multiple") or single (type="single").'],
+    },
+    toast: {
+      anatomy: ['ToastProvider', 'useToast', 'Toast'],
+      parts: [
+        { name: 'ToastProvider', description: isPt ? 'Obrigatorio no topo da aplicacao.' : 'Mandatory at the root of the app.' },
+        { name: 'useToast', description: isPt ? 'Hook para disparar notificacoes.' : 'Hook to trigger notifications.' },
+      ],
+      notes: isPt ? ['As notificacoes suportam variantes (success, error, info).'] : ['Notifications support variants (success, error, info).'],
+    },
+    tabs: {
+      anatomy: ['Tabs', 'TabsList', 'TabsTrigger', 'TabsContent'],
+      parts: [
+        { name: 'Tabs', description: isPt ? 'Controla o estado da selecao de abas.' : 'Controls tab selection state.' },
+        { name: 'TabsList', description: isPt ? 'Agrupa os botoes de gatilho.' : 'Groups trigger buttons.' },
+      ],
+      notes: isPt ? ['Transita perfeitamente as animacoes de entrada de conteudo.'] : ['Perfectly transitions content entry animations.'],
+    },
   } as const
 
   return map[id as keyof typeof map] ?? { anatomy: [], parts: [], notes: [] }
@@ -234,15 +276,26 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     href: '#components/glass-panel',
     urlText: 'components/glass-panel',
     preview: (
-      <GlassPanel.Root className="p-2">
-        <GlassPanel.Header>
-          <SectionLabel>{isPt ? 'Preview do painel' : 'Panel preview'}</SectionLabel>
-          <GlassPanel.Title className="mt-4">{isPt ? 'Bloco premium' : 'Premium block'}</GlassPanel.Title>
-          <GlassPanel.Description>
-            {isPt ? 'Superficie principal para blocos premium, auth containers e hero cards.' : 'Primary surface for premium blocks, auth containers and hero cards.'}
-          </GlassPanel.Description>
-        </GlassPanel.Header>
-      </GlassPanel.Root>
+      <div className="grid gap-4 w-full max-w-[800px] sm:grid-cols-2">
+        <GlassPanel.Root className="p-2">
+          <GlassPanel.Header>
+            <SectionLabel>{isPt ? 'Preview Default' : 'Default Preview'}</SectionLabel>
+            <GlassPanel.Title className="mt-4">{isPt ? 'Bloco premium' : 'Premium block'}</GlassPanel.Title>
+            <GlassPanel.Description>
+              {isPt ? 'Superficie principal para auth containers e hero cards.' : 'Primary surface for auth containers and hero cards.'}
+            </GlassPanel.Description>
+          </GlassPanel.Header>
+        </GlassPanel.Root>
+        <GlassPanel.Root className="p-2 opacity-50">
+          <GlassPanel.Header>
+            <SectionLabel>{isPt ? 'Estado Inativo' : 'Inactive State'}</SectionLabel>
+            <GlassPanel.Title className="mt-4">{isPt ? 'Bloco secundario' : 'Secondary block'}</GlassPanel.Title>
+            <GlassPanel.Description>
+              {isPt ? 'Pode ser usado com opacidade reduzida para hierarquia.' : 'Can be used with reduced opacity for hierarchy.'}
+            </GlassPanel.Description>
+          </GlassPanel.Header>
+        </GlassPanel.Root>
+      </div>
     ),
   },
   {
@@ -270,10 +323,12 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     href: '#components/tag',
     urlText: 'components/tag',
     preview: (
-      <div className="flex flex-wrap gap-2.5">
-        <Tag>tailwind v4</Tag>
+      <div className="flex flex-wrap gap-3 max-w-[600px] justify-center">
+        <Tag className="bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)] border-[rgba(111,224,255,0.2)]">tailwind v4</Tag>
         <Tag>react 19</Tag>
-        <Tag>{isPt ? 'ui premium' : 'premium ui'}</Tag>
+        <Tag className="bg-[rgba(255,100,100,0.05)] text-red-500 border-[rgba(255,100,100,0.2)]">{isPt ? 'Estado: Erro' : 'State: Error'}</Tag>
+        <Tag className="opacity-50">{isPt ? 'Inativo' : 'Inactive'}</Tag>
+        <Tag className="bg-[color:var(--surface-hover)] shadow-md">{isPt ? 'ui premium' : 'premium ui'}</Tag>
       </div>
     ),
   },
@@ -345,11 +400,29 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     href: '#components/input',
     urlText: 'components/input',
     preview: (
-      <Input.Root>
-        <Input.Label>{isPt ? 'Email profissional' : 'Work email'}</Input.Label>
-        <Input.Field icon={<Mail size={18} />} placeholder="name@company.com" type="email" />
-        <Input.Hint>{isPt ? 'Campo principal do formulario.' : 'Main form field.'}</Input.Hint>
-      </Input.Root>
+      <div className="grid gap-6 w-full max-w-[600px] sm:grid-cols-2">
+        <Input.Root>
+          <Input.Label>{isPt ? 'Email profissional' : 'Work email'}</Input.Label>
+          <Input.Field icon={<Mail size={18} />} placeholder="name@company.com" type="email" />
+          <Input.Hint>{isPt ? 'Aviso padrão ativo.' : 'Standard hint active.'}</Input.Hint>
+        </Input.Root>
+
+        <Input.Root>
+          <Input.Label>{isPt ? 'Senha' : 'Password'}</Input.Label>
+          <Input.Field placeholder="********" type="password" />
+        </Input.Root>
+
+        <Input.Root className="opacity-60 pointer-events-none">
+          <Input.Label>{isPt ? 'Campo desabilitado' : 'Disabled field'}</Input.Label>
+          <Input.Field placeholder="Desabilitado..." disabled />
+        </Input.Root>
+
+        <Input.Root>
+          <Input.Label className="text-red-400">{isPt ? 'Erro de validacao' : 'Validation error'}</Input.Label>
+          <Input.Field icon={<Mail size={18} className="text-red-400" />} className="border-red-400/50 bg-red-400/5" placeholder="Erro..." />
+          <Input.Hint className="text-red-400">{isPt ? 'Obrigatorio.' : 'Required.'}</Input.Hint>
+        </Input.Root>
+      </div>
     ),
   },
   {
@@ -372,9 +445,22 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     href: '#components/checkbox',
     urlText: 'components/checkbox',
     preview: (
-      <div className="grid gap-2">
-        <Checkbox label={isPt ? 'Aceito os termos de uso' : 'I accept the terms of use'} hint={isPt ? 'Consentimento obrigatorio para continuar.' : 'Required consent to continue.'} />
-        <Checkbox.Item framed={false} label={isPt ? 'Quero receber novidades por email' : 'Send me product updates by email'} defaultChecked />
+      <div className="flex flex-col gap-4 w-full max-w-[400px]">
+        <Checkbox 
+          label={isPt ? 'Aceito os termos' : 'I accept the terms'} 
+          hint={isPt ? 'Consentimento obrigatorio para continuar.' : 'Required consent to continue.'} 
+          defaultChecked 
+        />
+        <Checkbox.Item 
+          framed={false} 
+          label={isPt ? 'Quero receber e-mails' : 'Send me tracking emails'} 
+        />
+        <div className="opacity-50 pointer-events-none">
+          <Checkbox 
+            label={isPt ? 'Acao desabilitada' : 'Disabled action'} 
+            hint={isPt ? 'Opcao fora de acesso' : 'Option out of reach'}
+          />
+        </div>
       </div>
     ),
   },
@@ -398,15 +484,24 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     href: '#components/select',
     urlText: 'components/select',
     preview: (
-      <Select
-        defaultValue="medium"
-        hint={isPt ? 'Use para listas curtas de opcoes pre-definidas.' : 'Use for short predefined option lists.'}
-        label={isPt ? 'Nivel de prioridade' : 'Priority level'}
-      >
-        <Select.Option label={isPt ? 'Baixa' : 'Low'} value="low" />
-        <Select.Option label={isPt ? 'Media' : 'Medium'} value="medium" />
-        <Select.Option label={isPt ? 'Alta' : 'High'} value="high" />
-      </Select>
+      <div className="grid gap-6 w-full max-w-[600px] sm:grid-cols-2 items-start">
+        <Select
+          defaultValue="medium"
+          hint={isPt ? 'Estado default (Medium).' : 'Default status (Medium).'}
+          label={isPt ? 'Prioridade Ativa' : 'Active Priority'}
+        >
+          <Select.Option label={isPt ? 'Baixa' : 'Low'} value="low" />
+          <Select.Option label={isPt ? 'Media' : 'Medium'} value="medium" />
+          <Select.Option label={isPt ? 'Alta' : 'High'} value="high" />
+        </Select>
+
+        <Select
+          defaultValue="low"
+          label={isPt ? 'Outro Exemplo' : 'Another Example'}
+        >
+          <Select.Option label={isPt ? 'Baixa' : 'Low'} value="low" />
+        </Select>
+      </div>
     ),
   },
   {
@@ -466,13 +561,22 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     href: '#components/input-number',
     urlText: 'components/input-number',
     preview: (
-      <NumberInput
-        defaultValue={1}
-        hint={isPt ? 'Use min/max e step para restringir valores.' : 'Use min/max and step to constrain values.'}
-        label={isPt ? 'Quantidade de licencas' : 'License quantity'}
-        min={1}
-        step={1}
-      />
+      <div className="grid gap-6 w-full max-w-[600px] sm:grid-cols-2">
+        <NumberInput
+          defaultValue={1}
+          hint={isPt ? 'Use min/max e step.' : 'Use min/max and step.'}
+          label={isPt ? 'Quantidade de licencas' : 'License quantity'}
+          min={1}
+          step={1}
+        />
+        <div className="opacity-60 pointer-events-none">
+          <NumberInput
+            defaultValue={5}
+            hint={isPt ? 'Valor bloqueado.' : 'Locked value.'}
+            label={isPt ? 'Desabilitado' : 'Disabled'}
+          />
+        </div>
+      </div>
     ),
   },
   {
@@ -495,11 +599,17 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     href: '#components/textarea',
     urlText: 'components/textarea',
     preview: (
-      <Textarea.Root>
-        <Textarea.Label>{isPt ? 'Resumo do projeto' : 'Project brief'}</Textarea.Label>
-        <Textarea.Field placeholder={isPt ? 'Descreva produto, prazo e direcao visual...' : 'Describe the product, timeline and visual direction...'} />
-        <Textarea.Hint>{isPt ? 'Mensagem inicial.' : 'Initial message.'}</Textarea.Hint>
-      </Textarea.Root>
+      <div className="grid gap-6 w-full max-w-[640px] sm:grid-cols-2">
+        <Textarea.Root>
+          <Textarea.Label>{isPt ? 'Resumo do projeto' : 'Project brief'}</Textarea.Label>
+          <Textarea.Field placeholder={isPt ? 'Descreva produto, prazo e direcao visual...' : 'Describe the product, timeline and visual direction...'} />
+          <Textarea.Hint>{isPt ? 'Mensagem inicial.' : 'Initial message.'}</Textarea.Hint>
+        </Textarea.Root>
+        <Textarea.Root className="opacity-60 pointer-events-none">
+          <Textarea.Label>{isPt ? 'Mensagem Oculta (Disabled)' : 'Hidden Message (Disabled)'}</Textarea.Label>
+          <Textarea.Field placeholder={isPt ? 'Nao pode ser editado...' : 'Cannot be edited...'} disabled />
+        </Textarea.Root>
+      </div>
     ),
   },
   {
@@ -524,7 +634,7 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     href: '#components/card',
     urlText: 'components/card',
     preview: (
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-4 w-full max-w-[900px] sm:grid-cols-3">
         <Card.Root className="p-2" variant="subtle">
           <Card.Header>
             <Card.Title>{isPt ? 'Suave' : 'Subtle'}</Card.Title>
@@ -534,7 +644,13 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
         <Card.Root className="p-2" variant="elevated">
           <Card.Header>
             <Card.Title>{isPt ? 'Elevado' : 'Elevated'}</Card.Title>
-            <Card.Description>{isPt ? 'Para chamadas com mais profundidade.' : 'For calls with more depth.'}</Card.Description>
+            <Card.Description>{isPt ? 'Para chamadas com mais profundidade 3D.' : 'For calls with more 3D depth.'}</Card.Description>
+          </Card.Header>
+        </Card.Root>
+        <Card.Root className="p-2 border-[color:var(--accent-line)] opacity-80" variant="subtle">
+          <Card.Header>
+            <Card.Title className="text-[color:var(--accent-line)]">{isPt ? 'Outline (Custom)' : 'Outline (Custom)'}</Card.Title>
+            <Card.Description>{isPt ? 'Exemplo com customizacao de borda ativa.' : 'Example with active border customization.'}</Card.Description>
           </Card.Header>
         </Card.Root>
       </div>
@@ -820,6 +936,136 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
 </Tooltip.Root>`,
       },
     ],
+  },
+  {
+    id: 'avatar',
+    name: 'Avatar',
+    category: 'surface',
+    icon: <Users size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Representacao de perfil de usuario com fallback automatico para iniciais e suporte para empilhamento.' : 'User profile representation with automatic initials fallback and stacking support.',
+    source: 'src/lib/components/avatar.tsx',
+    importCode: "import { Avatar, AvatarGroup } from '@/lib'",
+    snippet: isPt ? `<Avatar src="/user.png" fallback="JG" size="md" />` : `<Avatar src="/user.png" fallback="JG" size="md" />`,
+    href: '#components/avatar',
+    urlText: 'components/avatar',
+    preview: (
+      <div className="flex items-center gap-8">
+        <AvatarGroup limit={3}>
+          <Avatar fallback="AL" />
+          <Avatar fallback="BR" />
+          <Avatar fallback="CR" />
+          <Avatar fallback="DR" />
+        </AvatarGroup>
+        <Avatar size="lg" fallback="PR" />
+      </div>
+    ),
+  },
+  {
+    id: 'switch',
+    name: 'Switch',
+    category: 'form',
+    icon: <ToggleLeft size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Controle estilo interruptor para operacoes e estados on/off.' : 'Switch-style control for on/off operations and states.',
+    source: 'src/lib/components/switch.tsx',
+    importCode: "import { Switch } from '@/lib'",
+    snippet: isPt ? `<Switch label="Ativar notificacoes" description="Receber e-mails de atualizacao." />` : `<Switch label="Enable notifications" description="Receive update emails." />`,
+    href: '#components/switch',
+    urlText: 'components/switch',
+    preview: (
+      <div className="flex flex-col gap-6">
+        <Switch defaultChecked label={isPt ? 'Tema Silencioso' : 'Quiet Theme'} description={isPt ? 'Desabilita sons de clique.' : 'Disables click sounds.'} />
+        <Switch label={isPt ? 'Modo Beta' : 'Beta Mode'} description={isPt ? 'Testar novos recursos.' : 'Test new features.'} />
+      </div>
+    ),
+  },
+  {
+    id: 'accordion',
+    name: 'Accordion',
+    category: 'surface',
+    icon: <Layers size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Paineis colapsaveis para organizar grande volume de informacao tecnica ou FAQs.' : 'Collapsible panels to organize large volumes of technical information or FAQs.',
+    source: 'src/lib/components/accordion.tsx',
+    importCode: "import { Accordion, AccordionItem } from '@/lib'",
+    snippet: isPt ? `<Accordion type="single">
+  <AccordionItem value="item-1" title="Detalhes do banco">
+    Conteudo oculto ate o clique.
+  </AccordionItem>
+</Accordion>` : `<Accordion type="single">
+  <AccordionItem value="item-1" title="Database Details">
+    Hidden content until click.
+  </AccordionItem>
+</Accordion>`,
+    href: '#components/accordion',
+    urlText: 'components/accordion',
+    preview: (
+      <Accordion type="single" className="w-full max-w-[500px]">
+        <AccordionItem value="1" title={isPt ? 'Posso customizar tokens?' : 'Can I customize tokens?'} subtitle={isPt ? 'Arquitetura CSS' : 'CSS Architecture'}>
+          <p className="mb-2">{isPt ? 'As variaveis CSS em scopes diretos facilitam a atualizacao em massa.' : 'Direct scoped CSS variables make mass updates easy.'}</p>
+        </AccordionItem>
+        <AccordionItem value="2" title={isPt ? 'Suporte a SSR?' : 'SSR Support?'} subtitle={isPt ? 'Next.js e Remix' : 'Next.js and Remix'}>
+          <p className="mb-2">{isPt ? 'Totalmente funcional pelo export nativo da pasta lib, sem dependencias externas poluidoras.' : 'Fully functional via native lib folder export, no polluting external dependencies.'}</p>
+        </AccordionItem>
+      </Accordion>
+    ),
+  },
+  {
+    id: 'toast',
+    name: 'Toast',
+    category: 'feedback',
+    icon: <Bell size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Notificacoes efemeras fluindo no canto da tela com animacoes liquidas e Blur background.' : 'Ephemeral notifications flowing on the screen corner with fluid animations and Blur background.',
+    source: 'src/lib/components/toast.tsx',
+    importCode: "import { useToast } from '@/lib'",
+    snippet: isPt ? `const toast = useToast()
+toast({ title: 'Sucesso!', variant: 'success' })` : `const toast = useToast()
+toast({ title: 'Success!', variant: 'success' })`,
+    href: '#components/toast',
+    urlText: 'components/toast',
+    preview: (
+      <div className="flex border border-dashed border-[color:var(--card-border)] rounded-xl p-6 items-center justify-center bg-[rgba(255,255,255,0.01)] text-[color:var(--text-soft)] text-sm italic">
+        {isPt ? 'Vá ate a pagina do componente para testar os alertas!' : 'Go to the component page to test the alerts!'}
+      </div>
+    ),
+  },
+  {
+    id: 'tabs',
+    name: 'Tabs',
+    category: 'navigation',
+    icon: <Columns size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Navegacao em janelas contextuais dentro da mesma rota, otimizadas para settings de dashboards.' : 'Navigation in contextual windows within the same route, optimized for dashboard settings.',
+    source: 'src/lib/components/tabs.tsx',
+    importCode: "import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/lib'",
+    snippet: isPt ? `<Tabs defaultValue="geral">
+  <TabsList>
+    <TabsTrigger value="geral">Geral</TabsTrigger>
+  </TabsList>
+  <TabsContent value="geral">Painel Geral</TabsContent>
+</Tabs>` : `<Tabs defaultValue="general">
+  <TabsList>
+    <TabsTrigger value="general">General</TabsTrigger>
+  </TabsList>
+  <TabsContent value="general">General Panel</TabsContent>
+</Tabs>`,
+    href: '#components/tabs',
+    urlText: 'components/tabs',
+    preview: (
+      <Tabs defaultValue="geral" className="w-full max-w-[400px]">
+        <TabsList>
+          <TabsTrigger value="geral">{isPt ? 'Geral' : 'General'}</TabsTrigger>
+          <TabsTrigger value="avancado">{isPt ? 'Avançado' : 'Advanced'}</TabsTrigger>
+          <TabsTrigger value="faturamento">{isPt ? 'Faturamento' : 'Billing'}</TabsTrigger>
+        </TabsList>
+        <TabsContent value="geral" className="p-4 border border-[color:var(--card-border)] rounded-lg bg-[rgba(0,0,0,0.2)] mt-4">
+          <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Opções gerais do app.' : 'General app options.'}</p>
+        </TabsContent>
+        <TabsContent value="avancado" className="p-4 border border-[color:var(--card-border)] rounded-lg bg-[rgba(0,0,0,0.2)] mt-4">
+          <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Painel crítico avançado.' : 'Critical advanced panel.'}</p>
+        </TabsContent>
+        <TabsContent value="faturamento" className="p-4 border border-[color:var(--card-border)] rounded-lg bg-[rgba(0,0,0,0.2)] mt-4">
+          <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Suas formas de pagamento.' : 'Your payment methods.'}</p>
+        </TabsContent>
+      </Tabs>
+    ),
   },
 ].map((doc) => ({
   ...doc,

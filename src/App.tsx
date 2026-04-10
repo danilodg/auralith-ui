@@ -143,6 +143,7 @@ function App() {
 
         <SideRail
           brandHref="#landing"
+          brandIconSrc={`${import.meta.env.BASE_URL}auralith-neon-a.png`}
           brandSubtitle="premium component library"
           brandTitle="Auralith UI"
           items={sideRailItems}

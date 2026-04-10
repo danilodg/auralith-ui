@@ -18,16 +18,16 @@ export function createDocsPages(language: Language): DocPage[] {
       icon: <TerminalSquare size={16} strokeWidth={1.8} />,
       content: (
         <div className="flex flex-col gap-6">
-          <section className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
-            <GlassPanel className="p-2 sm:p-2 lg:p-2">
+          <section className="grid gap-8 lg:grid-cols-2">
+            <GlassPanel className="p-8 sm:p-10 border border-[color:var(--card-border)] shadow-sm bg-[color:var(--surface-base)] flex flex-col justify-center">
               <div className="flex flex-wrap gap-3">
-                <Tag>docs</Tag>
-                <Tag>{isPt ? 'Instalacao' : 'Installation'}</Tag>
-                <Tag>docs/installation</Tag>
+                <Tag className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">docs</Tag>
+                <Tag className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">{isPt ? 'Instalacao' : 'Installation'}</Tag>
+                <Tag className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">docs/installation</Tag>
               </div>
 
               <SectionHeader
-                className="mt-6"
+                className="mt-8"
                 eyebrow={isPt ? 'Pagina de documentacao' : 'Documentation page'}
                 heading={isPt ? 'Instalacao' : 'Installation'}
                 description={isPt ? 'Como instalar a biblioteca e preparar o ambiente no seu projeto.' : 'How to install the library and prepare the environment in your project.'}
@@ -58,14 +58,16 @@ export function createDocsPages(language: Language): DocPage[] {
               </div>
             </GlassPanel>
 
-            <Card className="p-2 sm:p-2 lg:p-2" variant="elevated">
-              <SectionLabel>{isPt ? 'Checklist de setup' : 'Setup checklist'}</SectionLabel>
-              <div className="mt-5 flex flex-wrap gap-2.5">
-                <Tag>react 19+</Tag>
-                <Tag>typescript</Tag>
-                <Tag>tailwind v4</Tag>
-              </div>
-              <div className="mt-6 grid gap-3">
+            <Card className="p-8 sm:p-10 border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] relative overflow-hidden group" variant="elevated">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[color:var(--accent-line)] opacity-[0.02] blur-[50px] group-hover:opacity-[0.04] transition-opacity duration-700" />
+              <div className="relative z-10">
+                <SectionLabel>{isPt ? 'Checklist de setup' : 'Setup checklist'}</SectionLabel>
+                <div className="mt-6 flex flex-wrap gap-2.5">
+                  <Tag className="border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)] px-2.5 py-1">react 19+</Tag>
+                  <Tag className="border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)] px-2.5 py-1">typescript</Tag>
+                  <Tag className="border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)] px-2.5 py-1">tailwind v4</Tag>
+                </div>
+                <div className="mt-8 grid gap-4">
                 {[0, 1, 2].map((index) => {
                   const content = isPt
                     ? [
@@ -80,12 +82,13 @@ export function createDocsPages(language: Language): DocPage[] {
                       ][index]
 
                   return (
-                    <Card className="p-2" key={content[0]} variant="subtle">
+                    <Card className="p-4 bg-[rgba(255,255,255,0.015)] hover:border-[rgba(111,224,255,0.2)] transition-colors" key={content[0]} variant="subtle">
                       <p className="font-medium text-[color:var(--text-main)]">{content[0]}</p>
-                      <p className="mt-2 text-sm leading-6 text-[color:var(--text-soft)]">{content[1]}</p>
+                      <p className="mt-2 text-[0.95rem] leading-6 text-[color:var(--text-soft)]">{content[1]}</p>
                     </Card>
                   )
                 })}
+              </div>
               </div>
             </Card>
           </section>
@@ -101,16 +104,16 @@ export function createDocsPages(language: Language): DocPage[] {
       icon: <BookOpen size={16} strokeWidth={1.8} />,
       content: (
         <div className="flex flex-col gap-6">
-          <section className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
-            <GlassPanel className="p-2 sm:p-2 lg:p-2">
+          <section className="grid gap-8 lg:grid-cols-2">
+            <GlassPanel className="p-8 sm:p-10 border border-[color:var(--card-border)] shadow-sm bg-[color:var(--surface-base)] flex flex-col justify-center">
               <div className="flex flex-wrap gap-3">
-                <Tag>docs</Tag>
-                <Tag>{isPt ? 'Uso' : 'Usage'}</Tag>
-                <Tag>docs/usage</Tag>
+                <Tag className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">docs</Tag>
+                <Tag className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">{isPt ? 'Uso' : 'Usage'}</Tag>
+                <Tag className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">docs/usage</Tag>
               </div>
 
               <SectionHeader
-                className="mt-6"
+                className="mt-8"
                 eyebrow={isPt ? 'Pagina de documentacao' : 'Documentation page'}
                 heading={isPt ? 'Uso' : 'Usage'}
                 description={isPt ? 'Como importar, combinar e escalar os componentes no seu projeto.' : 'How to import, combine and scale the components in your project.'}
@@ -140,9 +143,11 @@ export function createDocsPages(language: Language): DocPage[] {
               </div>
             </GlassPanel>
 
-            <Card className="p-2 sm:p-2 lg:p-2" variant="elevated">
-              <SectionLabel>{isPt ? 'Diretrizes' : 'Guidelines'}</SectionLabel>
-              <div className="mt-6 grid gap-3">
+            <Card className="p-8 sm:p-10 border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] relative overflow-hidden group" variant="elevated">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[color:var(--accent-line)] opacity-[0.02] blur-[50px] group-hover:opacity-[0.04] transition-opacity duration-700" />
+              <div className="relative z-10">
+                <SectionLabel>{isPt ? 'Diretrizes' : 'Guidelines'}</SectionLabel>
+                <div className="mt-8 grid gap-4">
                 {(isPt
                   ? [
                       ['Use primitives primeiro', 'Comece por `Button`, `Input`, `Tag` e `Card` antes de subir para patterns.'],
@@ -154,11 +159,12 @@ export function createDocsPages(language: Language): DocPage[] {
                       ['Scale with patterns', 'Use `Modal`, `DropdownMenu` and `Tooltip` to accelerate interactions and overlays.'],
                       ['Keep visual consistency', 'Preserve the color, shadow and typography tokens from the library.'],
                     ]).map((item) => (
-                  <Card className="p-2" key={item[0]} variant="subtle">
+                  <Card className="p-4 bg-[rgba(255,255,255,0.015)] hover:border-[rgba(111,224,255,0.2)] transition-colors" key={item[0]} variant="subtle">
                     <p className="font-medium text-[color:var(--text-main)]">{item[0]}</p>
-                    <p className="mt-2 text-sm leading-6 text-[color:var(--text-soft)]">{item[1]}</p>
+                    <p className="mt-2 text-[0.95rem] leading-6 text-[color:var(--text-soft)]">{item[1]}</p>
                   </Card>
                 ))}
+              </div>
               </div>
             </Card>
           </section>

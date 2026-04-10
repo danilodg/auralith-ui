@@ -1,4 +1,4 @@
-import { Card, CodeBlock, GlassPanel, Tag } from '../../lib'
+import { CodeBlock, GlassPanel, Tag } from '../../lib'
 import { useLocale } from '../../locale-context'
 import type { ComponentDoc } from '../../types/docs'
 
@@ -24,32 +24,58 @@ interface ComponentDocCardProps {
 export function ComponentDocCard({ doc }: ComponentDocCardProps) {
   const { language, strings } = useLocale()
   const isPt = language === 'pt'
+  const sectionLabelClass = 'font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]'
 
   return (
-    <GlassPanel className="p-2 sm:p-2 lg:p-2">
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div>
-          <div className="flex flex-wrap items-center gap-3">
+    <GlassPanel className="p-0 overflow-hidden flex flex-col group w-full shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+      {/* Mini-Hero Showcase Area */}
+      <div className="relative flex min-h-[300px] w-full items-center justify-center border-b border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] py-12 px-6">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_0%,rgba(111,224,255,0.05)_0%,transparent_70%),repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px),repeating-linear-gradient(90deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px)] pointer-events-none" />
+        
+        {/* Glow effect matching Hero */}
+        <div className="absolute inset-0 max-w-2xl mx-auto rounded-3xl bg-[color:var(--accent-line)] opacity-[0.03] blur-[50px] pointer-events-none group-hover:opacity-[0.06] transition-opacity duration-700" />
+        
+        <div className="relative z-10 w-full flex justify-center">
+          {doc.preview}
+        </div>
+      </div>
+
+      {/* Info & Snippet Area */}
+      <div className="grid lg:grid-cols-[1.2fr_0.8fr] w-full min-w-0">
+        {/* Left: Info */}
+        <div className="p-6 sm:p-8 flex flex-col justify-center border-r-0 lg:border-r border-[color:var(--card-border)] bg-[color:var(--surface-base)] min-w-0">
+          <div className="flex flex-wrap items-center gap-3 mb-5">
             <Tag>{getCategoryLabel(doc.category, isPt)}</Tag>
-            <Tag>{doc.name}</Tag>
-            <Tag>{doc.urlText}</Tag>
+            <Tag className="bg-[rgba(255,255,255,0.03)] text-[color:var(--text-muted)] border-0">
+              {doc.urlText}
+            </Tag>
           </div>
-          <h3 className="mt-4 font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[1.7rem] font-bold tracking-[-0.04em] text-[color:var(--text-main)]">{doc.name}</h3>
-          <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">{doc.description}</p>
-          <div className="mt-5 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2">
-            <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{strings.docs.sourceLabel}</p>
-            <p className="mt-2 break-all font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6 text-[color:var(--accent-soft)]">{doc.source}</p>
-          </div>
-          <div className="mt-4 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2">
-            <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{strings.docs.snippetLabel}</p>
-            <CodeBlock className="mt-2" snippets={[{ code: doc.snippet, language: 'tsx' }]} />
-          </div>
+          <h3 className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[2rem] font-bold tracking-[-0.04em] text-[color:var(--text-main)] drop-shadow-sm">
+            {doc.name}
+          </h3>
+          <p className="mt-4 text-[1.05rem] leading-7 text-[color:var(--text-soft)]">
+            {doc.description}
+          </p>
         </div>
 
-        <Card className="p-2 sm:p-2 lg:p-2" variant="elevated">
-          <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{strings.docs.livePreviewLabel}</p>
-          <div className="mt-4 overflow-hidden">{doc.preview}</div>
-        </Card>
+        {/* Right: Technical */}
+        <div className="flex flex-col border-t lg:border-t-0 border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] min-w-0">
+           <div className="p-6">
+              <p className={sectionLabelClass}>{strings.docs.snippetLabel}</p>
+              <div className="mt-4 w-full">
+                 <CodeBlock snippets={[{ code: doc.snippet, language: 'tsx' }]} />
+              </div>
+
+              <div className="mt-6 flex flex-col gap-2">
+                 <p className={sectionLabelClass}>{strings.docs.sourceLabel}</p>
+                 <div className="rounded-[8px] bg-[rgba(0,0,0,0.15)] border border-[color:var(--card-border)] px-3 py-2 shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)]">
+                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] overflow-x-auto whitespace-nowrap text-[color:var(--text-muted)] select-all w-full leading-5">
+                     {doc.source}
+                   </p>
+                 </div>
+              </div>
+           </div>
+        </div>
       </div>
     </GlassPanel>
   )
