@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { ChevronDown, Pin, PinOff, Sparkles } from 'lucide-react'
+import { ChevronDown, Menu, Pin, PinOff, Sparkles, X } from 'lucide-react'
 
 import type { SideRailChildItem, SideRailItem } from '../../types/navigation'
 import { cn } from '../utils/cn'
@@ -270,12 +270,13 @@ export function SideRail({
   const [expanded, setExpanded] = useState(() => getInitialPinnedState())
   const [openGroupIds, setOpenGroupIds] = useState<string[]>([])
   const [focusedNavId, setFocusedNavId] = useState<string | null>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [desktopIndicatorStyle, setDesktopIndicatorStyle] = useState<{ height: number; opacity: number; top: number }>({
     top: 0,
     height: 0,
     opacity: 0,
   })
-  const [mobileIndicatorStyle, setMobileIndicatorStyle] = useState<{ left: number; width: number; opacity: number }>({ left: 0, width: 0, opacity: 0 })
+  const [mobileIndicatorStyle, setMobileIndicatorStyle] = useState<{ top: number; height: number; opacity: number }>({ top: 0, height: 0, opacity: 0 })
   const desktopNavRef = useRef<HTMLElement | null>(null)
   const desktopItemRefs = useRef<Record<string, HTMLElement | null>>({})
   const mobileNavRef = useRef<HTMLElement | null>(null)
@@ -311,16 +312,17 @@ export function SideRail({
 
     const updateMobileIndicator = () => {
       const nav = mobileNavRef.current
-      const currentItem = activeItem ? mobileItemRefs.current[activeItem.id] : null
+      const targetId = focusedNavId ?? activeNavId ?? openGroupIds[openGroupIds.length - 1] ?? activeItem?.id ?? null
+      const currentItem = targetId ? mobileItemRefs.current[targetId] : null
 
-      if (!nav || !currentItem) {
+      if (!nav || !currentItem || !mobileMenuOpen) {
         setMobileIndicatorStyle((current) => (current.opacity === 0 ? current : { ...current, opacity: 0 }))
         return
       }
 
       setMobileIndicatorStyle({
-        left: currentItem.offsetLeft,
-        width: currentItem.offsetWidth,
+        top: currentItem.offsetTop,
+        height: currentItem.offsetHeight,
         opacity: 1,
       })
     }
@@ -349,7 +351,7 @@ export function SideRail({
       }
       window.removeEventListener('resize', requestIndicatorUpdate)
     }
-  }, [activeItem, items])
+  }, [activeItem, activeNavId, focusedNavId, items, openGroupIds, mobileMenuOpen])
 
   useLayoutEffect(() => {
     let frameId: number | null = null
@@ -432,6 +434,7 @@ export function SideRail({
     }
 
     setFocusedNavId(item.id)
+    setMobileMenuOpen(false)
     item.onClick?.()
   }
 
@@ -547,86 +550,77 @@ export function SideRail({
               <span className="block truncate text-[0.68rem] uppercase tracking-[0.14em] text-[color:var(--text-muted)]">{brandSubtitle}</span>
             </span>
           </a>
+          
+          <button
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-[color:var(--surface-hover)] text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-hover-strong)]"
+            onClick={() => setMobileMenuOpen(true)}
+            title="Abrir menu"
+            type="button"
+          >
+            <Menu size={20} />
+          </button>
         </div>
 
-        <nav ref={mobileNavRef} className="fixed inset-x-3 bottom-3 z-30 flex flex-wrap gap-2 overflow-hidden rounded-[8px] border border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.18)] max-[420px]:gap-1.5 max-[420px]:p-2 [view-transition-name:none]" aria-label="Side rail navigation mobile">
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute bottom-2 left-0 top-2 rounded-[8px] border border-[color:var(--accent-line)]/25 bg-[color:var(--surface-hover)] shadow-[0_0_0_1px_rgba(111,224,255,0.08)] transition-[transform,width,opacity] duration-300 ease-out max-[420px]:bottom-1.5 max-[420px]:top-1.5"
-            style={{
-              opacity: mobileIndicatorStyle.opacity,
-              width: `${mobileIndicatorStyle.width}px`,
-              transform: `translateX(${mobileIndicatorStyle.left}px)`,
-            }}
-          />
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 z-[100] flex [view-transition-name:none]">
+            <div
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+              onClick={() => setMobileMenuOpen(false)}
+            />
 
-          {items.map((item) => {
-            const hasChildren = Boolean(item.items?.length)
-            const isHighlighted = item.isActive || item.items?.some((child) => childIsActive(child))
+            <div className="relative flex w-[280px] max-w-[calc(100vw-3rem)] flex-col border-r border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] shadow-xl transition-transform duration-300">
+              <div className="flex h-[60px] shrink-0 items-center gap-3 border-b border-[color:var(--card-border)] px-[14px]">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[linear-gradient(145deg,var(--accent-start),color-mix(in_srgb,var(--accent-mid)_55%,transparent))] text-white shadow-[0_0_20px_var(--accent-shadow)]">
+                  <Sparkles size={16} strokeWidth={2.1} />
+                </span>
+                <span className="min-w-0 overflow-hidden whitespace-nowrap font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-sm font-medium tracking-[0.04em] text-[color:var(--accent-line)]">
+                  {brandTitle}
+                </span>
+                <button
+                  className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]"
+                  onClick={() => setMobileMenuOpen(false)}
+                  title="Fechar"
+                  type="button"
+                >
+                  <X size={18} />
+                </button>
+              </div>
 
-            return item.href && !hasChildren ? (
-              <a
-                key={item.id}
-                ref={(node) => {
-                  mobileItemRefs.current[item.id] = node
-                }}
-                aria-current={isHighlighted ? 'page' : undefined}
-                className={cn(
-                  'relative z-10 flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[8px] px-2 py-2.5 text-[0.7rem] font-medium uppercase tracking-[0.12em] transition-[flex-grow,color,transform] duration-300 ease-out max-[420px]:px-1.5 max-[420px]:py-2 max-[420px]:text-[0.62rem] max-[420px]:tracking-[0.1em]',
-                  isHighlighted ? 'max-[420px]:flex-[1.2] text-white' : 'max-[420px]:flex-[0.9] text-[color:var(--text-soft)]',
-                )}
-                href={item.href}
-                onClick={() => handleMobileItemClick(item)}
-                title={getTooltipText(item)}
-              >
-                <span>{item.icon}</span>
-                <span className="max-w-full truncate">{item.title}</span>
-              </a>
-            ) : (
-              <button
-                key={item.id}
-                ref={(node) => {
-                  mobileItemRefs.current[item.id] = node
-                }}
-                aria-current={isHighlighted ? 'page' : undefined}
-                className={cn(
-                  'relative z-10 flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[8px] px-2 py-2.5 text-[0.7rem] font-medium uppercase tracking-[0.12em] transition-[flex-grow,color,transform] duration-300 ease-out max-[420px]:px-1.5 max-[420px]:py-2 max-[420px]:text-[0.62rem] max-[420px]:tracking-[0.1em]',
-                  isHighlighted ? 'max-[420px]:flex-[1.2] text-white' : 'max-[420px]:flex-[0.9] text-[color:var(--text-soft)]',
-                )}
-                onClick={() => handleMobileItemClick(item)}
-                title={getTooltipText(item)}
-                type="button"
-              >
-                <span>{item.icon}</span>
-                <span className="max-w-full truncate">{item.title}</span>
-              </button>
-            )
-          })}
+              <div className="auralith-scrollbar flex-1 overflow-y-auto overflow-x-hidden py-2" ref={mobileNavRef}>
+                <div className="h-8 px-[22px] pb-1 pt-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[color:var(--text-muted)]">
+                  Navigation
+                </div>
 
-          {openGroupIds.length ? (
-            <div className="basis-full px-1 pt-2">
-              {items
-                .filter((item) => openGroupIds.includes(item.id) && item.items?.length)
-                .map((item) => (
-                  <div key={item.id} className="space-y-2">
-                    <p className="px-2 pb-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">
-                      {item.title}
-                    </p>
-                    <div className="grid gap-2 sm:grid-cols-2">
-                      {item.items?.map((child) => (
-                        <ChildLink
-                          expanded
-                          item={child}
-                          key={child.id}
-                          level={1}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                <nav aria-label="Side rail navigation mobile" className="relative space-y-1">
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute left-2 right-2 z-0 rounded-[8px] border border-[color:var(--accent-line)]/25 bg-[color:var(--surface-hover)] shadow-[0_0_0_1px_rgba(111,224,255,0.08)] transition-[transform,height,opacity] duration-300 ease-out"
+                    style={{
+                      height: `${mobileIndicatorStyle.height}px`,
+                      opacity: mobileIndicatorStyle.opacity,
+                      transform: `translateY(${mobileIndicatorStyle.top}px)`,
+                    }}
+                  />
+                  {items.map((item) => (
+                    <DesktopNavItem
+                      expanded={true}
+                      item={item}
+                      key={item.id}
+                      onClick={() => handleMobileItemClick(item)}
+                      onItemClick={(id) => { setFocusedNavId(id); setMobileMenuOpen(false); }}
+                      open={openGroupIds.includes(item.id)}
+                      registerRef={(id, node) => {
+                        mobileItemRefs.current[id] = node
+                      }}
+                    />
+                  ))}
+                </nav>
+              </div>
+
+              {bottomSlot ? <div className="border-t border-[color:var(--card-border)] p-2">{bottomSlot}</div> : null}
             </div>
-          ) : null}
-        </nav>
+          </div>
+        )}
       </header>
     </>
   )
