@@ -586,12 +586,12 @@ export function SideRail({
                 </button>
               </div>
 
-              <div className="auralith-scrollbar flex-1 overflow-y-auto overflow-x-hidden py-2" ref={mobileNavRef}>
+              <div className="auralith-scrollbar flex-1 overflow-y-auto overflow-x-hidden py-2">
                 <div className="h-8 px-[22px] pb-1 pt-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[color:var(--text-muted)]">
                   Navigation
                 </div>
 
-                <nav aria-label="Side rail navigation mobile" className="relative space-y-1">
+                <nav aria-label="Side rail navigation mobile" className="relative space-y-1" ref={mobileNavRef}>
                   <span
                     aria-hidden="true"
                     className="pointer-events-none absolute left-2 right-2 z-0 rounded-[8px] border border-[color:var(--accent-line)]/25 bg-[color:var(--surface-hover)] shadow-[0_0_0_1px_rgba(111,224,255,0.08)] transition-[transform,height,opacity] duration-300 ease-out"
