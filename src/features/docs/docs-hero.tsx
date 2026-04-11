@@ -1,5 +1,4 @@
 import { Button, GlassPanel, Tag } from '../../lib'
-import { SectionHeader } from '../../lib/components/section-header'
 import { useLocale } from '../../locale-context'
 
 interface DocsHeroProps {

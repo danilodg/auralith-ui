@@ -1,5 +1,4 @@
-import { CodeBlock, GlassPanel, Tag, Card } from '../../lib'
-import { SectionHeader } from '../../lib/components/section-header'
+import { CodeBlock, GlassPanel, Tag } from '../../lib'
 import { useLocale } from '../../locale-context'
 import type { ComponentDoc } from '../../types/docs'
 import { Zap, Puzzle, Library, Layers, Asterisk, ShieldCheck } from 'lucide-react'
@@ -145,7 +144,7 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
                 <p className={sectionLabelClass}>{isPt ? 'Anatomia da Arvore' : 'Tree Anatomy'}</p>
               </div>
               <div className="relative pl-3 border-l-[1.5px] border-[color:var(--card-border)] py-1">
-                {doc.anatomy.map((part, index) => (
+                {doc.anatomy.map((part) => (
                   <div className="relative mb-4 last:mb-0" key={part}>
                     <div className="absolute -left-3 top-[10px] w-[14px] h-[1.5px] bg-[color:var(--card-border)]" />
                     <span className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.72rem] bg-[color:var(--surface-hover)] border border-[color:var(--card-border)] text-[color:var(--text-soft)] px-2.5 py-1.5 rounded-[8px] shadow-sm ml-3 block w-fit">

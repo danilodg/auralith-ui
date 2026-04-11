@@ -1,7 +1,7 @@
 import { Component, Library } from 'lucide-react'
 
 import { useLocale } from '../../locale-context'
-import { Card, GlassPanel, SectionLabel } from '../../lib'
+import { GlassPanel } from '../../lib'
 
 export function DocsOverview() {
   const { strings } = useLocale()

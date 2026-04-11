@@ -4,7 +4,6 @@ import { DocDetailView } from '../features/docs/doc-detail-view'
 import { DocsHero } from '../features/docs/docs-hero'
 import { DocsOverview } from '../features/docs/docs-overview'
 import { GlassPanel, Tag } from '../lib'
-import { SectionHeader } from '../lib/components/section-header'
 import { useLocale } from '../locale-context'
 import type { ComponentDoc, DocPage } from '../types/docs'
 
