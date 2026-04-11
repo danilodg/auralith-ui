@@ -76,6 +76,9 @@ function isTopPosition(position: ToastPosition) {
 export function Toast({ id, title, description, variant = 'default', position = 'bottom-right', duration = 5000, onClose, paused = false, immediate = false, promotedFromStack = false }: ToastProps & { paused?: boolean; immediate?: boolean; promotedFromStack?: boolean }) {
   const [isClosing, setIsClosing] = React.useState(false)
   const [promotionReady, setPromotionReady] = React.useState(!promotedFromStack)
+  const remainingRef = React.useRef(duration)
+  const startedAtRef = React.useRef<number | null>(null)
+  const timerIdRef = React.useRef<number | null>(null)
 
   const handleClose = React.useCallback(() => {
     setIsClosing(true)
@@ -83,13 +86,30 @@ export function Toast({ id, title, description, variant = 'default', position = 
   }, [id, onClose])
 
   React.useEffect(() => {
-    if (paused || isClosing) {
+    remainingRef.current = duration
+  }, [duration, id])
+
+  React.useEffect(() => {
+    if (duration <= 0 || paused || isClosing) {
       return
     }
 
-    if (duration > 0) {
-      const timer = setTimeout(handleClose, duration)
-      return () => clearTimeout(timer)
+    const timeoutMs = Math.max(remainingRef.current, 0)
+    startedAtRef.current = Date.now()
+    timerIdRef.current = window.setTimeout(handleClose, timeoutMs)
+
+    return () => {
+      if (timerIdRef.current !== null) {
+        window.clearTimeout(timerIdRef.current)
+      }
+
+      if (startedAtRef.current !== null && !isClosing) {
+        const elapsed = Date.now() - startedAtRef.current
+        remainingRef.current = Math.max(0, remainingRef.current - elapsed)
+      }
+
+      startedAtRef.current = null
+      timerIdRef.current = null
     }
   }, [duration, handleClose, isClosing, paused])
 
@@ -259,6 +279,9 @@ export function ToastProvider({ children, position = 'bottom-right' }: { childre
               const collapsedHeight = 84
               const expandedHeight = 84 + Math.max(ordered.length - 1, 0) * expandedStep
               const stackHeight = isExpanded ? expandedHeight : collapsedHeight
+              const setExpanded = (expanded: boolean) => {
+                setExpandedByPosition((prev) => ({ ...prev, [currentPosition]: expanded }))
+              }
 
               return (
                 <div
@@ -267,8 +290,10 @@ export function ToastProvider({ children, position = 'bottom-right' }: { childre
                 >
                   <div
                     className="pointer-events-auto relative w-[calc(100vw-2rem)] max-w-sm sm:w-96"
-                    onMouseEnter={() => setExpandedByPosition((prev) => ({ ...prev, [currentPosition]: true }))}
-                    onMouseLeave={() => setExpandedByPosition((prev) => ({ ...prev, [currentPosition]: false }))}
+                    onMouseEnter={() => setExpanded(true)}
+                    onMouseLeave={() => setExpanded(false)}
+                    onPointerEnter={() => setExpanded(true)}
+                    onPointerLeave={() => setExpanded(false)}
                     style={{ height: `${stackHeight}px` }}
                   >
                     {ordered.map((toast, index) => {
@@ -300,7 +325,7 @@ export function ToastProvider({ children, position = 'bottom-right' }: { childre
                           <Toast
                             {...toast}
                             immediate={!isFront}
-                            paused={isExpanded}
+                            paused={isExpanded || !isFront}
                             promotedFromStack={isFront && promotedByPosition[currentPosition] === toast.id}
                           />
                         </div>
