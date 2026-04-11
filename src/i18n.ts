@@ -82,9 +82,9 @@ export const localeStrings: Record<Language, LocaleStrings> = {
     },
     landing: {
       heroEyebrow: 'Design system em evolucao',
-      heroTitle: 'Auralith UI transforma sua identidade visual em biblioteca reutilizavel de componentes reais.',
+      heroTitle: 'Biblioteca front-end premium para criar interfaces consistentes, escalaveis e prontas para produto.',
       heroDescription:
-        'Nao e um kit generico. A proposta e consolidar a linguagem premium dos seus templates, portfolio e auth flows em tokens, primitives e patterns prontos para produto.',
+        'Componentes React reais com tokens, variantes e exemplos vivos para acelerar entregas sem perder identidade visual.',
       exploreDocs: 'Explorar docs',
       currentStack: 'Stack atual',
       stackDescription: 'Base enxuta para evoluir em repositorio proprio, publicar como pacote e reutilizar internamente com consistencia visual.',
@@ -123,7 +123,7 @@ export const localeStrings: Record<Language, LocaleStrings> = {
       continue: 'Continuar',
       recoveryFlow: 'Fluxo de recuperacao',
       nextStep: 'Proximo passo',
-      nextStepTitle: 'Acesse a docs para navegar pelos 17 componentes com preview, codigo e referencia de uso.',
+      nextStepTitle: 'Acesse a docs para navegar pelos 22 componentes com preview, codigo e referencia de uso.',
       openDocumentation: 'Abrir documentacao',
     },
     docs: {
@@ -157,8 +157,8 @@ export const localeStrings: Record<Language, LocaleStrings> = {
     },
     landing: {
       heroEyebrow: 'Design system in progress',
-      heroTitle: 'Auralith UI turns your visual identity into a reusable library of real components.',
-      heroDescription: 'This is not a generic kit. The goal is to consolidate your premium language from templates, portfolio, and auth flows into tokens, primitives, and patterns ready for product.',
+      heroTitle: 'A premium front-end library to build consistent, scalable, product-ready interfaces.',
+      heroDescription: 'Real React components with tokens, variants, and live examples to ship faster without losing visual identity.',
       exploreDocs: 'Explore docs',
       currentStack: 'Current stack',
       stackDescription: 'A lean foundation to evolve in its own repository, publish as a package, and reuse internally with visual consistency.',
@@ -197,7 +197,7 @@ export const localeStrings: Record<Language, LocaleStrings> = {
       continue: 'Continue',
       recoveryFlow: 'Recovery flow',
       nextStep: 'Next step',
-      nextStepTitle: 'Open docs to browse all 17 components with preview, code, and usage references.',
+      nextStepTitle: 'Open docs to browse all 22 components with preview, code, and usage references.',
       openDocumentation: 'Open documentation',
     },
     docs: {

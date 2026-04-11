@@ -7,7 +7,7 @@ export function createLandingContent(language: Language) {
 
   return {
     metrics: [
-      { value: '17', label: isPt ? 'componentes documentados' : 'documented components' },
+      { value: '22', label: isPt ? 'componentes documentados' : 'documented components' },
       { value: '7', label: isPt ? 'categorias de interface' : 'interface categories' },
       { value: '2', label: isPt ? 'patterns principais' : 'core patterns' },
     ] as const,
