@@ -4,15 +4,19 @@ export interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultValue?: string
   value?: string
   onValueChange?: (value: string) => void
+  variant?: TabsVariant
 }
+
+export type TabsVariant = 'solid' | 'baseline'
 
 const TabsContext = React.createContext<{
   value: string
   onValueChange: (value: string) => void
+  variant: TabsVariant
 } | null>(null)
 
 export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
-  ({ className, defaultValue, value: controlledValue, onValueChange, children, ...props }, ref) => {
+  ({ className, defaultValue, value: controlledValue, onValueChange, variant = 'solid', children, ...props }, ref) => {
     const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue || '')
     const isControlled = controlledValue !== undefined
     const value = isControlled ? controlledValue : uncontrolledValue
@@ -29,7 +33,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
     )
 
     return (
-      <TabsContext.Provider value={{ value, onValueChange: handleValueChange }}>
+      <TabsContext.Provider value={{ value, onValueChange: handleValueChange, variant }}>
         <div ref={ref} className={`flex w-full flex-col ${className || ''}`} {...props}>
           {children}
         </div>
@@ -42,6 +46,8 @@ Tabs.displayName = 'Tabs'
 export const TabsList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, children, ...props }, ref) => {
     const ctx = React.useContext(TabsContext)
+    if (!ctx) throw new Error('TabsList must be used within Tabs')
+
     const localRef = React.useRef<HTMLDivElement | null>(null)
     const [indicatorStyle, setIndicatorStyle] = React.useState<{ width: number; left: number; opacity: number }>({
       left: 0,
@@ -105,12 +111,15 @@ export const TabsList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
             ref.current = node
           }
         }}
-        className={`relative inline-flex h-11 items-center justify-center rounded-[10px] border border-[rgba(255,255,255,0.06)] bg-[rgba(0,0,0,0.25)] p-1 text-sm text-[color:var(--text-muted)] shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] backdrop-blur-sm ${className || ''}`}
+        className={`relative inline-flex items-center justify-center text-sm ${ctx.variant === 'solid'
+          ? 'h-11 rounded-[10px] border border-[rgba(255,255,255,0.06)] bg-[rgba(0,0,0,0.25)] p-1 text-[color:var(--text-muted)] shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] backdrop-blur-sm'
+          : 'h-12 border-b border-[color:var(--card-border)] p-0.5 text-[color:var(--text-soft)]'
+          } ${className || ''}`}
         {...props}
       >
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute bottom-0.5 left-0 h-0.5 rounded-full bg-[color:var(--accent-line)] shadow-[0_0_14px_var(--accent-shadow)] transition-[transform,width,opacity] duration-300 ease-out"
+          className={`pointer-events-none absolute left-0 rounded-full bg-[color:var(--accent-line)] transition-[transform,width,opacity] duration-300 ease-out ${ctx.variant === 'solid' ? 'bottom-0.5 h-0.5 shadow-[0_0_14px_var(--accent-shadow)]' : 'bottom-0 h-[2px] shadow-[0_0_10px_var(--accent-shadow)]'}`}
           style={{
             opacity: indicatorStyle.opacity,
             transform: `translate3d(${indicatorStyle.left}px, 0, 0)`,
@@ -143,9 +152,10 @@ export const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>
         data-tabs-trigger-value={value}
         aria-selected={isActive}
         onClick={() => ctx.onValueChange(value)}
-        className={`relative z-10 inline-flex items-center justify-center whitespace-nowrap rounded-[7px] px-4 py-1.5 font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-line)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--page-bg)] disabled:pointer-events-none disabled:opacity-50
-         ${isActive ? 'text-[color:var(--accent-line)]' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text-soft)] active:scale-95'
-         } ${className || ''}`}
+        className={`relative z-10 inline-flex items-center justify-center whitespace-nowrap font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-line)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--page-bg)] disabled:pointer-events-none disabled:opacity-50 ${ctx.variant === 'solid'
+          ? `rounded-[7px] px-4 py-1.5 ${isActive ? 'text-[color:var(--accent-line)]' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text-soft)] active:scale-95'}`
+          : `rounded-[6px] px-3.5 py-2 ${isActive ? 'text-[color:var(--text-main)]' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text-soft)]'}`
+          } ${className || ''}`}
         {...props}
       >
         {children}

@@ -1,8 +1,8 @@
-import { CodeBlock, GlassPanel, Tag, Card } from '../../lib'
+import { CodeBlock, GlassPanel, Tag } from '../../lib'
 import { ModalDetailView } from './modal-detail-view'
 import { useLocale } from '../../locale-context'
 import type { ComponentDoc } from '../../types/docs'
-import { Zap, Puzzle, Library, Layers } from 'lucide-react'
+import { Zap, Puzzle, Library, Layers, Code2 } from 'lucide-react'
 
 function getCategoryLabel(category: string, isPt: boolean) {
   if (!isPt) return category
@@ -33,12 +33,13 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
 
   const examples = doc.examples?.filter((example, index) => index !== 0 || example.code.trim() !== doc.snippet.trim()) ?? []
   const sectionLabelClass = 'font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]'
+  const isAccordionDoc = doc.id === 'accordion'
 
   return (
     <div className="flex min-h-full flex-1 flex-col gap-6 w-full max-w-full">
       {/* 1. HERO MASSIVE CANVAS */}
       <GlassPanel className="w-full p-0 overflow-hidden border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] relative shadow-[inset_0px_1px_1px_rgba(255,255,255,0.02)]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_70%_at_50%_-10%,rgba(111,224,255,0.06)_0%,transparent_60%),repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px),repeating-linear-gradient(90deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px)] pointer-events-none" />
+        <div className={`absolute ${isAccordionDoc ? '-inset-10' : 'inset-0'} bg-[radial-gradient(ellipse_60%_70%_at_50%_-10%,rgba(111,224,255,0.06)_0%,transparent_60%),repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px),repeating-linear-gradient(90deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px)] pointer-events-none`} />
         
         <div className="relative p-6 sm:p-10 flex flex-col items-center">
            <div className="flex flex-wrap gap-3 mb-8 w-full max-w-[1000px]">
@@ -54,7 +55,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
             <p className="mt-5 text-[1.05rem] leading-7 text-[color:var(--text-soft)] max-w-[640px]">{doc.description}</p>
           </div>
 
-          <div className="w-full relative flex justify-center py-6">
+          <div className={`w-full relative flex justify-center py-6 ${isAccordionDoc ? 'min-h-[430px] items-start' : ''}`}>
             <div className="absolute inset-0 max-w-4xl mx-auto rounded-3xl bg-[color:var(--accent-line)] opacity-[0.03] blur-[60px]" />
             <div className="relative z-10 w-full max-w-3xl flex justify-center">
                {doc.preview}
@@ -78,16 +79,15 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
 
           {examples.length ? (
             <GlassPanel className="p-6">
-              <p className={sectionLabelClass}>{isPt ? 'Exemplos Estendidos' : 'Extended Examples'}</p>
+              <div className="flex items-center gap-2">
+                <Code2 size={16} className="text-[color:var(--accent-line)]" />
+                <p className={sectionLabelClass}>{isPt ? 'Exemplos Estendidos' : 'Extended Examples'}</p>
+              </div>
               <div className="mt-6 flex flex-col gap-6">
                 {examples.map((example) => (
-                  <div key={example.title} className="rounded-xl border border-[color:var(--card-border)] overflow-hidden bg-[color:var(--surface-soft)] shadow-sm">
-                    <div className="px-5 py-4 border-b border-[color:var(--card-border)] bg-[rgba(255,255,255,0.015)]">
-                      <p className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[1.1rem] font-semibold text-[color:var(--text-main)]">{example.title}</p>
-                    </div>
-                    <div className="p-2 sm:p-4">
-                      <CodeBlock snippets={[{ code: example.code, language: 'tsx' }]} />
-                    </div>
+                  <div key={example.title}>
+                    <p className="mb-3 text-[0.96rem] font-medium text-[color:var(--text-main)]">{example.title}</p>
+                    <CodeBlock snippets={[{ code: example.code, language: 'tsx' }]} />
                   </div>
                 ))}
               </div>
@@ -154,7 +154,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
                 <p className={sectionLabelClass}>{isPt ? 'Anatomia' : 'Anatomy'}</p>
               </div>
               <div className="relative pl-3 border-l-[1.5px] border-[color:var(--card-border)] py-1">
-                {doc.anatomy.map((part, index) => (
+                {doc.anatomy.map((part) => (
                   <div className="relative mb-4 last:mb-0" key={part}>
                     <div className="absolute -left-3 top-[10px] w-[14px] h-[1.5px] bg-[color:var(--card-border)]" />
                     <span className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.72rem] bg-[color:var(--surface-hover)] border border-[color:var(--card-border)] text-[color:var(--text-soft)] px-2.5 py-1.5 rounded-[8px] shadow-sm ml-3 block w-fit">

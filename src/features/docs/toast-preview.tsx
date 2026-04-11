@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { BellRing, CheckCircle2, AlertTriangle, Info, Sparkles } from 'lucide-react'
 
-import { Button, Card, Tag, useToast } from '../../lib'
+import { Button, Tag, useToast } from '../../lib'
 import type { ToastPosition, ToastVariant } from '../../lib'
 
 const positions: ToastPosition[] = ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right']
@@ -38,7 +38,7 @@ export function ToastPreview({ isPt }: { isPt: boolean }) {
   }
 
   return (
-    <Card className="w-full max-w-[760px] border-0 bg-transparent p-6" variant="subtle">
+    <div className="w-full max-w-[760px] p-6">
       <div className="mx-auto flex max-w-[640px] flex-col items-center gap-5 text-center">
         <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--surface-hover)] text-[color:var(--accent-line)]">
           <BellRing size={22} strokeWidth={1.9} />
@@ -111,6 +111,6 @@ export function ToastPreview({ isPt }: { isPt: boolean }) {
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   )
 }

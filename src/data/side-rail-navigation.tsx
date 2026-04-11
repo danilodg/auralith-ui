@@ -18,7 +18,7 @@ export function createSideRailItems(
 ): SideRailItem[] {
   const strings = localeStrings[language]
   const isPt = language === 'pt'
-  const inputDocIds = new Set(['input', 'checkbox', 'select', 'textarea', 'input-date', 'input-time', 'input-number'])
+  const inputDocIds = new Set(['input', 'checkbox', 'select', 'textarea', 'switch', 'input-date', 'input-time', 'input-number'])
   const inputDocs = docs.filter((doc) => inputDocIds.has(doc.id))
   const otherDocs = docs.filter((doc) => !inputDocIds.has(doc.id))
 
@@ -26,7 +26,7 @@ export function createSideRailItems(
     {
       id: 'components-inputs',
       title: isPt ? 'Inputs' : 'Inputs',
-      description: isPt ? 'Email, checkbox, select, textarea, data, hora e numero.' : 'Email, checkbox, select, textarea, date, time and number.',
+      description: isPt ? 'Email, checkbox, select, textarea, switch, data, hora e numero.' : 'Email, checkbox, select, textarea, switch, date, time and number.',
       icon: <ListFilter className="h-4 w-4" strokeWidth={1.8} />,
       href: '#components/inputs',
       urlText: 'components/inputs',

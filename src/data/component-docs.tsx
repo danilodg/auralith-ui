@@ -20,7 +20,9 @@ import {
   ToggleLeft,
   Layers,
   Columns,
-  Bell
+  Bell,
+  Plus,
+  Settings2
 } from 'lucide-react'
 
 import { Accordion, AccordionItem, Avatar, AvatarGroup, Button, Card, Checkbox, CodeBlock, DateInput, DropdownMenu, GlassPanel, Input, NumberInput, SectionLabel, Select, Switch, Tabs, TabsContent, TabsList, TabsTrigger, Tag, Textarea, TimeInput, ToastProvider, Tooltip } from '../lib'
@@ -193,8 +195,9 @@ function getStructuredMeta(id: string, isPt: boolean) {
       parts: [
         { name: 'Accordion', description: isPt ? 'Container do grupo sanfona.' : 'Accordion group container.' },
         { name: 'AccordionItem', description: isPt ? 'Item individual com titulo e subtitulo.' : 'Individual item with title and subtitle.' },
+        { name: 'AccordionItem.actions', description: isPt ? 'Slot opcional para botoes de acao ao lado da seta.' : 'Optional slot for action buttons next to the chevron.' },
       ],
-      notes: isPt ? ['Suporta multipla expansao (type="multiple") ou unica (type="single").'] : ['Supports multiple expansion (type="multiple") or single (type="single").'],
+      notes: isPt ? ['Suporta multipla expansao (type="multiple") ou unica (type="single").', 'Use `actions` para atalhos como adicionar item, abrir configuracoes ou menu contextual.', 'As acoes ficam alinhadas verticalmente ao lado da seta por padrao.'] : ['Supports multiple expansion (type="multiple") or single (type="single").', 'Use `actions` for shortcuts like add item, settings, or contextual menus.', 'Actions are vertically centered next to the chevron by default.'],
     },
     toast: {
       anatomy: ['ToastProvider', 'useToast', 'Toast'],
@@ -202,7 +205,9 @@ function getStructuredMeta(id: string, isPt: boolean) {
         { name: 'ToastProvider', description: isPt ? 'Obrigatorio no topo da aplicacao.' : 'Mandatory at the root of the app.' },
         { name: 'useToast', description: isPt ? 'Hook para disparar notificacoes.' : 'Hook to trigger notifications.' },
       ],
-      notes: isPt ? ['As notificacoes suportam variantes (success, error, info).'] : ['Notifications support variants (success, error, info).'],
+      notes: isPt
+        ? ['As notificacoes suportam variantes (success, error, info).', 'Voce pode definir a posicao padrao no ToastProvider e sobrescrever por chamada no toast().']
+        : ['Notifications support variants (success, error, info).', 'You can set a default position on ToastProvider and override it per toast() call.'],
     },
     tabs: {
       anatomy: ['Tabs', 'TabsList', 'TabsTrigger', 'TabsContent'],
@@ -210,7 +215,7 @@ function getStructuredMeta(id: string, isPt: boolean) {
         { name: 'Tabs', description: isPt ? 'Controla o estado da selecao de abas.' : 'Controls tab selection state.' },
         { name: 'TabsList', description: isPt ? 'Agrupa os botoes de gatilho.' : 'Groups trigger buttons.' },
       ],
-      notes: isPt ? ['Transita perfeitamente as animacoes de entrada de conteudo.'] : ['Perfectly transitions content entry animations.'],
+      notes: isPt ? ['Transita perfeitamente as animacoes de entrada de conteudo.', 'Suporta variantes visuais com `variant="solid"` (padrao) e `variant="baseline"`.'] : ['Perfectly transitions content entry animations.', 'Supports visual variants with `variant="solid"` (default) and `variant="baseline"`.'],
     },
   } as const
 
@@ -986,21 +991,59 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     icon: <Layers size={16} strokeWidth={1.8} />,
     description: isPt ? 'Paineis colapsaveis para organizar grande volume de informacao tecnica ou FAQs.' : 'Collapsible panels to organize large volumes of technical information or FAQs.',
     source: 'src/lib/components/accordion.tsx',
-    importCode: "import { Accordion, AccordionItem } from '@/lib'",
+    importCode: "import { Accordion, AccordionItem } from '@/lib'\nimport { Plus, Settings2 } from 'lucide-react'",
     snippet: isPt ? `<Accordion type="single">
-  <AccordionItem value="item-1" title="Detalhes do banco">
+  <AccordionItem
+    value="item-1"
+    title="Detalhes do banco"
+    actions={
+      <button type="button" aria-label="Adicionar" className="h-8 w-8 rounded-md border border-[color:var(--card-border)]">
+        +
+      </button>
+    }
+  >
     Conteudo oculto ate o clique.
   </AccordionItem>
 </Accordion>` : `<Accordion type="single">
-  <AccordionItem value="item-1" title="Database Details">
+  <AccordionItem
+    value="item-1"
+    title="Database Details"
+    actions={
+      <button type="button" aria-label="Add" className="h-8 w-8 rounded-md border border-[color:var(--card-border)]">
+        +
+      </button>
+    }
+  >
     Hidden content until click.
   </AccordionItem>
 </Accordion>`,
     href: '#components/accordion',
     urlText: 'components/accordion',
     preview: (
-      <Accordion type="single" className="w-full max-w-[500px]">
-        <AccordionItem value="1" title={isPt ? 'Posso customizar tokens?' : 'Can I customize tokens?'} subtitle={isPt ? 'Arquitetura CSS' : 'CSS Architecture'}>
+      <Accordion type="single" freezeContainerSize={false} className="w-full max-w-[500px]">
+        <AccordionItem
+          value="1"
+          title={isPt ? 'Posso customizar tokens?' : 'Can I customize tokens?'}
+          subtitle={isPt ? 'Arquitetura CSS' : 'CSS Architecture'}
+          actions={(
+            <>
+              <button
+                type="button"
+                aria-label={isPt ? 'Adicionar item' : 'Add item'}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] text-[color:var(--text-soft)] transition-colors hover:text-[color:var(--text-main)]"
+              >
+                <Plus size={15} />
+              </button>
+              <button
+                type="button"
+                aria-label={isPt ? 'Abrir configuracoes' : 'Open settings'}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.02)] text-[color:var(--text-soft)] transition-colors hover:text-[color:var(--text-main)]"
+              >
+                <Settings2 size={14} />
+              </button>
+            </>
+          )}
+        >
           <p className="mb-2">{isPt ? 'As variaveis CSS em scopes diretos facilitam a atualizacao em massa.' : 'Direct scoped CSS variables make mass updates easy.'}</p>
         </AccordionItem>
         <AccordionItem value="2" title={isPt ? 'Suporte a SSR?' : 'SSR Support?'} subtitle={isPt ? 'Next.js e Remix' : 'Next.js and Remix'}>
@@ -1008,6 +1051,73 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
         </AccordionItem>
       </Accordion>
     ),
+    examples: [
+      {
+        title: isPt ? 'Acoes ao lado da seta' : 'Actions next to chevron',
+        code: isPt ? `import { Plus, Settings2 } from 'lucide-react'
+
+<Accordion type="single">
+  <AccordionItem
+    value="general"
+    title="Configuracoes"
+    actions={
+      <>
+        <button
+          type="button"
+          aria-label="Adicionar"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] border border-[color:var(--card-border)]"
+        >
+          <Plus size={14} />
+        </button>
+        <button
+          type="button"
+          aria-label="Configuracoes"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] border border-[color:var(--card-border)]"
+        >
+          <Settings2 size={14} />
+        </button>
+      </>
+    }
+  >
+    Conteudo do painel.
+  </AccordionItem>
+</Accordion>` : `import { Plus, Settings2 } from 'lucide-react'
+
+<Accordion type="single">
+  <AccordionItem
+    value="general"
+    title="Settings"
+    actions={
+      <>
+        <button
+          type="button"
+          aria-label="Add"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] border border-[color:var(--card-border)]"
+        >
+          <Plus size={14} />
+        </button>
+        <button
+          type="button"
+          aria-label="Settings"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] border border-[color:var(--card-border)]"
+        >
+          <Settings2 size={14} />
+        </button>
+      </>
+    }
+  >
+    Panel content.
+  </AccordionItem>
+</Accordion>`,
+      },
+    ],
+    api: [
+      {
+        name: 'AccordionItem.actions',
+        type: 'ReactNode',
+        description: isPt ? 'Renderiza botoes de acao no lado direito, antes da seta de expansao, com alinhamento vertical centralizado.' : 'Renders action buttons on the right side, before the expand chevron, with vertical center alignment.',
+      },
+    ],
   },
   {
     id: 'toast',
@@ -1016,10 +1126,18 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
     icon: <Bell size={16} strokeWidth={1.8} />,
     description: isPt ? 'Notificacoes efemeras fluindo no canto da tela com animacoes liquidas e Blur background.' : 'Ephemeral notifications flowing on the screen corner with fluid animations and Blur background.',
     source: 'src/lib/components/toast.tsx',
-    importCode: "import { useToast } from '@/lib'",
-    snippet: isPt ? `const toast = useToast()
-toast({ title: 'Sucesso!', variant: 'success' })` : `const toast = useToast()
-toast({ title: 'Success!', variant: 'success' })`,
+    importCode: "import { ToastProvider, useToast } from '@/lib'",
+    snippet: isPt ? `<ToastProvider position="top-right">
+  <MinhaPagina />
+</ToastProvider>
+
+const toast = useToast()
+toast({ title: 'Sucesso!', variant: 'success', position: 'bottom-left' })` : `<ToastProvider position="top-right">
+  <MyPage />
+</ToastProvider>
+
+const toast = useToast()
+toast({ title: 'Success!', variant: 'success', position: 'bottom-left' })`,
     href: '#components/toast',
     urlText: 'components/toast',
     preview: (
@@ -1027,6 +1145,51 @@ toast({ title: 'Success!', variant: 'success' })`,
         <ToastPreview isPt={isPt} />
       </ToastProvider>
     ),
+    examples: [
+      {
+        title: isPt ? 'Posicao padrao no provider' : 'Default provider position',
+        code: isPt ? `<ToastProvider position="top-center">
+  <App />
+</ToastProvider>` : `<ToastProvider position="top-center">
+  <App />
+</ToastProvider>`,
+      },
+      {
+        title: isPt ? 'Sobrescrever posicao por toast' : 'Override position per toast',
+        code: isPt ? `const toast = useToast()
+
+toast({
+  title: 'Download concluido',
+  description: 'Arquivo pronto para abrir.',
+  variant: 'success',
+  position: 'bottom-left',
+})` : `const toast = useToast()
+
+toast({
+  title: 'Download finished',
+  description: 'File is ready to open.',
+  variant: 'success',
+  position: 'bottom-left',
+})`,
+      },
+    ],
+    api: [
+      {
+        name: 'ToastProvider.position',
+        type: 'ToastPosition',
+        description: isPt ? 'Define a posicao padrao da pilha de notificacoes.' : 'Defines the default notification stack position.',
+      },
+      {
+        name: 'toast({ position })',
+        type: 'ToastPosition',
+        description: isPt ? 'Sobrescreve a posicao somente para o toast disparado.' : 'Overrides the position only for the triggered toast.',
+      },
+      {
+        name: 'toast({ duration, variant })',
+        type: 'number | ToastVariant',
+        description: isPt ? 'Controla tempo de exibicao e estilo visual da notificacao.' : 'Controls display duration and visual style of each notification.',
+      },
+    ],
   },
   {
     id: 'tabs',
@@ -1036,12 +1199,12 @@ toast({ title: 'Success!', variant: 'success' })`,
     description: isPt ? 'Navegacao em janelas contextuais dentro da mesma rota, otimizadas para settings de dashboards.' : 'Navigation in contextual windows within the same route, optimized for dashboard settings.',
     source: 'src/lib/components/tabs.tsx',
     importCode: "import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/lib'",
-    snippet: isPt ? `<Tabs defaultValue="geral">
+    snippet: isPt ? `<Tabs defaultValue="geral" variant="baseline">
   <TabsList>
     <TabsTrigger value="geral">Geral</TabsTrigger>
   </TabsList>
   <TabsContent value="geral">Painel Geral</TabsContent>
-</Tabs>` : `<Tabs defaultValue="general">
+</Tabs>` : `<Tabs defaultValue="general" variant="baseline">
   <TabsList>
     <TabsTrigger value="general">General</TabsTrigger>
   </TabsList>
@@ -1050,23 +1213,169 @@ toast({ title: 'Success!', variant: 'success' })`,
     href: '#components/tabs',
     urlText: 'components/tabs',
     preview: (
-      <Tabs defaultValue="geral" className="w-full max-w-[400px]">
-        <TabsList>
-          <TabsTrigger value="geral">{isPt ? 'Geral' : 'General'}</TabsTrigger>
-          <TabsTrigger value="avancado">{isPt ? 'Avançado' : 'Advanced'}</TabsTrigger>
-          <TabsTrigger value="faturamento">{isPt ? 'Faturamento' : 'Billing'}</TabsTrigger>
-        </TabsList>
-        <TabsContent value="geral" className="p-4 border border-[color:var(--card-border)] rounded-lg bg-[rgba(0,0,0,0.2)] mt-4">
-          <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Opções gerais do app.' : 'General app options.'}</p>
-        </TabsContent>
-        <TabsContent value="avancado" className="p-4 border border-[color:var(--card-border)] rounded-lg bg-[rgba(0,0,0,0.2)] mt-4">
-          <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Painel crítico avançado.' : 'Critical advanced panel.'}</p>
-        </TabsContent>
-        <TabsContent value="faturamento" className="p-4 border border-[color:var(--card-border)] rounded-lg bg-[rgba(0,0,0,0.2)] mt-4">
-          <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Suas formas de pagamento.' : 'Your payment methods.'}</p>
-        </TabsContent>
-      </Tabs>
+      <div className="grid w-full max-w-[760px] gap-6 md:grid-cols-2">
+        <div className="rounded-xl border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.015)] p-4">
+          <p className="mb-3 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.66rem] uppercase tracking-[0.16em] text-[color:var(--text-muted)]">
+            solid
+          </p>
+          <Tabs defaultValue="geral" variant="solid" className="w-full">
+            <TabsList>
+              <TabsTrigger value="geral">{isPt ? 'Geral' : 'General'}</TabsTrigger>
+              <TabsTrigger value="avancado">{isPt ? 'Avançado' : 'Advanced'}</TabsTrigger>
+              <TabsTrigger value="faturamento">{isPt ? 'Faturamento' : 'Billing'}</TabsTrigger>
+            </TabsList>
+            <TabsContent value="geral" className="rounded-lg border border-[color:var(--card-border)] bg-[rgba(0,0,0,0.2)] p-4">
+              <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Opções gerais do app.' : 'General app options.'}</p>
+            </TabsContent>
+            <TabsContent value="avancado" className="rounded-lg border border-[color:var(--card-border)] bg-[rgba(0,0,0,0.2)] p-4">
+              <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Painel crítico avançado.' : 'Critical advanced panel.'}</p>
+            </TabsContent>
+            <TabsContent value="faturamento" className="rounded-lg border border-[color:var(--card-border)] bg-[rgba(0,0,0,0.2)] p-4">
+              <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Suas formas de pagamento.' : 'Your payment methods.'}</p>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        <div className="rounded-xl border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.015)] p-4">
+          <p className="mb-3 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.66rem] uppercase tracking-[0.16em] text-[color:var(--text-muted)]">
+            baseline
+          </p>
+          <Tabs defaultValue="geral" variant="baseline" className="w-full">
+            <TabsList>
+              <TabsTrigger value="geral">{isPt ? 'Geral' : 'General'}</TabsTrigger>
+              <TabsTrigger value="equipe">{isPt ? 'Equipe' : 'Team'}</TabsTrigger>
+              <TabsTrigger value="seguranca">{isPt ? 'Segurança' : 'Security'}</TabsTrigger>
+            </TabsList>
+            <TabsContent value="geral" className="rounded-lg border border-[color:var(--card-border)] bg-[rgba(0,0,0,0.2)] p-4">
+              <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Visão geral da conta.' : 'Account overview.'}</p>
+            </TabsContent>
+            <TabsContent value="equipe" className="rounded-lg border border-[color:var(--card-border)] bg-[rgba(0,0,0,0.2)] p-4">
+              <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Membros e permissões.' : 'Members and permissions.'}</p>
+            </TabsContent>
+            <TabsContent value="seguranca" className="rounded-lg border border-[color:var(--card-border)] bg-[rgba(0,0,0,0.2)] p-4">
+              <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Políticas de acesso.' : 'Access policies.'}</p>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
     ),
+    examples: [
+      {
+        title: isPt ? 'Variante baseline (nova)' : 'Baseline variant (new)',
+        code: isPt ? `<Tabs defaultValue="geral" variant="baseline">
+  <TabsList>
+    <TabsTrigger value="geral">Geral</TabsTrigger>
+    <TabsTrigger value="equipe">Equipe</TabsTrigger>
+    <TabsTrigger value="seguranca">Seguranca</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="geral">Visao geral da conta.</TabsContent>
+  <TabsContent value="equipe">Membros e permissoes.</TabsContent>
+  <TabsContent value="seguranca">Politicas de acesso.</TabsContent>
+</Tabs>` : `<Tabs defaultValue="general" variant="baseline">
+  <TabsList>
+    <TabsTrigger value="general">General</TabsTrigger>
+    <TabsTrigger value="team">Team</TabsTrigger>
+    <TabsTrigger value="security">Security</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="general">Account overview.</TabsContent>
+  <TabsContent value="team">Members and permissions.</TabsContent>
+  <TabsContent value="security">Access policies.</TabsContent>
+</Tabs>`,
+      },
+      {
+        title: isPt ? 'Tabs horizontal basica' : 'Basic horizontal tabs',
+        code: isPt ? `<Tabs defaultValue="geral">
+  <TabsList>
+    <TabsTrigger value="geral">Geral</TabsTrigger>
+    <TabsTrigger value="seguranca">Seguranca</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="geral">Configuracoes gerais.</TabsContent>
+  <TabsContent value="seguranca">Configuracoes de seguranca.</TabsContent>
+</Tabs>` : `<Tabs defaultValue="general">
+  <TabsList>
+    <TabsTrigger value="general">General</TabsTrigger>
+    <TabsTrigger value="security">Security</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="general">General settings.</TabsContent>
+  <TabsContent value="security">Security settings.</TabsContent>
+</Tabs>`,
+      },
+      {
+        title: isPt ? 'Componente controlado' : 'Controlled component',
+        code: isPt ? `const [tab, setTab] = useState('geral')
+
+<Tabs value={tab} onValueChange={setTab}>
+  <TabsList>
+    <TabsTrigger value="geral">Geral</TabsTrigger>
+    <TabsTrigger value="equipe">Equipe</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="geral">Painel geral.</TabsContent>
+  <TabsContent value="equipe">Permissoes da equipe.</TabsContent>
+</Tabs>` : `const [tab, setTab] = useState('general')
+
+<Tabs value={tab} onValueChange={setTab}>
+  <TabsList>
+    <TabsTrigger value="general">General</TabsTrigger>
+    <TabsTrigger value="team">Team</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="general">General dashboard.</TabsContent>
+  <TabsContent value="team">Team permissions.</TabsContent>
+</Tabs>`,
+      },
+      {
+        title: isPt ? 'Aba desabilitada' : 'Disabled tab',
+        code: isPt ? `<Tabs defaultValue="geral">
+  <TabsList>
+    <TabsTrigger value="geral">Geral</TabsTrigger>
+    <TabsTrigger value="analytics" disabled>Analytics</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="geral">Conteudo disponivel.</TabsContent>
+  <TabsContent value="analytics">Em breve.</TabsContent>
+</Tabs>` : `<Tabs defaultValue="general">
+  <TabsList>
+    <TabsTrigger value="general">General</TabsTrigger>
+    <TabsTrigger value="analytics" disabled>Analytics</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="general">Available content.</TabsContent>
+  <TabsContent value="analytics">Coming soon.</TabsContent>
+</Tabs>`,
+      },
+    ],
+    api: [
+      {
+        name: 'Tabs',
+        type: 'container',
+        description: isPt ? 'Aceita `defaultValue` (nao controlado) ou `value` + `onValueChange` (controlado).' : 'Accepts `defaultValue` (uncontrolled) or `value` + `onValueChange` (controlled).',
+      },
+      {
+        name: 'Tabs.variant',
+        type: 'solid | baseline',
+        description: isPt ? 'Escolhe o estilo visual da barra de abas. `solid` e o estilo atual; `baseline` usa linha inferior mais minimalista.' : 'Chooses the visual style for the tab bar. `solid` is the current style; `baseline` uses a more minimal bottom line.',
+      },
+      {
+        name: 'TabsTrigger.value',
+        type: 'string',
+        description: isPt ? 'Identificador da aba; deve bater com o `value` correspondente no `TabsContent`.' : 'Tab identifier; must match the corresponding `TabsContent` value.',
+      },
+      {
+        name: 'TabsTrigger.disabled',
+        type: 'boolean',
+        description: isPt ? 'Desabilita interacao da aba mantendo o item visivel na lista.' : 'Disables tab interaction while keeping the item visible in the list.',
+      },
+      {
+        name: 'TabsContent.value',
+        type: 'string',
+        description: isPt ? 'Define qual painel sera exibido para cada aba selecionada.' : 'Defines which panel is rendered for each selected tab.',
+      },
+    ],
   },
 ].map((doc) => ({
   ...doc,

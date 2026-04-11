@@ -20,7 +20,7 @@ interface DocsPageProps {
   selectedDoc: ComponentDoc | null
 }
 
-const inputDocIds = new Set(['input', 'checkbox', 'select', 'textarea', 'input-date', 'input-time', 'input-number'])
+const inputDocIds = new Set(['input', 'checkbox', 'select', 'textarea', 'switch', 'input-date', 'input-time', 'input-number'])
 
 export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedComponentGroup, selectedDoc }: DocsPageProps) {
   const { language, strings } = useLocale()
