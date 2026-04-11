@@ -12,6 +12,10 @@
 - npm package output is `dist/` (see `package.json` `main/module/types/exports`).
 - `dist/` is generated; do not hand-edit build artifacts.
 
+## Current npm release
+- Latest published version: `auralith-ui@0.1.2`.
+- Quick check command: `npm view auralith-ui version`.
+
 ## Commands you should actually run
 - Install deps: `npm install`
 - Local dev (showcase): `npm run dev`

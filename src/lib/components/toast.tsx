@@ -35,13 +35,6 @@ const variantBorderColor: Record<ToastVariant, string> = {
   info: 'rgba(59, 130, 246, 0.68)',
 }
 
-const variantStackBorderColor: Record<ToastVariant, string> = {
-  default: 'rgba(148, 163, 184, 0.4)',
-  success: 'rgba(34, 197, 94, 0.5)',
-  error: 'rgba(239, 68, 68, 0.5)',
-  info: 'rgba(59, 130, 246, 0.5)',
-}
-
 const variantIcons = {
   default: null,
   success: <CheckCircle2 className="text-green-400 mt-0.5 shrink-0" size={18} />,
@@ -80,7 +73,7 @@ function isTopPosition(position: ToastPosition) {
   return position.startsWith('top')
 }
 
-export function Toast({ id, title, description, variant = 'default', position = 'bottom-right', duration = 5000, onClose, paused = false, renderOnlyTimer = false, immediate = false, promotedFromStack = false }: ToastProps & { paused?: boolean; renderOnlyTimer?: boolean; immediate?: boolean; promotedFromStack?: boolean }) {
+export function Toast({ id, title, description, variant = 'default', position = 'bottom-right', duration = 5000, onClose, paused = false, immediate = false, promotedFromStack = false }: ToastProps & { paused?: boolean; immediate?: boolean; promotedFromStack?: boolean }) {
   const [isClosing, setIsClosing] = React.useState(false)
   const [promotionReady, setPromotionReady] = React.useState(!promotedFromStack)
 
@@ -115,10 +108,6 @@ export function Toast({ id, title, description, variant = 'default', position = 
       window.cancelAnimationFrame(frameId)
     }
   }, [id, promotedFromStack])
-
-  if (renderOnlyTimer) {
-    return null
-  }
 
   const icon = variantIcons[variant]
 
@@ -200,16 +189,16 @@ export function ToastProvider({ children, position = 'bottom-right' }: { childre
     setPortalTarget(document.body)
   }, [])
 
+  const removeToast = React.useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id))
+  }, [])
+
   const addToast = React.useCallback((props: Omit<ToastProps, 'id' | 'onClose'>) => {
     setToasts((prev) => {
       const id = Math.random().toString(36).substring(2, 9)
       return [...prev, { ...props, createdAt: Date.now(), id, onClose: removeToast, position: props.position ?? position }]
     })
-  }, [position])
-
-  const removeToast = React.useCallback((id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id))
-  }, [])
+  }, [position, removeToast])
 
   const toastsByPosition = React.useMemo(() => {
     return TOAST_POSITIONS.reduce<Record<ToastPosition, ToastItem[]>>((acc, currentPosition) => {
@@ -263,12 +252,13 @@ export function ToastProvider({ children, position = 'bottom-right' }: { childre
 
               const isExpanded = expandedByPosition[currentPosition]
               const ordered = [...list].sort((a, b) => a.createdAt - b.createdAt)
-              const visible = isExpanded ? ordered : ordered.slice(0, 1)
-              const hidden = isExpanded ? [] : ordered.slice(1)
-              const hiddenCount = hidden.length
-              const stackPreviewCount = Math.min(hiddenCount, 3)
               const stackDirection = isTopPosition(currentPosition) ? 1 : -1
-              const topToastVariant = visible[0]?.variant ?? 'default'
+              const previewLimit = 4
+              const collapsedStep = 10
+              const expandedStep = 92
+              const collapsedHeight = 84
+              const expandedHeight = 84 + Math.max(ordered.length - 1, 0) * expandedStep
+              const stackHeight = isExpanded ? expandedHeight : collapsedHeight
 
               return (
                 <div
@@ -276,54 +266,46 @@ export function ToastProvider({ children, position = 'bottom-right' }: { childre
                   key={currentPosition}
                 >
                   <div
-                    className="pointer-events-auto flex max-w-sm flex-col gap-3"
+                    className="pointer-events-auto relative w-[calc(100vw-2rem)] max-w-sm sm:w-96"
                     onMouseEnter={() => setExpandedByPosition((prev) => ({ ...prev, [currentPosition]: true }))}
                     onMouseLeave={() => setExpandedByPosition((prev) => ({ ...prev, [currentPosition]: false }))}
+                    style={{ height: `${stackHeight}px` }}
                   >
-                    {!isExpanded && visible[0] ? (
-                      <div className="relative w-full max-w-sm">
-                        {hidden.slice(0, stackPreviewCount).map((stackToast, index) => (
-                          <div
-                            aria-hidden="true"
-                            className="pointer-events-none absolute inset-0 flex min-h-[60px] w-full max-w-sm items-start gap-4 overflow-hidden rounded-xl border p-4 shadow-xl backdrop-blur-xl transition-all duration-300"
-                            key={`stack-${stackToast.id}`}
-                            style={{
-                              backgroundColor: 'var(--toast-bg-stack)',
-                              borderColor: variantStackBorderColor[stackToast.variant ?? topToastVariant],
-                              opacity: 1,
-                              transform: `translate3d(${(index + 1) * 3}px, ${stackDirection * (index + 1) * 10}px, 0) scale(${1 - (index + 1) * 0.03})`,
-                              zIndex: 5 - index,
-                            }}
-                          >
-                            {(stackToast.variant && variantIcons[stackToast.variant]) ? <div>{variantIcons[stackToast.variant]}</div> : null}
-                            <div className="flex-1 flex flex-col gap-1">
-                              <p className="font-semibold text-[0.95rem] text-[color:var(--text-main)] shadow-sm">{stackToast.title}</p>
-                              {stackToast.description ? (
-                                <p className="text-[0.88rem] leading-snug text-[color:var(--text-soft)] opacity-95 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] overflow-hidden">
-                                  {stackToast.description}
-                                </p>
-                              ) : null}
-                            </div>
-                          </div>
-                        ))}
-                        <div className="relative z-20">
+                    {ordered.map((toast, index) => {
+                      const isFront = index === 0
+                      const inCollapsedPreview = index < previewLimit
+                      const collapsedX = isFront ? 0 : index * 3
+                      const collapsedY = stackDirection * index * collapsedStep
+                      const collapsedScale = isFront ? 1 : Math.max(0.86, 1 - index * 0.03)
+                      const expandedY = stackDirection * index * expandedStep
+                      const translateX = isExpanded ? 0 : collapsedX
+                      const translateY = isExpanded ? expandedY : collapsedY
+                      const scale = isExpanded ? 1 : collapsedScale
+                      const opacity = isExpanded ? 1 : inCollapsedPreview ? Math.max(0.55, 1 - index * 0.12) : 0
+
+                      return (
+                        <div
+                          className="absolute left-0 right-0 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                          key={toast.id}
+                          style={{
+                            top: isTopPosition(currentPosition) ? 0 : 'auto',
+                            bottom: isTopPosition(currentPosition) ? 'auto' : 0,
+                            transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
+                            opacity,
+                            zIndex: ordered.length - index,
+                            pointerEvents: isExpanded || isFront ? 'auto' : 'none',
+                            filter: isExpanded || isFront ? 'none' : 'saturate(0.88)',
+                          }}
+                        >
                           <Toast
-                            {...visible[0]}
-                            immediate={hiddenCount > 0}
-                            paused={false}
-                            promotedFromStack={promotedByPosition[currentPosition] === visible[0].id}
+                            {...toast}
+                            immediate={!isFront}
+                            paused={isExpanded}
+                            promotedFromStack={isFront && promotedByPosition[currentPosition] === toast.id}
                           />
                         </div>
-                      </div>
-                    ) : null}
-
-                    {isExpanded ? visible.map((toast) => (
-                      <Toast key={toast.id} {...toast} paused={true} />
-                    )) : null}
-
-                    {!isExpanded ? hidden.map((toast) => (
-                      <Toast key={`${toast.id}-timer`} {...toast} paused={false} renderOnlyTimer />
-                    )) : null}
+                      )
+                    })}
                   </div>
                 </div>
               )
