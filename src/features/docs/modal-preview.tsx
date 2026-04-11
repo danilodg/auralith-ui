@@ -16,7 +16,7 @@ export function ModalPreview({ isPt }: { isPt: boolean }) {
             ? 'Um exemplo premium mostrando a flexibilidade de composicao com inputs, selects e listas customizadas dentro de um unico portal overlay.'
             : 'A premium example showing composition flexibility with inputs, selects and custom lists inside a single overlay portal.'}
         </p>
-        
+
         <Modal.Root>
           <div className="mt-8">
             <Modal.Trigger asChild>

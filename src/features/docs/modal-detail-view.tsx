@@ -47,7 +47,6 @@ export function ModalDetailView({ doc }: { doc: ComponentDoc }) {
           </div>
 
           <div className="w-full relative flex justify-center py-6">
-            <div className="absolute inset-0 max-w-4xl mx-auto rounded-3xl bg-[color:var(--accent-line)] opacity-[0.03] blur-[60px]" />
             <div className="relative z-10 w-full max-w-3xl">
                {doc.preview}
             </div>

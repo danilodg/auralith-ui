@@ -23,7 +23,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
     return (
       <div
         ref={ref}
-        className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-[color:var(--card-border)] bg-[color:var(--surface-base)] shadow-[inset_0_1px_3px_rgba(255,255,255,0.05),0_4px_12px_rgba(0,0,0,0.1)] ${sizeStyles[size]} ${className || ''}`}
+        className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] shadow-[inset_0_1px_3px_rgba(255,255,255,0.05),0_4px_12px_rgba(0,0,0,0.1)] ${sizeStyles[size]} ${className || ''}`}
         {...props}
       >
         {showFallback ? (
@@ -62,7 +62,7 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
         {...props}
       >
         {visibleAvatars.map((child, i) => (
-          <div key={i} className="relative z-[0] transform transition-transform hover:z-[10] hover:-translate-y-1 hover:scale-105 ring-2 ring-[color:var(--page-bg)] rounded-full">
+          <div key={i} className="relative z-[0] rounded-full bg-[color:var(--surface-panel-3)] ring-2 ring-[color:var(--page-bg)] transform transition-transform hover:z-[10] hover:-translate-y-1 hover:scale-105">
             {child}
           </div>
         ))}
