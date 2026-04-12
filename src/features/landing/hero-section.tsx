@@ -25,7 +25,7 @@ export function HeroSection({ metrics, onOpenDocs }: HeroSectionProps) {
           <div className="flex flex-col items-center gap-6 md:flex-row md:items-center md:justify-center md:gap-8">
             <div className="relative w-full max-w-[350px]">
               <img
-                src="/auralith-neon-a.png"
+                src={`${import.meta.env.BASE_URL}auralith-neon-a.png`}
                 alt="Auralith UI logo"
                 className="h-auto w-full object-cover"
                 loading="eager"
