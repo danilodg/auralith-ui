@@ -17,8 +17,8 @@ export function HeroSection({ metrics, onOpenDocs }: HeroSectionProps) {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_0%,rgba(111,224,255,0.08)_0%,transparent_70%),repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px),repeating-linear-gradient(90deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px)] pointer-events-none" />
       <div className="absolute inset-0 max-w-4xl mx-auto rounded-[100%] bg-[color:var(--accent-line)] opacity-[0.03] blur-[80px] pointer-events-none" />
 
-      <div className="relative z-10 p-6 py-12 sm:py-16 max-w-5xl mx-auto flex flex-col items-center w-full">
-        <Tag className="mb-6 border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)]">
+      <div className="relative z-10 p-6 py-6 sm:py-16 max-w-5xl mx-auto flex flex-col items-center w-full">
+        <Tag className="absolute top-[20px] left-1/2 -translate-x-1/2 mb-0 whitespace-nowrap border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)] sm:static sm:left-auto sm:top-auto sm:translate-x-0 sm:mb-6">
           {strings.landing.heroEyebrow}
         </Tag>
         <div className="w-full max-w-5xl">

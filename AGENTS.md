@@ -1,37 +1,53 @@
 # AGENTS
 
 ## Repo shape
-- Single-package project (not a monorepo): React + TypeScript + Vite.
-- This repo serves two roles from one codebase:
-  - Showcase app (dev/docs site) from `src/main.tsx` + `src/App.tsx`.
-  - Published UI library from `src/lib/index.ts`.
+- Single-package React + TypeScript + Vite repo.
+- Two outputs from one codebase:
+  - Showcase/docs app (`src/main.tsx`, `src/App.tsx`) -> `dist-showcase/`
+  - Published library entry (`src/lib/index.ts`) -> `dist/`
 
 ## Source of truth for package output
-- Library public exports are defined only in `src/lib/index.ts`.
-- Library styles are loaded by that entrypoint via `import './styles.css'`.
-- npm package output is `dist/` (see `package.json` `main/module/types/exports`).
-- `dist/` is generated; do not hand-edit build artifacts.
+- Public exports are defined in `src/lib/index.ts`.
+- Published CSS is `./styles.css` -> `dist/auralith-ui.css`.
+- `dist/` and `dist-showcase/` are generated artifacts; do not hand-edit.
 
 ## Current npm release
-- Latest published version: `auralith-ui@0.1.2`.
-- Quick check command: `npm view auralith-ui version`.
+- Latest published package: `auralith-ui@0.1.2`.
+- Quick check: `npm view auralith-ui version`.
 
-## Commands you should actually run
-- Install deps: `npm install`
-- Local dev (showcase): `npm run dev`
-- Lint: `npm run lint`
-- Build showcase: `npm run build` (runs `tsc -b` + Vite app build to `dist-showcase/`)
-- Build publishable library: `npm run build:lib` (Vite lib mode + declaration emit)
-- Validate npm publish contents: `npm run pack:check`
+## Commands
+- `npm install`
+- `npm run dev`
+- `npm run lint`
+- `npm run build` (showcase: `tsc -b && vite build` to `dist-showcase/`)
+- `npm run build:lib` (library bundle + declaration emit)
+- `npm run pack:check`
 
-## TypeScript/build gotcha
-- Declaration generation is controlled by `tsconfig.lib.json` and currently includes `src/lib/**/*` plus `src/types/navigation.ts`.
-- If you add exported library types/files outside those globs, declarations will be missing from `dist/types` until `tsconfig.lib.json` is updated.
+## GitHub Pages critical path rules
+- Vite base is dynamic via `VITE_BASE_PATH` (`vite.config.ts`).
+- Pages workflow sets this automatically (`.github/workflows/deploy-pages.yml`).
+- Any app asset URL used by showcase must be base-aware:
+  - TSX: `${import.meta.env.BASE_URL}file.ext`
+  - `index.html`: `%BASE_URL%file.ext`
+- Avoid root-absolute paths (`/file.ext`) in showcase UI.
 
-## Tooling specifics
-- Tailwind CSS v4 is wired through `@tailwindcss/vite` and CSS `@import 'tailwindcss'` (no Tailwind config file in repo).
-- ESLint uses flat config in `eslint.config.js` and targets `**/*.{ts,tsx}`.
+## SiteBackground gotcha
+- `SiteBackground` (`src/features/shared/site-background.tsx`) uses inline `style` for gradients/grid.
+- Do not revert to Tailwind arbitrary utility strings for these dynamic patterns; production builds can drop/alter them.
+
+## Type declaration scope gotcha
+- `tsconfig.lib.json` currently includes `src/lib/**/*` plus `src/types/navigation.ts`.
+- Exported types outside these globs will be missing from published declarations until include paths are updated.
+
+## Lint reality (current)
+- `npm run lint` currently reports existing errors/warnings in some lib components (`select`, `side-rail`, `toast`, `date-input`).
+- If your task is unrelated, avoid broad refactors just to clear pre-existing lint debt.
 
 ## Practical verification order
-- For library changes: `npm run lint` -> `npm run build:lib` -> `npm run pack:check`.
-- For showcase/docs changes: `npm run lint` -> `npm run build`.
+- Library changes: `npm run build:lib` -> `npm run pack:check`.
+- Showcase changes: `VITE_BASE_PATH=/auralith-ui/ npm run build` (to mirror Pages behavior).
+
+## Documentation policy (Context7 first)
+- For library/framework documentation, query Context7 first.
+- If Context7 is missing or outdated for the topic, then use official web docs.
+- After relying on non-Context7 docs, note a Context7 coverage gap for future update.

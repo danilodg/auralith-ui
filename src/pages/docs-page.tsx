@@ -42,7 +42,7 @@ export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedCo
           <div className="absolute inset-0 max-w-4xl mx-auto rounded-[100%] bg-[color:var(--accent-line)] opacity-[0.03] blur-[80px] pointer-events-none" />
 
           <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center w-full">
-            <Tag className="mb-6 border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)]">
+            <Tag className="absolute top-[20px] left-1/2 -translate-x-1/2 mb-0 whitespace-nowrap border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)] sm:static sm:left-auto sm:top-auto sm:translate-x-0 sm:mb-6">
               {strings.docs.heroEyebrow}
             </Tag>
             <h1 className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(2.2rem,4.5vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-[color:var(--text-main)] drop-shadow-sm max-w-3xl">

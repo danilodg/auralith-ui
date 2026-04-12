@@ -69,6 +69,19 @@ function findActiveItemId(items: SideRailItem[]): string | null {
   return null
 }
 
+function splitBrandTitle(title: string) {
+  const uiSuffixMatch = title.match(/^(.*?)(\s*UI)$/i)
+
+  if (!uiSuffixMatch) {
+    return { base: title, suffix: '' }
+  }
+
+  return {
+    base: uiSuffixMatch[1],
+    suffix: uiSuffixMatch[2],
+  }
+}
+
 function ChildLink({
   expanded,
   item,
@@ -273,6 +286,7 @@ export function SideRail({
   const [openGroupIds, setOpenGroupIds] = useState<string[]>([])
   const [focusedNavId, setFocusedNavId] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuRendered, setMobileMenuRendered] = useState(false)
   const [desktopIndicatorStyle, setDesktopIndicatorStyle] = useState<{ height: number; opacity: number; top: number }>({
     top: 0,
     height: 0,
@@ -290,6 +304,7 @@ export function SideRail({
   const brandIcon = brandIconSrc
     ? <img alt="" className="h-full w-full object-cover" src={brandIconSrc} />
     : <Sparkles size={16} strokeWidth={2.1} />
+  const brandTitleParts = splitBrandTitle(brandTitle)
 
   useEffect(() => {
     if (!activeChildGroupId) return
@@ -310,6 +325,38 @@ export function SideRail({
       // Ignore localStorage write failures (private mode, denied storage, etc)
     }
   }, [pinned])
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+
+    const body = document.body
+    const html = document.documentElement
+    const previousBodyOverflow = body.style.overflow
+    const previousHtmlOverflow = html.style.overflow
+    const previousBodyTouchAction = body.style.touchAction
+
+    if (mobileMenuOpen) {
+      body.style.overflow = 'hidden'
+      html.style.overflow = 'hidden'
+      body.style.touchAction = 'none'
+    }
+
+    return () => {
+      body.style.overflow = previousBodyOverflow
+      html.style.overflow = previousHtmlOverflow
+      body.style.touchAction = previousBodyTouchAction
+    }
+  }, [mobileMenuOpen])
+
+  useEffect(() => {
+    if (mobileMenuOpen || !mobileMenuRendered) return
+
+    const timeoutId = window.setTimeout(() => {
+      setMobileMenuRendered(false)
+    }, 280)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [mobileMenuOpen, mobileMenuRendered])
 
   useLayoutEffect(() => {
     let frameId: number | null = null
@@ -443,9 +490,25 @@ export function SideRail({
     item.onClick?.()
   }
 
+  function openMobileMenu() {
+    if (mobileMenuRendered) {
+      setMobileMenuOpen(true)
+      return
+    }
+
+    setMobileMenuRendered(true)
+    window.requestAnimationFrame(() => {
+      setMobileMenuOpen(true)
+    })
+  }
+
+  function closeMobileMenu() {
+    setMobileMenuOpen(false)
+  }
+
   return (
     <>
-      <aside className="hidden lg:block">
+      <aside className="hidden xl:block">
         <div
           className={cn(
             'z-30 [view-transition-name:none]',
@@ -461,7 +524,7 @@ export function SideRail({
                 : 'rounded-[8px] shadow-[0_24px_60px_rgba(0,0,0,0.22)]',
             )}
           >
-            <div className="flex h-[60px] items-center gap-3 border-b border-[color:var(--card-border)] px-[14px]">
+            <div className="flex h-[68px] items-center gap-3 border-b border-[color:var(--card-border)] px-[14px]">
               <button
                 className={cn(
                   'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] border transition',
@@ -476,14 +539,27 @@ export function SideRail({
                 {brandIcon}
               </button>
 
-              <a className="min-w-0 overflow-hidden" href={brandHref}>
+              <a className="min-w-0 flex-1 overflow-hidden" href={brandHref}>
                 <span
                   className={cn(
-                    'block whitespace-nowrap font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-sm font-medium tracking-[0.04em] text-[color:var(--accent-line)] transition-[transform,opacity] duration-200',
+                    'block whitespace-nowrap font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-sm font-bold tracking-[0.02em] text-[color:var(--text-main)] transition-[transform,opacity] duration-200',
                     expanded ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0',
                   )}
                 >
-                  {brandTitle}
+                  {brandTitleParts.base}
+                  {brandTitleParts.suffix ? (
+                    <span className="bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] bg-clip-text text-transparent">
+                      {brandTitleParts.suffix}
+                    </span>
+                  ) : null}
+                </span>
+                <span
+                  className={cn(
+                    'block truncate pt-0.5 text-[0.62rem] uppercase tracking-[0.14em] text-[color:var(--text-muted)] transition-[transform,opacity] duration-200',
+                    expanded ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0',
+                  )}
+                >
+                  {brandSubtitle}
                 </span>
               </a>
 
@@ -549,43 +625,58 @@ export function SideRail({
         </div>
       </aside>
 
-      <header className="lg:hidden">
-        <div className="mb-6 flex items-center justify-between gap-3 rounded-[8px] border border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] px-4 py-3 shadow-[0_18px_46px_rgba(0,0,0,0.16)] [view-transition-name:none]">
+      <header className="sticky top-0 z-40 xl:hidden">
+        <div className="mb-6 flex h-[60px] items-center justify-between gap-3 rounded-[8px] border border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] px-[14px] shadow-[0_18px_46px_rgba(0,0,0,0.16)] [view-transition-name:none]">
           <a className="inline-flex min-w-0 flex-1 items-center gap-3 text-[color:var(--text-main)] no-underline" href={brandHref}>
             <span
               className={cn(
-                'inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px]',
+                'inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px]',
                 brandIconSrc
                   ? 'overflow-hidden border border-[color:var(--card-border)] bg-transparent p-0'
                   : 'bg-[linear-gradient(145deg,var(--accent-start),color-mix(in_srgb,var(--accent-mid)_55%,transparent))] text-white shadow-[0_0_22px_var(--accent-shadow)]',
               )}
             >
-              {brandIconSrc ? <img alt="" className="h-full w-full object-cover" src={brandIconSrc} /> : <Sparkles size={18} strokeWidth={2.1} />}
+              {brandIconSrc ? <img alt="" className="h-full w-full object-cover" src={brandIconSrc} /> : <Sparkles size={16} strokeWidth={2.1} />}
             </span>
             <span className="min-w-0 pr-1">
-              <strong className="block text-sm font-semibold">{brandTitle}</strong>
+              <strong className="block font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-sm font-bold tracking-[0.01em] text-[color:var(--text-main)]">
+                {brandTitleParts.base}
+                {brandTitleParts.suffix ? (
+                  <span className="bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] bg-clip-text text-transparent">
+                    {brandTitleParts.suffix}
+                  </span>
+                ) : null}
+              </strong>
               <span className="block truncate text-[0.68rem] uppercase tracking-[0.14em] text-[color:var(--text-muted)]">{brandSubtitle}</span>
             </span>
           </a>
           
           <button
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-[color:var(--surface-hover)] text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-hover-strong)]"
-            onClick={() => setMobileMenuOpen(true)}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[color:var(--surface-hover)] text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-hover-strong)]"
+            onClick={openMobileMenu}
             title="Abrir menu"
             type="button"
           >
-            <Menu size={20} />
+            <Menu size={18} />
           </button>
         </div>
 
-        {mobileMenuOpen && (
+        {mobileMenuRendered && (
           <div className="fixed inset-0 z-[100] flex [view-transition-name:none]">
             <div
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
-              onClick={() => setMobileMenuOpen(false)}
+              className={cn(
+                'absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300',
+                mobileMenuOpen ? 'opacity-100' : 'opacity-0',
+              )}
+              onClick={closeMobileMenu}
             />
 
-            <div className="relative flex w-[280px] max-w-[calc(100vw-3rem)] flex-col border-r border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] shadow-xl transition-transform duration-300">
+            <div
+              className={cn(
+                'relative flex w-[280px] max-w-[calc(100vw-3rem)] flex-col border-r border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] shadow-xl transition-transform duration-300 ease-out',
+                mobileMenuOpen ? 'translate-x-0' : '-translate-x-full',
+              )}
+            >
               <div className="flex h-[60px] shrink-0 items-center gap-3 border-b border-[color:var(--card-border)] px-[14px]">
                 <span
                   className={cn(
@@ -597,12 +688,17 @@ export function SideRail({
                 >
                   {brandIcon}
                 </span>
-                <span className="min-w-0 overflow-hidden whitespace-nowrap font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-sm font-medium tracking-[0.04em] text-[color:var(--accent-line)]">
-                  {brandTitle}
+                <span className="min-w-0 overflow-hidden whitespace-nowrap font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-sm font-bold tracking-[0.02em] text-[color:var(--text-main)]">
+                  {brandTitleParts.base}
+                  {brandTitleParts.suffix ? (
+                    <span className="bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] bg-clip-text text-transparent">
+                      {brandTitleParts.suffix}
+                    </span>
+                  ) : null}
                 </span>
                 <button
                   className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={closeMobileMenu}
                   title="Fechar"
                   type="button"
                 >
@@ -631,7 +727,10 @@ export function SideRail({
                       item={item}
                       key={item.id}
                       onClick={() => handleMobileItemClick(item)}
-                      onItemClick={(id) => { setFocusedNavId(id); setMobileMenuOpen(false); }}
+                      onItemClick={(id) => {
+                        setFocusedNavId(id)
+                        closeMobileMenu()
+                      }}
                       open={openGroupIds.includes(item.id)}
                       registerRef={(id, node) => {
                         mobileItemRefs.current[id] = node

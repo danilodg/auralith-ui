@@ -150,7 +150,7 @@ function App() {
   return (
     <LocaleProvider value={{ language, setLanguage, strings }}>
       <SiteBackgroundProvider value={{ settings: siteBackground, updateSettings: handleSiteBackgroundChange }}>
-        <main className="relative min-h-screen overflow-hidden bg-[var(--bg-base)] text-[color:var(--text-main)]">
+        <main className="relative min-h-screen overflow-x-hidden bg-[var(--bg-base)] text-[color:var(--text-main)]">
           <SiteBackground settings={siteBackground} />
 
         <SideRail
