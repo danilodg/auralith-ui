@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 import { ChevronDown, Menu, Pin, PinOff, Sparkles, X } from 'lucide-react'
 
 import type { SideRailChildItem, SideRailItem } from '../../types/navigation'
@@ -116,60 +116,79 @@ function ChildLink({
     item.onClick?.()
   }
 
+  function handleToggleClick(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
+    event.stopPropagation()
+    setOpen((current) => !current)
+  }
+
   return (
     <div>
-      <Component
-        {...(item.href && !hasChildren ? { href: item.href } : { type: 'button' as const })}
-        aria-current={isActive ? 'page' : undefined}
-        ref={(node: HTMLAnchorElement | HTMLButtonElement | null) => registerRef?.(item.id, node)}
-        className={cn(
-          'group flex h-10 min-w-0 items-center rounded-[8px] text-sm transition',
-          expanded
-            ? cn(
-                'mx-1 w-[calc(100%-8px)] gap-3 py-2.5 pr-2',
-                level === 0 ? 'pl-2' : '',
-                level === 1 ? 'pl-5' : '',
-                level >= 2 ? 'pl-8' : '',
-              )
-            : 'mx-auto w-11 justify-center gap-0 px-0 py-2',
-          isActive
-            ? 'text-[color:var(--accent-line)]'
-            : 'text-[color:var(--text-muted)] hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]',
-        )}
-        onClick={handleClick}
-        title={[item.title, item.description, item.urlText].filter(Boolean).join('\n')}
-      >
-        {item.icon ? (
-          <span
-            className={cn(
-              'flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] transition',
-              isActive
-                ? 'bg-[linear-gradient(135deg,rgba(111,224,255,0.18),rgba(104,126,255,0.2)_55%,rgba(139,102,255,0.22))] text-[color:var(--accent-line)]'
-                : 'bg-[color:var(--surface-hover)] group-hover:bg-[color:var(--surface-hover-strong)]',
-            )}
-          >
-            {item.icon}
-          </span>
-        ) : (
-          <span
-            className={cn(
-              'flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)]',
-              isActive ? 'text-[color:var(--accent-line)]' : 'text-[color:var(--text-muted)]',
-            )}
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
-          </span>
-        )}
-        <span
+      <div className="relative">
+        <Component
+          {...(item.href && !hasChildren ? { href: item.href } : { type: 'button' as const })}
+          aria-current={isActive ? 'page' : undefined}
+          ref={(node: HTMLAnchorElement | HTMLButtonElement | null) => registerRef?.(item.id, node)}
           className={cn(
-            'min-w-0 flex-1 whitespace-nowrap overflow-hidden text-left text-[13px] font-medium transition-[max-width,opacity] duration-200',
-            expanded ? 'max-w-full opacity-100' : 'max-w-0 opacity-0',
+            'group flex h-10 min-w-0 items-center rounded-[8px] text-sm transition',
+            expanded
+              ? cn(
+                  'mx-1 w-[calc(100%-8px)] gap-3 py-2.5',
+                  hasChildren ? 'pr-10' : 'pr-2',
+                  level === 0 ? 'pl-2' : '',
+                  level === 1 ? 'pl-5' : '',
+                  level >= 2 ? 'pl-8' : '',
+                )
+              : 'mx-auto w-11 justify-center gap-0 px-0 py-2',
+            isActive
+              ? 'text-[color:var(--accent-line)]'
+              : 'text-[color:var(--text-muted)] hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]',
           )}
+          onClick={handleClick}
+          title={[item.title, item.description, item.urlText].filter(Boolean).join('\n')}
         >
-          {item.title}
-        </span>
-        {hasChildren && expanded ? <ChevronDown className={cn('ml-auto shrink-0 transition-transform duration-200', open ? 'rotate-90' : '')} size={14} /> : null}
-      </Component>
+          {item.icon ? (
+            <span
+              className={cn(
+                'flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] transition',
+                isActive
+                  ? 'bg-[linear-gradient(135deg,rgba(111,224,255,0.18),rgba(104,126,255,0.2)_55%,rgba(139,102,255,0.22))] text-[color:var(--accent-line)]'
+                  : 'bg-[color:var(--surface-hover)] group-hover:bg-[color:var(--surface-hover-strong)]',
+              )}
+            >
+              {item.icon}
+            </span>
+          ) : (
+            <span
+              className={cn(
+                'flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)]',
+                isActive ? 'text-[color:var(--accent-line)]' : 'text-[color:var(--text-muted)]',
+              )}
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
+            </span>
+          )}
+          <span
+            className={cn(
+              'min-w-0 flex-1 whitespace-nowrap overflow-hidden text-left text-[13px] font-medium transition-[max-width,opacity] duration-200',
+              expanded ? 'max-w-full opacity-100' : 'max-w-0 opacity-0',
+            )}
+          >
+            {item.title}
+          </span>
+        </Component>
+
+        {hasChildren && expanded ? (
+          <button
+            aria-label={`Toggle ${item.title} submenu`}
+            className="absolute right-[10px] top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[8px] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]"
+            onClick={handleToggleClick}
+            type="button"
+          >
+            <ChevronDown className={cn('transition-transform duration-200', open ? 'rotate-90' : '')} size={14} />
+          </button>
+        ) : null}
+      </div>
 
       {hasChildren ? (
         <div className={cn('overflow-hidden transition-[max-height] duration-300 ease-out', expanded && open ? 'max-h-[1200px]' : 'max-h-0')}>
@@ -195,6 +214,7 @@ function DesktopNavItem({
   expanded,
   item,
   onClick,
+  onToggleGroup,
   open,
   onItemClick,
   registerRef,
@@ -202,12 +222,13 @@ function DesktopNavItem({
   expanded: boolean
   item: SideRailItem
   onClick: () => void
+  onToggleGroup?: () => void
   open: boolean
   onItemClick?: (id: string) => void
   registerRef?: (id: string, node: HTMLElement | null) => void
 }) {
   const hasChildren = Boolean(item.items?.length)
-  const Component = item.href && !hasChildren ? 'a' : 'button'
+  const Component = item.href ? 'a' : 'button'
   const isActive = item.isActive || item.items?.some((child) => childIsActive(child))
 
   function handleClick() {
@@ -215,43 +236,60 @@ function DesktopNavItem({
     onClick()
   }
 
+  function handleToggleClick(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
+    event.stopPropagation()
+    onToggleGroup?.()
+  }
+
   return (
     <div className="nav-item">
-      <Component
-        {...(item.href && !hasChildren ? { href: item.href, onClick: handleClick } : { onClick: handleClick, type: 'button' as const })}
-        aria-current={isActive ? 'page' : undefined}
-        ref={(node: HTMLAnchorElement | HTMLButtonElement | null) => registerRef?.(item.id, node)}
-        className={cn(
-          'group relative flex h-11 items-center rounded-[8px] text-left transition',
-          expanded ? 'w-full gap-3 px-3' : 'mx-auto w-11 justify-center px-0',
-          isActive
-            ? 'text-[color:var(--accent-line)]'
-            : 'text-[color:var(--text-muted)] hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]',
-        )}
-        title={expanded ? undefined : getTooltipText(item)}
-      >
-        <span
-            className={cn(
-              'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition',
-              isActive
-                ? 'bg-[rgba(111,224,255,0.16)] text-[color:var(--accent-line)]'
-                : 'group-hover:bg-[color:var(--surface-hover-strong)]',
-            )}
-        >
-          {item.icon}
-        </span>
-        <span
+      <div className="relative">
+        <Component
+          {...(item.href ? { href: item.href, onClick: handleClick } : { onClick: handleClick, type: 'button' as const })}
+          aria-current={isActive ? 'page' : undefined}
+          ref={(node: HTMLAnchorElement | HTMLButtonElement | null) => registerRef?.(item.id, node)}
           className={cn(
-            'min-w-0 flex-1 whitespace-nowrap overflow-hidden text-[13.5px] font-medium transition-[max-width,opacity] duration-200',
-            expanded ? 'max-w-full opacity-100' : 'max-w-0 opacity-0',
+            'group relative flex h-11 items-center rounded-[8px] text-left transition',
+            expanded ? 'w-full gap-3 px-3' : 'mx-auto w-11 justify-center px-0',
+            hasChildren && expanded ? 'pr-10' : '',
+            isActive
+              ? 'text-[color:var(--accent-line)]'
+              : 'text-[color:var(--text-muted)] hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]',
           )}
+          title={expanded ? undefined : getTooltipText(item)}
         >
-          {item.title}
-        </span>
-        {item.items?.length && expanded ? (
-          <ChevronDown className={cn('shrink-0 text-[color:var(--text-muted)] transition-all duration-300', open ? 'rotate-90' : '')} size={14} />
+          <span
+              className={cn(
+                'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition',
+                isActive
+                  ? 'bg-[rgba(111,224,255,0.16)] text-[color:var(--accent-line)]'
+                  : 'group-hover:bg-[color:var(--surface-hover-strong)]',
+              )}
+          >
+            {item.icon}
+          </span>
+          <span
+            className={cn(
+              'min-w-0 flex-1 whitespace-nowrap overflow-hidden text-[13.5px] font-medium transition-[max-width,opacity] duration-200',
+              expanded ? 'max-w-full opacity-100' : 'max-w-0 opacity-0',
+            )}
+          >
+            {item.title}
+          </span>
+        </Component>
+
+        {hasChildren && expanded ? (
+          <button
+            aria-label={`Toggle ${item.title} submenu`}
+            className="absolute right-[10px] top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[8px] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]"
+            onClick={handleToggleClick}
+            type="button"
+          >
+            <ChevronDown className={cn('transition-all duration-300', open ? 'rotate-90' : '')} size={14} />
+          </button>
         ) : null}
-      </Component>
+      </div>
 
       <div className={cn('overflow-hidden transition-[max-height] duration-300 ease-out', expanded && open ? 'max-h-[1200px]' : 'max-h-0')}>
         <div className="pb-1 pt-1">
@@ -467,27 +505,27 @@ export function SideRail({
   }
 
   function handleDesktopItemClick(item: SideRailItem) {
-    if (item.items?.length) {
-      setExpanded(true)
-      setOpenGroupIds((current) => (current.includes(item.id) ? current.filter((id) => id !== item.id) : [...current, item.id]))
-      item.onClick?.()
-      return
-    }
-
     setFocusedNavId(item.id)
     item.onClick?.()
   }
 
-  function handleMobileItemClick(item: SideRailItem) {
-    if (item.items?.length) {
-      setOpenGroupIds((current) => (current.includes(item.id) ? current.filter((id) => id !== item.id) : [...current, item.id]))
-      item.onClick?.()
-      return
-    }
+  function handleDesktopGroupToggle(item: SideRailItem) {
+    if (!item.items?.length) return
 
+    setExpanded(true)
+    setOpenGroupIds((current) => (current.includes(item.id) ? current.filter((id) => id !== item.id) : [...current, item.id]))
+  }
+
+  function handleMobileItemClick(item: SideRailItem) {
     setFocusedNavId(item.id)
     setMobileMenuOpen(false)
     item.onClick?.()
+  }
+
+  function handleMobileGroupToggle(item: SideRailItem) {
+    if (!item.items?.length) return
+
+    setOpenGroupIds((current) => (current.includes(item.id) ? current.filter((id) => id !== item.id) : [...current, item.id]))
   }
 
   function openMobileMenu() {
@@ -610,6 +648,7 @@ export function SideRail({
                     item={item}
                     key={item.id}
                     onClick={() => handleDesktopItemClick(item)}
+                    onToggleGroup={() => handleDesktopGroupToggle(item)}
                     onItemClick={setFocusedNavId}
                     open={openGroupIds.includes(item.id)}
                     registerRef={(id, node) => {
@@ -727,6 +766,7 @@ export function SideRail({
                       item={item}
                       key={item.id}
                       onClick={() => handleMobileItemClick(item)}
+                      onToggleGroup={() => handleMobileGroupToggle(item)}
                       onItemClick={(id) => {
                         setFocusedNavId(id)
                         closeMobileMenu()
