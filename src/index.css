@@ -40,6 +40,10 @@
     --card-shadow-default: 0 20px 60px rgba(8, 14, 37, 0.2);
     --card-shadow-elevated: 0 24px 70px rgba(7, 12, 32, 0.24);
     --card-subtle-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+    --site-glow-top-left: rgba(111, 224, 255, 0.22);
+    --site-glow-top-right: rgba(104, 126, 255, 0.18);
+    --site-glow-bottom: rgba(139, 102, 255, 0.18);
+    --site-grid-line: rgba(126, 231, 255, 0.08);
     color-scheme: dark;
     font-family: Outfit, 'Trebuchet MS', sans-serif;
     font-synthesis: none;
@@ -86,6 +90,10 @@
     --card-shadow-default: 0 18px 42px rgba(22, 51, 98, 0.14);
     --card-shadow-elevated: 0 24px 52px rgba(18, 46, 93, 0.18);
     --card-subtle-bg: #eef5ff;
+    --site-glow-top-left: rgba(12, 164, 217, 0.18);
+    --site-glow-top-right: rgba(46, 117, 216, 0.14);
+    --site-glow-bottom: rgba(40, 100, 184, 0.14);
+    --site-grid-line: rgba(15, 122, 168, 0.11);
     color-scheme: light;
   }
 

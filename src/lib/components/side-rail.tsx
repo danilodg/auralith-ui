@@ -625,8 +625,8 @@ export function SideRail({
         </div>
       </aside>
 
-      <header className="sticky top-0 z-40 xl:hidden">
-        <div className="mb-6 flex h-[60px] items-center justify-between gap-3 rounded-[8px] border border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] px-[14px] shadow-[0_18px_46px_rgba(0,0,0,0.16)] [view-transition-name:none]">
+      <header className="fixed inset-x-0 top-0 z-40 xl:hidden">
+        <div className="flex h-[60px] items-center justify-between gap-3 border-b border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] px-[14px] shadow-[0_10px_30px_rgba(0,0,0,0.16)] [view-transition-name:none]">
           <a className="inline-flex min-w-0 flex-1 items-center gap-3 text-[color:var(--text-main)] no-underline" href={brandHref}>
             <span
               className={cn(
@@ -745,6 +745,8 @@ export function SideRail({
           </div>
         )}
       </header>
+
+      <div aria-hidden="true" className="h-[60px] xl:hidden" />
     </>
   )
 }
