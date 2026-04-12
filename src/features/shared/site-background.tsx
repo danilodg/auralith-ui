@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+
 import { cn } from '../../lib/utils/cn'
 
 export type SiteBackgroundIntensity = 'soft' | 'medium' | 'strong'
@@ -14,21 +16,31 @@ interface SiteBackgroundProps {
   settings: SiteBackgroundSettings
 }
 
-const diffuseOpacityClass: Record<SiteBackgroundIntensity, string> = {
-  soft: 'opacity-70',
-  medium: 'opacity-100',
-  strong: 'opacity-[1.2]',
+const diffuseOpacity: Record<SiteBackgroundIntensity, number> = {
+  soft: 0.7,
+  medium: 1,
+  strong: 1.2,
 }
 
-const gridOpacityClass: Record<SiteBackgroundIntensity, string> = {
-  soft: 'opacity-40',
-  medium: 'opacity-60',
-  strong: 'opacity-80',
+const gridOpacity: Record<SiteBackgroundIntensity, number> = {
+  soft: 0.4,
+  medium: 0.6,
+  strong: 0.8,
 }
 
-const gridPatternClass: Record<SiteBackgroundGridStyle, string> = {
-  orthogonal: '[background-image:linear-gradient(var(--site-grid-line)_1px,transparent_1px),linear-gradient(90deg,var(--site-grid-line)_1px,transparent_1px)] [background-position:center] [background-size:78px_78px]',
-  diagonal: '[background-image:repeating-linear-gradient(45deg,var(--site-grid-line)_0px,var(--site-grid-line)_1px,transparent_1px,transparent_28px),repeating-linear-gradient(-45deg,var(--site-grid-line)_0px,var(--site-grid-line)_1px,transparent_1px,transparent_28px)] [background-position:center] [background-size:84px_84px]',
+const gridPatternStyle: Record<SiteBackgroundGridStyle, CSSProperties> = {
+  orthogonal: {
+    backgroundImage:
+      'linear-gradient(var(--site-grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--site-grid-line) 1px, transparent 1px)',
+    backgroundPosition: 'center',
+    backgroundSize: '78px 78px',
+  },
+  diagonal: {
+    backgroundImage:
+      'repeating-linear-gradient(45deg, var(--site-grid-line) 0px, var(--site-grid-line) 1px, transparent 1px, transparent 28px), repeating-linear-gradient(-45deg, var(--site-grid-line) 0px, var(--site-grid-line) 1px, transparent 1px, transparent 28px)',
+    backgroundPosition: 'center',
+    backgroundSize: '84px 84px',
+  },
 }
 
 export function SiteBackground({ settings }: SiteBackgroundProps) {
@@ -36,20 +48,22 @@ export function SiteBackground({ settings }: SiteBackgroundProps) {
     <>
       {settings.showDiffuse ? (
         <div
-          className={cn(
-            'pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top_left,var(--site-glow-top-left),transparent_30%),radial-gradient(circle_at_80%_12%,var(--site-glow-top-right),transparent_24%),radial-gradient(circle_at_50%_100%,var(--site-glow-bottom),transparent_30%)] transition-opacity duration-500',
-            diffuseOpacityClass[settings.intensity],
-          )}
+          className={cn('pointer-events-none fixed inset-0 transition-opacity duration-500')}
+          style={{
+            backgroundImage:
+              'radial-gradient(circle at top left, var(--site-glow-top-left), transparent 30%), radial-gradient(circle at 80% 12%, var(--site-glow-top-right), transparent 24%), radial-gradient(circle at 50% 100%, var(--site-glow-bottom), transparent 30%)',
+            opacity: diffuseOpacity[settings.intensity],
+          }}
         />
       ) : null}
 
       {settings.showGrid ? (
         <div
-          className={cn(
-            'pointer-events-none fixed inset-0 transition-opacity duration-500',
-            gridPatternClass[settings.gridStyle],
-            gridOpacityClass[settings.intensity],
-          )}
+          className={cn('pointer-events-none fixed inset-0 transition-opacity duration-500')}
+          style={{
+            ...gridPatternStyle[settings.gridStyle],
+            opacity: gridOpacity[settings.intensity],
+          }}
         />
       ) : null}
     </>
