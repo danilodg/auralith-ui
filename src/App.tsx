@@ -4,9 +4,11 @@ import { Languages, MoonStar, Settings2, Sun, User2 } from 'lucide-react'
 import { createComponentDocs } from './data/component-docs'
 import { createDocsPages } from './data/docs-pages'
 import { createSideRailItems } from './data/side-rail-navigation'
+import { SiteBackground, type SiteBackgroundSettings } from './features/shared/site-background'
 import { buildLanguageUrl, getInitialLanguage, localeStrings } from './i18n'
 import { SideRail } from './lib'
 import { LocaleProvider } from './locale-context'
+import { SiteBackgroundProvider } from './site-background-context'
 import { DocsPage } from './pages/docs-page'
 import { LandingPage } from './pages/landing-page'
 
@@ -67,6 +69,12 @@ function App() {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false)
   const [isSidebarPinned, setIsSidebarPinned] = useState(false)
   const [sidebarOffset, setSidebarOffset] = useState(0)
+  const [siteBackground, setSiteBackground] = useState<SiteBackgroundSettings>({
+    showDiffuse: true,
+    showGrid: true,
+    intensity: 'medium',
+    gridStyle: 'orthogonal',
+  })
   const accountMenuRef = useRef<HTMLDivElement | null>(null)
 
   const strings = localeStrings[language]
@@ -120,6 +128,10 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  function handleSiteBackgroundChange(patch: Partial<SiteBackgroundSettings>) {
+    setSiteBackground((current) => ({ ...current, ...patch }))
+  }
+
   const selectedDocPage = route.docPageId
     ? docsPages.find((docPage) => docPage.id === route.docPageId) ?? null
     : null
@@ -137,9 +149,9 @@ function App() {
 
   return (
     <LocaleProvider value={{ language, setLanguage, strings }}>
-      <main className="relative min-h-screen overflow-hidden bg-[var(--bg-base)] text-[color:var(--text-main)]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(111,224,255,0.22),transparent_30%),radial-gradient(circle_at_80%_12%,rgba(104,126,255,0.18),transparent_24%),radial-gradient(circle_at_50%_100%,rgba(139,102,255,0.18),transparent_30%)]" />
-        <div className="pointer-events-none absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(126,231,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(126,231,255,0.08)_1px,transparent_1px)] [background-position:center] [background-size:78px_78px]" />
+      <SiteBackgroundProvider value={{ settings: siteBackground, updateSettings: handleSiteBackgroundChange }}>
+        <main className="relative min-h-screen overflow-hidden bg-[var(--bg-base)] text-[color:var(--text-main)]">
+          <SiteBackground settings={siteBackground} />
 
         <SideRail
           brandHref="#landing"
@@ -286,7 +298,8 @@ function App() {
             </div>
           </div>
         </div>
-      </main>
+        </main>
+      </SiteBackgroundProvider>
     </LocaleProvider>
   )
 }

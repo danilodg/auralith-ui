@@ -27,6 +27,7 @@ import {
 
 import { Accordion, AccordionItem, Avatar, AvatarGroup, Button, Card, Checkbox, CodeBlock, DateInput, DropdownMenu, GlassPanel, Input, NumberInput, SectionLabel, Select, Switch, Tabs, TabsContent, TabsList, TabsTrigger, Tag, Textarea, TimeInput, ToastProvider, Tooltip } from '../lib'
 import { ModalPreview } from '../features/docs/modal-preview'
+import { SiteBackgroundPlayground } from '../features/docs/site-background-playground'
 import { ToastPreview } from '../features/docs/toast-preview'
 import type { Language } from '../i18n'
 import type { ComponentDoc } from '../types/docs'
@@ -50,6 +51,18 @@ function getStructuredMeta(id: string, isPt: boolean) {
         { name: 'GlassPanel.Description', description: isPt ? 'Texto de apoio do painel.' : 'Supporting panel copy.' },
       ],
       notes: isPt ? ['Prefira a API composta para blocos editoriais e hero surfaces.'] : ['Prefer the compositional API for editorial blocks and hero surfaces.'],
+    },
+    'site-background': {
+      anatomy: ['SiteBackground', 'SiteBackgroundPlayground'],
+      parts: [
+        { name: 'showDiffuse', description: isPt ? 'Liga/desliga os gradientes difusos de cor.' : 'Toggles diffuse color gradients.' },
+        { name: 'showGrid', description: isPt ? 'Liga/desliga a grade de linhas da tela.' : 'Toggles the full-page grid lines.' },
+        { name: 'intensity', description: isPt ? 'Controla a intensidade visual (`soft`, `medium`, `strong`).' : 'Controls visual strength (`soft`, `medium`, `strong`).' },
+        { name: 'gridStyle', description: isPt ? 'Alterna a grade entre `orthogonal` e `diagonal`.' : 'Switches grid style between `orthogonal` and `diagonal`.' },
+      ],
+      notes: isPt
+        ? ['Este componente e de showcase do site e afeta o fundo global em tempo real.', 'As cores base continuam vindo do CSS global (tokens do tema).']
+        : ['This is a showcase-site component that affects the global background in real time.', 'Base colors still come from global CSS theme tokens.'],
     },
     'section-label': {
       anatomy: ['SectionLabel'],
@@ -303,6 +316,69 @@ export function createComponentDocs(language: Language): ComponentDoc[] {
         </GlassPanel.Root>
       </div>
     ),
+  },
+  {
+    id: 'site-background',
+    name: 'SiteBackground',
+    category: 'surface',
+    icon: <Layers size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Fundo global fixo com cores difusas e grade opcional para o showcase da aplicacao.' : 'Fixed global background with diffuse colors and optional grid for the showcase app.',
+    source: 'src/features/shared/site-background.tsx',
+    importCode: "import { SiteBackground } from '@/features/shared/site-background'",
+    snippet: isPt ? `<SiteBackground settings={{
+  showDiffuse: true,
+  showGrid: true,
+  intensity: 'medium',
+  gridStyle: 'diagonal',
+}} />` : `<SiteBackground settings={{
+  showDiffuse: true,
+  showGrid: true,
+  intensity: 'medium',
+  gridStyle: 'diagonal',
+}} />`,
+    href: '#components/site-background',
+    urlText: 'components/site-background',
+    preview: <SiteBackgroundPlayground />,
+    examples: [
+      {
+        title: isPt ? 'Atualizar fundo global via contexto' : 'Update global background through context',
+        code: isPt ? `const { updateSettings } = useSiteBackground()
+
+updateSettings({
+  showGrid: true,
+  gridStyle: 'diagonal',
+  intensity: 'strong',
+})` : `const { updateSettings } = useSiteBackground()
+
+updateSettings({
+  showGrid: true,
+  gridStyle: 'diagonal',
+  intensity: 'strong',
+})`,
+      },
+    ],
+    api: [
+      {
+        name: 'showDiffuse',
+        type: 'boolean',
+        description: isPt ? 'Ativa ou desativa os gradientes difusos de fundo.' : 'Enables or disables diffuse background gradients.',
+      },
+      {
+        name: 'showGrid',
+        type: 'boolean',
+        description: isPt ? 'Ativa ou desativa a grade de linhas fixa.' : 'Enables or disables the fixed grid lines.',
+      },
+      {
+        name: 'intensity',
+        type: "'soft' | 'medium' | 'strong'",
+        description: isPt ? 'Define o peso visual da composicao do fundo.' : 'Defines the visual weight of the background composition.',
+      },
+      {
+        name: 'gridStyle',
+        type: "'orthogonal' | 'diagonal'",
+        description: isPt ? 'Controla o estilo da grade fixa de linhas.' : 'Controls the style of the fixed line grid.',
+      },
+    ],
   },
   {
     id: 'section-label',

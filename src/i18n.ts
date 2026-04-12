@@ -123,7 +123,7 @@ export const localeStrings: Record<Language, LocaleStrings> = {
       continue: 'Continuar',
       recoveryFlow: 'Fluxo de recuperacao',
       nextStep: 'Proximo passo',
-      nextStepTitle: 'Acesse a docs para navegar pelos 22 componentes com preview, codigo e referencia de uso.',
+      nextStepTitle: 'Acesse a docs para navegar pelos 23 componentes com preview, codigo e referencia de uso.',
       openDocumentation: 'Abrir documentacao',
     },
     docs: {
@@ -197,7 +197,7 @@ export const localeStrings: Record<Language, LocaleStrings> = {
       continue: 'Continue',
       recoveryFlow: 'Recovery flow',
       nextStep: 'Next step',
-      nextStepTitle: 'Open docs to browse all 22 components with preview, code, and usage references.',
+      nextStepTitle: 'Open docs to browse all 23 components with preview, code, and usage references.',
       openDocumentation: 'Open documentation',
     },
     docs: {
