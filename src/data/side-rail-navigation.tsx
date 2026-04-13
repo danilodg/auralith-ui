@@ -1,5 +1,6 @@
 import { BookOpen, Home, Layers, ListFilter } from 'lucide-react'
 
+import { getDocCategoryDescription, getDocCategoryTitle, sortComponentDocsByCategory, sortDocCategories } from '../features/docs/docs-categories'
 import type { Language } from '../i18n'
 import { localeStrings } from '../i18n'
 import type { ComponentDoc, DocPage } from '../types/docs'
@@ -18,21 +19,24 @@ export function createSideRailItems(
 ): SideRailItem[] {
   const strings = localeStrings[language]
   const isPt = language === 'pt'
-  const inputDocIds = new Set(['input', 'checkbox', 'select', 'textarea', 'switch', 'input-date', 'input-time', 'input-number'])
-  const inputDocs = docs.filter((doc) => inputDocIds.has(doc.id))
-  const otherDocs = docs.filter((doc) => !inputDocIds.has(doc.id))
+  const sortedDocs = sortComponentDocsByCategory(docs)
+  const categories = sortDocCategories(Array.from(new Set(sortedDocs.map((doc) => doc.category))))
+  const componentItems = categories.map((category) => {
+    const categoryDocs = sortedDocs.filter((doc) => doc.category === category)
+    const categoryTitle = getDocCategoryTitle(category, isPt)
 
-  const componentItems = [
-    {
-      id: 'components-inputs',
-      title: isPt ? 'Inputs' : 'Inputs',
-      description: isPt ? 'Email, checkbox, select, textarea, switch, data, hora e numero.' : 'Email, checkbox, select, textarea, switch, date, time and number.',
-      icon: <ListFilter className="h-4 w-4" strokeWidth={1.8} />,
-      href: '#components/inputs',
-      urlText: 'components/inputs',
-      isActive: componentId === 'inputs' || (componentId ? inputDocIds.has(componentId) : false),
-      onClick: () => navigate('#components/inputs'),
-      items: inputDocs.map((doc) => ({
+    return {
+      id: `components-${category}`,
+      title: categoryTitle,
+      description: getDocCategoryDescription(category, isPt),
+      icon: category === 'form'
+        ? <ListFilter className="h-4 w-4" strokeWidth={1.8} />
+        : <Layers className="h-4 w-4" strokeWidth={1.8} />,
+      href: `#components/${category}`,
+      urlText: `components/${category}`,
+      isActive: componentId ? categoryDocs.some((doc) => doc.id === componentId) : false,
+      onClick: () => navigate(`#components/${category}`),
+      items: categoryDocs.map((doc) => ({
         id: doc.id,
         title: doc.name,
         description: doc.description,
@@ -42,18 +46,8 @@ export function createSideRailItems(
         isActive: componentId === doc.id,
         onClick: () => navigate(`#components/${doc.id}`),
       })),
-    },
-    ...otherDocs.map((doc) => ({
-      id: doc.id,
-      title: doc.name,
-      description: doc.description,
-      icon: doc.icon,
-      href: `#components/${doc.id}`,
-      urlText: `components/${doc.id}`,
-      isActive: componentId === doc.id,
-      onClick: () => navigate(`#components/${doc.id}`),
-    })),
-  ]
+    }
+  })
 
   return [
     {

@@ -4,6 +4,7 @@ import { Languages, MoonStar, Settings2, Sun, User2 } from 'lucide-react'
 import { createComponentDocs } from './data/component-docs'
 import { createDocsPages } from './data/docs-pages'
 import { createSideRailItems } from './data/side-rail-navigation'
+import { DOC_CATEGORY_ORDER } from './features/docs/docs-categories'
 import { SiteBackground, type SiteBackgroundSettings } from './features/shared/site-background'
 import { buildLanguageUrl, getInitialLanguage, localeStrings } from './i18n'
 import { SideRail } from './lib'
@@ -136,11 +137,14 @@ function App() {
     ? docsPages.find((docPage) => docPage.id === route.docPageId) ?? null
     : null
 
-  const selectedDoc = route.componentId && route.componentId !== 'inputs'
+  const categoryRouteIds = new Set<string>([...DOC_CATEGORY_ORDER, 'inputs'])
+  const selectedDoc = route.componentId && !categoryRouteIds.has(route.componentId)
     ? componentDocs.find((doc) => doc.id === route.componentId) ?? null
     : null
 
-  const selectedComponentGroup = route.componentId === 'inputs' ? 'inputs' : null
+  const selectedComponentGroup = route.componentId && categoryRouteIds.has(route.componentId)
+    ? route.componentId
+    : null
 
   const sideRailItems = useMemo(
     () => createSideRailItems(language, route.page, route.docPageId, route.componentId, docsPages, componentDocs, navigateToHash),

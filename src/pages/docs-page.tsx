@@ -1,4 +1,5 @@
 import { ComponentDocCard } from '../features/docs/component-doc-card'
+import { getDocCategoryDescription, getDocCategoryLabel, getDocCategoryTitle, sortComponentDocsByCategory, sortDocCategories } from '../features/docs/docs-categories'
 import { ComponentDetailView } from '../features/docs/component-detail-view'
 import { DocDetailView } from '../features/docs/doc-detail-view'
 import { DocsHero } from '../features/docs/docs-hero'
@@ -15,20 +16,28 @@ interface DocsPageProps {
   docPages: DocPage[]
   onBackHome: () => void
   page: PageView
-  selectedComponentGroup: 'inputs' | null
+  selectedComponentGroup: string | null
   selectedDoc: ComponentDoc | null
 }
 
-const inputDocIds = new Set(['input', 'checkbox', 'select', 'textarea', 'switch', 'input-date', 'input-time', 'input-number'])
+const inputDocIds = new Set(['input', 'form-field', 'checkbox', 'checkbox-group', 'radio-group', 'combobox', 'select', 'textarea', 'switch', 'input-date', 'input-time', 'input-number'])
 
 export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedComponentGroup, selectedDoc }: DocsPageProps) {
   const { language, strings } = useLocale()
   const isPt = language === 'pt'
-  const filteredDocs = selectedComponentGroup === 'inputs'
-    ? docs.filter((item) => inputDocIds.has(item.id))
+  const filteredDocs = selectedComponentGroup
+    ? selectedComponentGroup === 'inputs'
+      ? docs.filter((item) => inputDocIds.has(item.id))
+      : docs.filter((item) => item.category === selectedComponentGroup)
     : docs
 
-  const categories = Array.from(new Set(filteredDocs.map((item) => item.category)))
+  const orderedDocs = sortComponentDocsByCategory(filteredDocs)
+  const categories = sortDocCategories(Array.from(new Set(orderedDocs.map((item) => item.category)))).map((category) => getDocCategoryLabel(category, isPt))
+
+  const docsByCategory = sortDocCategories(Array.from(new Set(orderedDocs.map((item) => item.category)))).map((category) => ({
+    category,
+    items: orderedDocs.filter((item) => item.category === category),
+  }))
 
   if (page === 'docs') {
     if (docPage) {
@@ -80,9 +89,32 @@ export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedCo
         <DocsOverview />
       </section>
 
-      <section className="grid gap-6">
-        {filteredDocs.map((doc) => (
-          <ComponentDocCard doc={doc} key={doc.id} />
+      <section className="grid gap-8">
+        {docsByCategory.map((categoryGroup) => (
+          <div className="grid gap-4" key={categoryGroup.category}>
+            <GlassPanel className="border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-4 sm:p-5">
+              <div className="flex flex-wrap items-center gap-3">
+                <Tag className="border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)]">
+                  {getDocCategoryLabel(categoryGroup.category, isPt)}
+                </Tag>
+                <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] text-[color:var(--text-muted)]">
+                  {categoryGroup.items.length} {isPt ? 'componentes' : 'components'}
+                </Tag>
+              </div>
+              <h2 className="mt-3 font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[1.2rem] font-semibold tracking-[-0.02em] text-[color:var(--text-main)]">
+                {getDocCategoryTitle(categoryGroup.category, isPt)}
+              </h2>
+              <p className="mt-2 text-[0.9rem] leading-6 text-[color:var(--text-soft)]">
+                {getDocCategoryDescription(categoryGroup.category, isPt)}
+              </p>
+            </GlassPanel>
+
+            <div className="grid gap-6">
+              {categoryGroup.items.map((doc) => (
+                <ComponentDocCard doc={doc} key={doc.id} />
+              ))}
+            </div>
+          </div>
         ))}
       </section>
     </div>

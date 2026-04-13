@@ -1,21 +1,7 @@
 import { CodeBlock, GlassPanel, Tag } from '../../lib'
 import { useLocale } from '../../locale-context'
 import type { ComponentDoc } from '../../types/docs'
-
-function getCategoryLabel(category: string, isPt: boolean) {
-  if (!isPt) return category
-
-  return {
-    primitive: 'primitivo',
-    surface: 'superficie',
-    typography: 'tipografia',
-    feedback: 'feedback',
-    form: 'formulario',
-    pattern: 'pattern',
-    navigation: 'navegacao',
-    overlay: 'overlay',
-  }[category] ?? category
-}
+import { getDocCategoryLabel } from './docs-categories'
 
 interface ComponentDocCardProps {
   doc: ComponentDoc
@@ -40,7 +26,7 @@ export function ComponentDocCard({ doc }: ComponentDocCardProps) {
         {/* Left: Info */}
         <div className="p-6 sm:p-8 flex flex-col justify-center border-r-0 lg:border-r border-[color:var(--card-border)] min-w-0">
           <div className="flex flex-wrap items-center gap-3 mb-5">
-            <Tag>{getCategoryLabel(doc.category, isPt)}</Tag>
+            <Tag>{getDocCategoryLabel(doc.category, isPt)}</Tag>
             <Tag className="bg-[rgba(255,255,255,0.03)] text-[color:var(--text-muted)] border-0">
               {doc.urlText}
             </Tag>

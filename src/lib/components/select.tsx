@@ -161,7 +161,7 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
         {open && panelPosition && typeof document !== 'undefined'
           ? createPortal(
               <div
-                className="fixed z-[220] overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
+                className="fixed z-[320] overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
                 id={selectId ? `${selectId}-content` : undefined}
                 ref={panelRef}
                 role="listbox"

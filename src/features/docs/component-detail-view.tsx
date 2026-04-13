@@ -3,21 +3,7 @@ import { ModalDetailView } from './modal-detail-view'
 import { useLocale } from '../../locale-context'
 import type { ComponentDoc } from '../../types/docs'
 import { Zap, Puzzle, Library, Layers, Code2 } from 'lucide-react'
-
-function getCategoryLabel(category: string, isPt: boolean) {
-  if (!isPt) return category
-
-  return {
-    primitive: 'primitivo',
-    surface: 'superficie',
-    typography: 'tipografia',
-    feedback: 'feedback',
-    form: 'formulario',
-    pattern: 'pattern',
-    navigation: 'navegacao',
-    overlay: 'overlay',
-  }[category] ?? category
-}
+import { getDocCategoryLabel } from './docs-categories'
 
 interface ComponentDetailViewProps {
   doc: ComponentDoc
@@ -43,7 +29,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
         
         <div className="relative p-6 sm:p-10 flex flex-col items-center">
            <div className="flex flex-wrap gap-3 mb-8 w-full max-w-[1000px]">
-            <Tag>{getCategoryLabel(doc.category, isPt)}</Tag>
+            <Tag>{getDocCategoryLabel(doc.category, isPt)}</Tag>
             <Tag>{doc.name}</Tag>
             <Tag className="bg-[rgba(255,255,255,0.03)] text-[color:var(--text-muted)] border-0 select-none">
               {doc.urlText}
