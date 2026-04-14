@@ -2,11 +2,28 @@
 
 Auralith UI is a React component library focused on premium, glass-inspired product interfaces. It provides reusable primitives, composed patterns, and a shared visual language so different apps keep the same look and behavior.
 
+## What this project is
+
+This repository has two goals:
+
+- ship a reusable frontend library (`auralith-ui` on npm)
+- keep a live showcase/docs app to demonstrate components and patterns
+
+If you only want to use the library in another app, install from npm and import from `auralith-ui`.
+If you want to contribute or explore components visually, run this repo locally and use the showcase app.
+
 ## Why this library
 
 - Keep visual consistency across projects with the same token base.
 - Speed up implementation with production-ready form, overlay, and navigation components.
 - Preserve a strong visual identity without rebuilding the same UI foundations each time.
+
+## What you get in practice
+
+- Consistent form controls with predictable states and sizing.
+- Ready-to-use overlays and navigation patterns for app shells.
+- Shared style tokens and CSS that keep visual rhythm across products.
+- Typed React components that fit strict TypeScript projects.
 
 ## Installation
 
@@ -35,6 +52,12 @@ export function SignupCard() {
   )
 }
 ```
+
+## Typical use cases
+
+- Internal dashboards that need a cohesive visual system.
+- SaaS frontends that want premium visuals without custom UI from scratch.
+- Teams that want one source of truth for shared React UI components.
 
 ## Components included
 
@@ -84,6 +107,14 @@ npm run build:lib
 npm run pack:check
 ```
 
+## How this repo is organized
+
+- Library entry exports: `src/lib/index.ts`
+- Published styles entry: `src/lib/styles.css`
+- Showcase/docs app: `src/main.tsx` + `src/App.tsx`
+- Library output: `dist/`
+- Showcase build output: `dist-showcase/`
+
 ## Publish flow
 
 ```bash
@@ -110,6 +141,13 @@ src/
   pages/
   data/
 ```
+
+## Contributing notes
+
+- Add or update components under `src/lib/components/`.
+- Export new public APIs from `src/lib/index.ts`.
+- Validate package output with `npm run build:lib` and `npm run pack:check`.
+- Use `npm run dev` to verify docs/showcase behavior before release.
 
 ## Tech stack
 
