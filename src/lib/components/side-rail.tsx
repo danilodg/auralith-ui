@@ -7,6 +7,11 @@ import { cn } from '../utils/cn'
 
 const SIDE_RAIL_PINNED_STORAGE_KEY = 'auralith-ui:side-rail:pinned'
 
+function getIsDesktopViewport() {
+  if (typeof window === 'undefined') return true
+  return window.matchMedia('(min-width: 1024px)').matches
+}
+
 function getInitialPinnedState() {
   if (typeof window === 'undefined') return false
 
@@ -325,6 +330,7 @@ export function SideRail({
   const [focusedNavId, setFocusedNavId] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileMenuRendered, setMobileMenuRendered] = useState(false)
+  const [isDesktopViewport, setIsDesktopViewport] = useState(getIsDesktopViewport)
   const [desktopIndicatorStyle, setDesktopIndicatorStyle] = useState<{ height: number; opacity: number; top: number }>({
     top: 0,
     height: 0,
@@ -349,6 +355,29 @@ export function SideRail({
 
     setOpenGroupIds((current) => (current.includes(activeChildGroupId) ? current : [...current, activeChildGroupId]))
   }, [activeChildGroupId])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const mediaQuery = window.matchMedia('(min-width: 1024px)')
+    const syncViewport = () => {
+      setIsDesktopViewport(mediaQuery.matches)
+    }
+
+    syncViewport()
+    mediaQuery.addEventListener('change', syncViewport)
+
+    return () => {
+      mediaQuery.removeEventListener('change', syncViewport)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isDesktopViewport) return
+
+    setMobileMenuOpen(false)
+    setMobileMenuRendered(false)
+  }, [isDesktopViewport])
 
   useEffect(() => {
     onPinnedChange?.(pinned)
@@ -546,7 +575,8 @@ export function SideRail({
 
   return (
     <>
-      <aside className="hidden lg:block">
+      {isDesktopViewport ? (
+        <aside>
         <div
           className={cn(
             'z-30 [view-transition-name:none]',
@@ -662,9 +692,11 @@ export function SideRail({
             {bottomSlot ? <div className="border-t border-[color:var(--card-border)] p-2">{bottomSlot}</div> : null}
           </div>
         </div>
-      </aside>
+        </aside>
+      ) : null}
 
-      <header className="fixed inset-x-0 top-0 z-40 lg:hidden">
+      {!isDesktopViewport ? (
+      <header className="fixed inset-x-0 top-0 z-40">
         <div className="flex h-[60px] items-center justify-between gap-3 border-b border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] px-[14px] shadow-[0_10px_30px_rgba(0,0,0,0.16)] [view-transition-name:none]">
           <a className="inline-flex min-w-0 flex-1 items-center gap-3 text-[color:var(--text-main)] no-underline" href={brandHref}>
             <span
@@ -785,8 +817,9 @@ export function SideRail({
           </div>
         )}
       </header>
+      ) : null}
 
-      <div aria-hidden="true" className="h-[60px] lg:hidden" />
+      {!isDesktopViewport ? <div aria-hidden="true" className="h-[60px]" /> : null}
     </>
   )
 }
