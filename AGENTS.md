@@ -12,8 +12,12 @@
 - `dist/` and `dist-showcase/` are generated artifacts; do not hand-edit.
 
 ## Current npm release
-- Latest published package: `auralith-ui@0.1.2`.
+- Latest published package: `auralith-ui@0.1.3`.
 - Quick check: `npm view auralith-ui version`.
+
+## SideRail breakpoint rule
+- Desktop rail must be visible from `lg` and up.
+- Mobile header/drawer must be active below `lg`.
 
 ## Commands
 - `npm install`
