@@ -12,7 +12,7 @@
 - `dist/` and `dist-showcase/` are generated artifacts; do not hand-edit.
 
 ## Current npm release
-- Latest published package: `auralith-ui@0.1.5`.
+- Latest published package: `auralith-ui@0.1.6`.
 - Quick check: `npm view auralith-ui version`.
 
 ## SideRail breakpoint rule

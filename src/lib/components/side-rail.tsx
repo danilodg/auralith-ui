@@ -237,6 +237,12 @@ function DesktopNavItem({
   const isActive = item.isActive || item.items?.some((child) => childIsActive(child))
 
   function handleClick() {
+    if (hasChildren && !item.href) {
+      onItemClick?.(item.id)
+      onToggleGroup?.()
+      return
+    }
+
     onItemClick?.(item.id)
     onClick()
   }
