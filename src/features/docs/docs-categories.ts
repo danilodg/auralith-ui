@@ -42,10 +42,10 @@ const DOC_CATEGORY_META = {
 const DOC_COMPONENT_ORDER: Record<string, string[]> = {
   primitive: ['button'],
   surface: ['card', 'glass-panel', 'avatar', 'accordion', 'site-background'],
-  form: ['form-field', 'input', 'checkbox', 'checkbox-group', 'radio-group', 'select', 'combobox', 'textarea', 'input-date', 'input-time', 'input-number', 'switch'],
-  overlay: ['tooltip', 'dropdown-menu', 'popover', 'modal', 'sheet'],
-  feedback: ['alert', 'toast', 'skeleton', 'empty-state'],
-  navigation: ['breadcrumb', 'tabs', 'pagination', 'stepper', 'side-rail'],
+  form: ['form-field', 'input', 'checkbox', 'checkbox-group', 'radio-group', 'select', 'combobox', 'textarea', 'input-date', 'input-time', 'input-number', 'switch', 'toggle-group', 'slider', 'file-upload', 'search-input'],
+  overlay: ['tooltip', 'dropdown-menu', 'popover', 'modal', 'sheet', 'context-menu', 'command-palette'],
+  feedback: ['alert', 'toast', 'skeleton', 'empty-state', 'progress', 'badge'],
+  navigation: ['breadcrumb', 'tabs', 'pagination', 'stepper', 'side-rail', 'navbar'],
   data: ['table-toolbar', 'data-table'],
   typography: ['section-label', 'tag', 'code-block'],
 }

@@ -3,7 +3,9 @@ import {
   CalendarDays,
   CaseSensitive,
   CheckSquare,
+  Circle,
   Code2,
+  Search,
   ChevronDownSquare,
   Clock3,
   Hash,
@@ -15,6 +17,7 @@ import {
   SquareStack,
   Tags,
   TextCursorInput,
+  Upload,
   Waypoints,
   Users,
   ToggleLeft,
@@ -22,10 +25,12 @@ import {
   Columns,
   Bell,
   Plus,
-  Settings2
+  Settings2,
+  Command,
+  Menu
 } from 'lucide-react'
 
-import { Accordion, AccordionItem, Alert, Avatar, AvatarGroup, Breadcrumb, Button, Card, Checkbox, CheckboxGroup, CodeBlock, Combobox, DataTable, DateInput, DropdownMenu, EmptyState, FormField, FormHint, FormMessage, GlassPanel, Input, NumberInput, Pagination, Popover, RadioGroup, SectionLabel, Select, Sheet, Skeleton, Stepper, Switch, TableToolbar, Tabs, TabsContent, TabsList, TabsTrigger, Tag, Textarea, TimeInput, ToastProvider, Tooltip } from '../lib'
+import { Accordion, AccordionItem, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Card, Checkbox, CheckboxGroup, CodeBlock, CommandPalette, Combobox, ContextMenu, DataTable, DateInput, DropdownMenu, EmptyState, FileUpload, FormField, FormHint, FormMessage, GlassPanel, Input, Navbar, NumberInput, Pagination, Popover, Progress, RadioGroup, SearchInput, SectionLabel, Select, Sheet, Skeleton, Slider, Stepper, Switch, TableToolbar, Tabs, TabsContent, TabsList, TabsTrigger, Tag, Textarea, TimeInput, ToastProvider, ToggleGroup, Tooltip } from '../lib'
 import { ModalPreview } from '../features/docs/modal-preview'
 import { SiteBackgroundPlayground } from '../features/docs/site-background-playground'
 import { ToastPreview } from '../features/docs/toast-preview'
@@ -1451,6 +1456,361 @@ updateSettings({
         <Switch label={isPt ? 'Modo Beta' : 'Beta Mode'} description={isPt ? 'Testar novos recursos.' : 'Test new features.'} />
       </div>
     ),
+  },
+  {
+    id: 'toggle-group',
+    name: 'ToggleGroup',
+    category: 'form',
+    icon: <ToggleLeft size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Grupo de botoes estilo toggle para selecao exclusiva entre opcoes.' : 'Toggle-style button group for exclusive selection between options.',
+    source: 'src/lib/components/toggle-group.tsx',
+    importCode: "import { ToggleGroup } from '@/lib'",
+    snippet: isPt ? `<ToggleGroup defaultValue="1">
+  <ToggleGroup.Item value="1" label="Dia" />
+  <ToggleGroup.Item value="2" label="Semana" />
+  <ToggleGroup.Item value="3" label="Mes" />
+</ToggleGroup>` : `<ToggleGroup defaultValue="1">
+  <ToggleGroup.Item value="1" label="Day" />
+  <ToggleGroup.Item value="2" label="Week" />
+  <ToggleGroup.Item value="3" label="Month" />
+</ToggleGroup>`,
+    href: '#components/toggle-group',
+    urlText: 'components/toggle-group',
+    preview: (
+      <div className="flex flex-col gap-6">
+        <ToggleGroup defaultValue="1">
+          <ToggleGroup.Item value="1" label={isPt ? 'Dia' : 'Day'} />
+          <ToggleGroup.Item value="2" label={isPt ? 'Semana' : 'Week'} />
+          <ToggleGroup.Item value="3" label={isPt ? 'Mês' : 'Month'} />
+        </ToggleGroup>
+        <ToggleGroup defaultValue="2" orientation="vertical">
+          <ToggleGroup.Item value="1" label={isPt ? 'Pequeno' : 'Small'} />
+          <ToggleGroup.Item value="2" label={isPt ? 'Médio' : 'Medium'} />
+          <ToggleGroup.Item value="3" label={isPt ? 'Grande' : 'Large'} />
+        </ToggleGroup>
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Horizontal' : 'Horizontal',
+        code: isPt ? `<ToggleGroup defaultValue="1">
+  <ToggleGroup.Item value="1" label="Dia" />
+  <ToggleGroup.Item value="2" label="Semana" />
+  <ToggleGroup.Item value="3" label="Mês" />
+</ToggleGroup>` : `<ToggleGroup defaultValue="1">
+  <ToggleGroup.Item value="1" label="Day" />
+  <ToggleGroup.Item value="2" label="Week" />
+  <ToggleGroup.Item value="3" label="Month" />
+</ToggleGroup>`,
+      },
+      {
+        title: isPt ? 'Vertical' : 'Vertical',
+        code: isPt ? `<ToggleGroup defaultValue="1" orientation="vertical">
+  <ToggleGroup.Item value="1" label="Pequeno" />
+  <ToggleGroup.Item value="2" label="Médio" />
+  <ToggleGroup.Item value="3" label="Grande" />
+</ToggleGroup>` : `<ToggleGroup defaultValue="1" orientation="vertical">
+  <ToggleGroup.Item value="1" label="Small" />
+  <ToggleGroup.Item value="2" label="Medium" />
+  <ToggleGroup.Item value="3" label="Large" />
+</ToggleGroup>`,
+      },
+    ],
+  },
+  {
+    id: 'slider',
+    name: 'Slider',
+    category: 'form',
+    icon: <BetweenHorizontalStart size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Controle deslizante para selecao de valores numericos em um intervalo.' : 'Slider control for selecting numeric values within a range.',
+    source: 'src/lib/components/slider.tsx',
+    importCode: "import { Slider } from '@/lib'",
+    snippet: isPt ? `<Slider defaultValue={50} label="Volume" showValue />` : `<Slider defaultValue={50} label="Volume" showValue />`,
+    href: '#components/slider',
+    urlText: 'components/slider',
+    preview: (
+      <div className="flex flex-col gap-8 w-full max-w-[400px]">
+        <Slider defaultValue={50} label={isPt ? 'Volume' : 'Volume'} showValue />
+        <Slider defaultValue={75} min={0} max={100} step={5} label={isPt ? 'Progresso' : 'Progress'} showValue formatValue={(v) => v + '%'} />
+        <Slider defaultValue={25} disabled label={isPt ? 'Desabilitado' : 'Disabled'} showValue />
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Básico' : 'Basic',
+        code: isPt ? `<Slider defaultValue={50} label="Volume" showValue />` : `<Slider defaultValue={50} label="Volume" showValue />`,
+      },
+      {
+        title: isPt ? 'Com formatação' : 'With formatting',
+        code: isPt ? `<Slider defaultValue={75} min={0} max={100} step={5} label="Progresso" showValue formatValue={(v) => v + '%'} />` : `<Slider defaultValue={75} min={0} max={100} step={5} label="Progress" showValue formatValue={(v) => v + '%'} />`,
+      },
+    ],
+  },
+  {
+    id: 'file-upload',
+    name: 'FileUpload',
+    category: 'form',
+    icon: <Upload size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Area de upload com drag & drop, preview de imagens e validacao.' : 'Upload area with drag & drop, image preview and validation.',
+    source: 'src/lib/components/file-upload.tsx',
+    importCode: "import { FileUpload } from '@/lib'",
+    snippet: isPt ? `<FileUpload label="Arquivos" accept="image/*,.pdf" maxSize={5000000} />` : `<FileUpload label="Files" accept="image/*,.pdf" maxSize={5000000} />`,
+    href: '#components/file-upload',
+    urlText: 'components/file-upload',
+    preview: (
+      <div className="w-full max-w-[400px]">
+        <FileUpload
+          label={isPt ? 'Upload de arquivos' : 'File upload'}
+          accept="image/*,.pdf"
+          maxSize={5000000}
+          maxFiles={3}
+          hint={isPt ? 'Arraste ou clique para selecionar' : 'Drag or click to select'}
+        />
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Imagens apenas' : 'Images only',
+        code: isPt ? `<FileUpload label="Fotos" accept="image/*" multiple />` : `<FileUpload label="Photos" accept="image/*" multiple />`,
+      },
+      {
+        title: isPt ? 'Com limite de tamanho' : 'With size limit',
+        code: isPt ? `<FileUpload label="Documentos" accept=".pdf,.doc" maxSize={10000000} />` : `<FileUpload label="Documents" accept=".pdf,.doc" maxSize={10000000} />`,
+      },
+    ],
+  },
+  {
+    id: 'search-input',
+    name: 'SearchInput',
+    category: 'form',
+    icon: <Search size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Input de busca com debounce integrado e botao de limpar.' : 'Search input with built-in debounce and clear button.',
+    source: 'src/lib/components/search-input.tsx',
+    importCode: "import { SearchInput } from '@/lib'",
+    snippet: isPt ? `<SearchInput label="Buscar" placeholder="Digite para buscar..." debounceMs={300} />` : `<SearchInput label="Search" placeholder="Type to search..." debounceMs={300} />`,
+    href: '#components/search-input',
+    urlText: 'components/search-input',
+    preview: (
+      <div className="flex flex-col gap-4 w-full max-w-[300px]">
+        <SearchInput
+          label={isPt ? 'Buscar produtos' : 'Search products'}
+          placeholder={isPt ? 'Nome do produto...' : 'Product name...'}
+          debounceMs={300}
+        />
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Básico' : 'Basic',
+        code: isPt ? `<SearchInput placeholder="Buscar..." />` : `<SearchInput placeholder="Search..." />`,
+      },
+      {
+        title: isPt ? 'Com debounce' : 'With debounce',
+        code: isPt ? `<SearchInput debounceMs={500} onSearch={(value) => console.log(value)} />` : `<SearchInput debounceMs={500} onSearch={(value) => console.log(value)} />`,
+      },
+    ],
+  },
+  {
+    id: 'progress',
+    name: 'Progress',
+    category: 'feedback',
+    icon: <Circle size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Barra ou circular de progresso com variants de cor e tamanho.' : 'Linear or circular progress bar with color variants and sizes.',
+    source: 'src/lib/components/progress.tsx',
+    importCode: "import { Progress } from '@/lib'",
+    snippet: isPt ? `<Progress value={60} label="Carregando" />` : `<Progress value={60} label="Loading" />`,
+    href: '#components/progress',
+    urlText: 'components/progress',
+    preview: (
+      <div className="flex flex-col gap-6 w-full max-w-[300px]">
+        <Progress value={60} label={isPt ? 'Progresso' : 'Progress'} showValue />
+        <Progress value={45} variant="success" label={isPt ? 'Completo' : 'Complete'} showValue />
+        <Progress value={80} variant="warning" label={isPt ? 'Atenção' : 'Warning'} showValue />
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Linear' : 'Linear',
+        code: isPt ? `<Progress value={60} label="Progresso" showValue />` : `<Progress value={60} label="Progress" showValue />`,
+      },
+      {
+        title: isPt ? 'Circular' : 'Circular',
+        code: isPt ? `<Progress value={75} shape="circular" label="Carregando" showValue />` : `<Progress value={75} shape="circular" label="Loading" showValue />`,
+      },
+      {
+        title: isPt ? 'Indeterminado' : 'Indeterminate',
+        code: isPt ? `<Progress indeterminate label="Carregando..." />` : `<Progress indeterminate label="Loading..." />`,
+      },
+    ],
+  },
+  {
+    id: 'badge',
+    name: 'Badge',
+    category: 'feedback',
+    icon: <Circle size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Indicador de status com variants de cor e opçao de ponto.' : 'Status indicator with color variants and optional dot.',
+    source: 'src/lib/components/badge.tsx',
+    importCode: "import { Badge } from '@/lib'",
+    snippet: isPt ? `<Badge variant="success">Online</Badge>` : `<Badge variant="success">Online</Badge>`,
+    href: '#components/badge',
+    urlText: 'components/badge',
+    preview: (
+      <div className="flex flex-wrap gap-3">
+        <Badge variant="default">{isPt ? 'Padrão' : 'Default'}</Badge>
+        <Badge variant="success" dot>{isPt ? 'Online' : 'Online'}</Badge>
+        <Badge variant="warning" dot>{isPt ? 'Pendente' : 'Pending'}</Badge>
+        <Badge variant="error" dot>{isPt ? 'Erro' : 'Error'}</Badge>
+        <Badge variant="neutral">{isPt ? 'Inativo' : 'Inactive'}</Badge>
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Básico' : 'Basic',
+        code: isPt ? `<Badge>Novo</Badge>` : `<Badge>New</Badge>`,
+      },
+      {
+        title: isPt ? 'Com ponto' : 'With dot',
+        code: isPt ? `<Badge variant="success" dot>Online</Badge>` : `<Badge variant="success" dot>Online</Badge>`,
+      },
+      {
+        title: isPt ? 'Tamanhos' : 'Sizes',
+        code: isPt ? `<><Badge size="sm">Pequeno</Badge><Badge size="md">Médio</Badge><Badge size="lg">Grande</Badge></>` : `<><Badge size="sm">Small</Badge><Badge size="md">Medium</Badge><Badge size="lg">Large</Badge></>`,
+      },
+    ],
+  },
+  {
+    id: 'navbar',
+    name: 'Navbar',
+    category: 'navigation',
+    icon: <Menu size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Header responsivo com brand, navegacao, dropdowns e acoes.' : 'Responsive header with brand, navigation, dropdowns and actions.',
+    source: 'src/lib/components/navbar.tsx',
+    importCode: "import { Navbar } from '@/lib'",
+    snippet: isPt ? `<Navbar
+  brandTitle="MyApp"
+  brandSubtitle="PRO"
+  navItems={[{ id: '1', label: 'Home', href: '/' }]}
+  actions={[{ id: '1', label: 'Login', variant: 'primary' }]}
+/>` : `<Navbar
+  brandTitle="MyApp"
+  brandSubtitle="PRO"
+  navItems={[{ id: '1', label: 'Home', href: '/' }]}
+  actions={[{ id: '1', label: 'Login', variant: 'primary' }]}
+/>`,
+    href: '#components/navbar',
+    urlText: 'components/navbar',
+    preview: (
+      <div className="w-full">
+        <Navbar
+          brandTitle="Auralith"
+          brandSubtitle="UI"
+          navItems={[
+            { id: '1', label: isPt ? 'Início' : 'Home', href: '#' },
+            { id: '2', label: isPt ? 'Docs' : 'Docs', href: '#' },
+            { id: '3', label: isPt ? 'Componentes' : 'Components', href: '#' },
+          ]}
+          actions={[
+            { id: '1', label: isPt ? 'Login' : 'Login', variant: 'primary' },
+            { id: '2', label: isPt ? 'GitHub' : 'GitHub', variant: 'secondary' },
+          ]}
+        />
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Básico' : 'Basic',
+        code: isPt ? `<Navbar brandTitle="MinhaApp" navItems={[{ id: '1', label: 'Home', href: '/' }]} />` : `<Navbar brandTitle="MyApp" navItems={[{ id: '1', label: 'Home', href: '/' }]} />`,
+      },
+      {
+        title: isPt ? 'Com ações' : 'With actions',
+        code: isPt ? `<Navbar brandTitle="MinhaApp" actions={[{ id: '1', label: 'Login', variant: 'primary' }]} />` : `<Navbar brandTitle="MyApp" actions={[{ id: '1', label: 'Login', variant: 'primary' }]} />`,
+      },
+    ],
+  },
+  {
+    id: 'context-menu',
+    name: 'ContextMenu',
+    category: 'overlay',
+    icon: <Menu size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Menu de contexto ao clicar com botao direito do mouse.' : 'Context menu on right-click mouse button.',
+    source: 'src/lib/components/context-menu.tsx',
+    importCode: "import { ContextMenu } from '@/lib'\nimport { Copy, Edit, Trash } from 'lucide-react'",
+    snippet: isPt ? `<ContextMenu
+  items={[
+    { id: 'copy', label: 'Copiar', icon: <Copy size={14} /> },
+    { id: 'edit', label: 'Editar', icon: <Edit size={14} /> },
+  ]}
+/>` : `<ContextMenu
+  items={[
+    { id: 'copy', label: 'Copy', icon: <Copy size={14} /> },
+    { id: 'edit', label: 'Edit', icon: <Edit size={14} /> },
+  ]}
+/>`,
+    href: '#components/context-menu',
+    urlText: 'components/context-menu',
+    preview: (
+      <div className="flex items-center justify-center p-8">
+        <ContextMenu
+          items={[
+            { id: 'copy', label: isPt ? 'Copiar' : 'Copy', shortcut: 'Ctrl+C' },
+            { id: 'paste', label: isPt ? 'Colar' : 'Paste', shortcut: 'Ctrl+V' },
+            { id: 'edit', label: isPt ? 'Editar' : 'Edit' },
+            { id: 'delete', label: isPt ? 'Excluir' : 'Delete' },
+          ]}
+        >
+          <div className="rounded-lg border border-[var(--card-border)] bg-[var(--surface-base)] px-6 py-4 text-sm text-[var(--text-muted)]">
+            {isPt ? 'Clique com botão direito' : 'Right click here'}
+          </div>
+        </ContextMenu>
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Básico' : 'Basic',
+        code: isPt ? `<ContextMenu items={[{ id: '1', label: 'Opção 1' }]}><div>Conteúdo</div></ContextMenu>` : `<ContextMenu items={[{ id: '1', label: 'Option 1' }]}><div>Content</div></ContextMenu>`,
+      },
+    ],
+  },
+  {
+    id: 'command-palette',
+    name: 'CommandPalette',
+    category: 'overlay',
+    icon: <Command size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Menu de busca estilo Cmd+K com atalho de teclado.' : 'Cmd+K style search menu with keyboard shortcut.',
+    source: 'src/lib/components/command-palette.tsx',
+    importCode: "import { CommandPalette } from '@/lib'\nimport { Settings, User, Home } from 'lucide-react'",
+    snippet: isPt ? `<CommandPalette
+  items={[
+    { id: 'home', label: 'Home', icon: <Home /> },
+    { id: 'settings', label: 'Configurações', icon: <Settings /> },
+  ]}
+/>` : `<CommandPalette
+  items={[
+    { id: 'home', label: 'Home', icon: <Home /> },
+    { id: 'settings', label: 'Settings', icon: <Settings /> },
+  ]}
+/>`,
+    href: '#components/command-palette',
+    urlText: 'components/command-palette',
+    preview: (
+      <div className="flex items-center justify-center p-8">
+        <CommandPalette
+          placeholder={isPt ? 'Buscar comando...' : 'Search command...'}
+          items={[
+            { id: 'home', label: isPt ? 'Ir para Home' : 'Go to Home', shortcut: 'H' },
+            { id: 'docs', label: isPt ? 'Documentação' : 'Documentation', shortcut: 'D' },
+            { id: 'settings', label: isPt ? 'Configurações' : 'Settings', shortcut: 'S' },
+            { id: 'profile', label: isPt ? 'Perfil' : 'Profile', shortcut: 'P' },
+          ]}
+        />
+      </div>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Básico' : 'Basic',
+        code: isPt ? `<CommandPalette items={[{ id: '1', label: 'Buscar' }]} />` : `<CommandPalette items={[{ id: '1', label: 'Search' }]} />`,
+      },
+    ],
   },
   {
     id: 'accordion',
