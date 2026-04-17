@@ -1,12 +1,12 @@
 {
   "name": "auralith-ui",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Premium React component library with Auralith visual system.",
   "license": "MIT",
-  "homepage": "https://github.com/danilo-gomes/auralith-ui#readme",
+  "homepage": "https://danilodg.github.io/auralith-ui/?lang=pt",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danilo-gomes/auralith-ui.git"
+    "url": "git+https://github.com/danilodg/auralith-ui.git"
   },
   "type": "module",
   "files": [

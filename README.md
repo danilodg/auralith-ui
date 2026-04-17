@@ -2,6 +2,11 @@
 
 Auralith UI is a React component library focused on premium, glass-inspired product interfaces. It provides reusable primitives, composed patterns, and a shared visual language so different apps keep the same look and behavior.
 
+## Official links
+
+- GitHub repository: [https://github.com/danilodg/auralith-ui](https://github.com/danilodg/auralith-ui)
+- Live docs/showcase: [https://danilodg.github.io/auralith-ui/?lang=pt](https://danilodg.github.io/auralith-ui/?lang=pt)
+
 ## What this project is
 
 This repository has two goals:
