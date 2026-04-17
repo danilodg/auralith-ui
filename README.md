@@ -90,7 +90,6 @@ export function SignupCard() {
 
 ### App patterns
 - `SideRail`
-- `AuthShell`
 - `CodeBlock`
 
 ## Development commands

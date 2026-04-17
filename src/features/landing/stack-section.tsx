@@ -1,46 +1,80 @@
-import { CheckCircle2 } from 'lucide-react'
+import { ArrowUpRight, CheckCircle2 } from 'lucide-react'
 
-import { useLocale } from '../../locale-context'
 import { GlassPanel, SectionLabel, Tag } from '../../lib'
 
 interface StackSectionProps {
-  componentNames: ReadonlyArray<string>
-  stackItems: ReadonlyArray<string>
+  technicalSection: {
+    eyebrow: string
+    title: string
+    description: string
+    technologies: ReadonlyArray<{
+      name: string
+      reason: string
+      impact: string
+    }>
+    scopeEyebrow: string
+    scopeDescription: string
+    categories: ReadonlyArray<string>
+    dependencyLabel: string
+    dependencyCount: string
+    openAllLabel: string
+  }
+  onOpenComponents: () => void
 }
 
-export function StackSection({ componentNames, stackItems }: StackSectionProps) {
-  const { strings } = useLocale()
-
+export function StackSection({ technicalSection, onOpenComponents }: StackSectionProps) {
   return (
-    <div className="grid gap-6 lg:grid-cols-2 w-full">
-      <GlassPanel className="p-6 sm:p-8 border border-[color:var(--card-border)] shadow-sm bg-[color:var(--surface-base)] flex flex-col justify-center">
-        <SectionLabel>{strings.landing.currentStack}</SectionLabel>
-        <div className="mt-6 flex flex-wrap gap-3">
-          {stackItems.map((item) => (
-            <Tag key={item} className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] px-3 py-1.5 text-[0.8rem]">{item}</Tag>
+    <div className="grid w-full gap-3 lg:grid-cols-2">
+      <GlassPanel className="flex flex-col justify-center border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-3 shadow-sm">
+        <SectionLabel>{technicalSection.eyebrow}</SectionLabel>
+        <h2 className="mt-2 font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(1.25rem,3.2vw,1.8rem)] font-semibold tracking-[-0.03em] text-[color:var(--text-main)]">
+          {technicalSection.title}
+        </h2>
+        <p className="mt-3 text-sm leading-6 text-[color:var(--text-soft)]">
+          {technicalSection.description}
+        </p>
+
+        <div className="mt-3 grid gap-2">
+          {technicalSection.technologies.map((item) => (
+            <div key={item.name} className="rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.015)] p-3">
+              <div className="flex items-center justify-between gap-2">
+                <Tag className="border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)]">
+                  {item.name}
+                </Tag>
+                <CheckCircle2 className="text-[color:var(--text-muted)] opacity-50" size={15} />
+              </div>
+              <p className="mt-2 text-sm leading-6 text-[color:var(--text-soft)]">{item.reason}</p>
+              <p className="mt-1 text-[0.74rem] uppercase tracking-[0.1em] text-[color:var(--accent-soft)]">{item.impact}</p>
+            </div>
           ))}
         </div>
-        <p className="mt-6 text-[1.05rem] leading-7 text-[color:var(--text-soft)]">
-          {strings.landing.stackDescription}
-        </p>
       </GlassPanel>
 
-      <GlassPanel className="p-6 sm:p-8 border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] relative overflow-hidden group">
+      <GlassPanel className="group relative overflow-hidden border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-3">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[color:var(--accent-line)] opacity-[0.02] blur-[50px] group-hover:opacity-[0.04] transition-opacity duration-700" />
         <div className="flex items-center justify-between gap-3 relative z-10">
-          <SectionLabel>{strings.landing.libraryScope}</SectionLabel>
+          <SectionLabel>{technicalSection.scopeEyebrow}</SectionLabel>
           <span className="rounded-[999px] border border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-[color:var(--accent-line)]">
-            {componentNames.length} items
+            {technicalSection.dependencyCount} {technicalSection.dependencyLabel}
           </span>
         </div>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 relative z-10">
-          {componentNames.map((name) => (
-            <div key={name} className="flex items-center justify-between rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.015)] p-3 hover:border-[rgba(111,224,255,0.2)] transition-colors">
+        <p className="relative z-10 mt-2 text-sm leading-6 text-[color:var(--text-soft)]">{technicalSection.scopeDescription}</p>
+        <div className="relative z-10 mt-3 grid gap-2 sm:grid-cols-2">
+          {technicalSection.categories.map((name) => (
+            <div key={name} className="flex items-center justify-between rounded-[8px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.015)] p-2 transition-colors hover:border-[rgba(111,224,255,0.2)]">
               <span className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.14em] text-[color:var(--text-soft)]">{name}</span>
               <CheckCircle2 className="text-[color:var(--text-muted)] opacity-50" size={15} />
             </div>
           ))}
         </div>
+        <button
+          type="button"
+          onClick={onOpenComponents}
+          className="relative z-10 mt-3 inline-flex items-center gap-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-[color:var(--accent-line)] transition hover:brightness-110"
+        >
+          {technicalSection.openAllLabel}
+          <ArrowUpRight size={13} />
+        </button>
       </GlassPanel>
     </div>
   )

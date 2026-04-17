@@ -9,16 +9,16 @@ export function PrimitivesShowcase() {
 
   return (
     <section className="grid gap-3 lg:grid-cols-[0.95fr_1.05fr]">
-      <GlassPanel className="p-3 sm:p-3">
+      <GlassPanel className="p-3">
         <SectionHeader
           eyebrow={strings.landing.featuredPrimitives}
           heading={strings.landing.featuredPrimitivesTitle}
           description={strings.landing.featuredPrimitivesDescription}
         />
-        <div className="mt-3 grid gap-3">
+        <div className="mt-2 grid gap-2">
           <Input label={strings.landing.workEmail} type="email" placeholder="name@company.com" icon={<Mail size={18} />} hint={strings.landing.workEmailHint} />
           <Textarea label={strings.landing.projectBrief} placeholder={strings.landing.projectBriefHint} hint={strings.landing.projectBriefHint} />
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             <Button>{strings.landing.requestDesignSystem}</Button>
             <Button variant="secondary">{strings.landing.previewTokens}</Button>
           </div>
@@ -26,7 +26,7 @@ export function PrimitivesShowcase() {
       </GlassPanel>
 
       <div className="grid gap-3">
-        <Card className="p-3 sm:p-3" variant="subtle">
+        <Card className="p-3" variant="subtle">
           <SectionHeader
             eyebrow={strings.landing.whyLibrary}
             heading={strings.landing.whyLibraryTitle}

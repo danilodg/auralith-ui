@@ -13,6 +13,8 @@ export type LocaleStrings = {
     heroTitle: string
     heroDescription: string
     exploreDocs: string
+    viewComponents: string
+    readFoundations: string
     currentStack: string
     stackDescription: string
     libraryScope: string
@@ -33,18 +35,9 @@ export type LocaleStrings = {
     whyLibrary: string
     whyLibraryTitle: string
     whyLibraryDescription: string
-    authEyebrow: string
-    authTitle: string
-    authDescription: string
-    authHighlights: string[]
-    authStats: Array<{ value: string; label: string }>
-    authPreview: string
-    accessWorkspace: string
-    authPreviewDescription: string
-    password: string
-    passwordPlaceholder: string
-    continue: string
-    recoveryFlow: string
+    releaseEyebrow: string
+    releaseTitle: string
+    releaseDescription: string
     nextStep: string
     nextStepTitle: string
     openDocumentation: string
@@ -82,10 +75,12 @@ export const localeStrings: Record<Language, LocaleStrings> = {
     },
     landing: {
       heroEyebrow: 'Design system em evolucao',
-      heroTitle: 'Biblioteca front-end premium para criar interfaces consistentes, escalaveis e prontas para produto.',
+      heroTitle: 'Biblioteca React para interfaces de produto consistentes, escalaveis e prontas para entrega.',
       heroDescription:
-        'Componentes React reais com tokens, variantes e exemplos vivos para acelerar entregas sem perder identidade visual.',
+        'Use componentes reais com tokens, variantes e docs vivas para acelerar squads sem perder identidade visual.',
       exploreDocs: 'Explorar docs',
+      viewComponents: 'Ver componentes',
+      readFoundations: 'Ler fundamentos',
       currentStack: 'Stack atual',
       stackDescription: 'Base enxuta para evoluir em repositorio proprio, publicar como pacote e reutilizar internamente com consistencia visual.',
       libraryScope: 'Escopo da biblioteca',
@@ -94,7 +89,7 @@ export const localeStrings: Record<Language, LocaleStrings> = {
       featuredPrimitivesDescription: 'Os componentes nascem da extracao dos seus projetos e viram base pronta para novas paginas, formularios e fluxos de produto.',
       workEmail: 'Work email',
       projectBrief: 'Resumo do projeto',
-      workEmailHint: 'Campo inspirado no contact form e no login showcase.',
+      workEmailHint: 'Campo inspirado no contact form da landing.',
       projectBriefHint: 'Pronto para forms de contato, proposta ou onboarding.',
       requestDesignSystem: 'Solicitar design system',
       previewTokens: 'Ver tokens',
@@ -105,25 +100,12 @@ export const localeStrings: Record<Language, LocaleStrings> = {
       openDocs: 'Abrir docs',
       whyLibrary: 'Por que a biblioteca',
       whyLibraryTitle: 'Menos retrabalho e mais consistencia entre produtos com a mesma assinatura.',
-      whyLibraryDescription: 'Auralith UI conecta identidade visual e implementacao, evitando reescrever glass panels, auth shell, campos e overlays em cada novo projeto.',
-      authEyebrow: 'Preview de pattern',
-      authTitle: 'Auth shell pronto para login, recuperacao, onboarding e acesso privado.',
-      authDescription: 'Esse pattern traz a composicao principal do login para a biblioteca, mantendo trust stats, conteudo lateral e formulario reaproveitavel.',
-      authHighlights: ['trust stats', 'auth ready', 'responsive shell'],
-      authStats: [
-        { value: '99.98%', label: 'uptime para servicos de auth' },
-        { value: '< 120ms', label: 'tempo medio de resposta' },
-        { value: '24/7', label: 'camada de monitoramento' },
-      ],
-      authPreview: 'Preview de auth',
-      accessWorkspace: 'Acessar workspace',
-      authPreviewDescription: 'Use a estrutura como base para sign-in, verification, waitlist ou acesso privado.',
-      password: 'Senha',
-      passwordPlaceholder: 'Digite sua senha segura',
-      continue: 'Continuar',
-      recoveryFlow: 'Fluxo de recuperacao',
+      whyLibraryDescription: 'Auralith UI conecta identidade visual e implementacao, evitando reescrever glass panels, campos e overlays em cada novo projeto.',
+      releaseEyebrow: 'Release highlights',
+      releaseTitle: 'Novidades da v0.1.8 para fluxos reais de produto',
+      releaseDescription: 'Inclui novos componentes e refinos visuais para overlays, confirmacoes e legibilidade em contexto.',
       nextStep: 'Proximo passo',
-      nextStepTitle: 'Acesse a docs para navegar pelos 38 componentes com preview, codigo e referencia de uso.',
+      nextStepTitle: 'Acesse a docs para navegar pelos componentes com preview, codigo e referencia de uso.',
       openDocumentation: 'Abrir documentacao',
     },
     docs: {
@@ -157,9 +139,11 @@ export const localeStrings: Record<Language, LocaleStrings> = {
     },
     landing: {
       heroEyebrow: 'Design system in progress',
-      heroTitle: 'A premium front-end library to build consistent, scalable, product-ready interfaces.',
-      heroDescription: 'Real React components with tokens, variants, and live examples to ship faster without losing visual identity.',
+      heroTitle: 'A React library for consistent, scalable, product-ready interfaces.',
+      heroDescription: 'Use real components with tokens, variants, and live docs to ship faster without losing visual identity.',
       exploreDocs: 'Explore docs',
+      viewComponents: 'View components',
+      readFoundations: 'Read foundations',
       currentStack: 'Current stack',
       stackDescription: 'A lean foundation to evolve in its own repository, publish as a package, and reuse internally with visual consistency.',
       libraryScope: 'Library scope',
@@ -168,7 +152,7 @@ export const localeStrings: Record<Language, LocaleStrings> = {
       featuredPrimitivesDescription: 'These components are extracted from your real projects and become a ready base for new pages, forms, and product flows.',
       workEmail: 'Work email',
       projectBrief: 'Project brief',
-      workEmailHint: 'Field inspired by the contact form and the login showcase.',
+      workEmailHint: 'Field inspired by the landing contact form.',
       projectBriefHint: 'Ready for contact forms, proposals or onboarding.',
       requestDesignSystem: 'Request design system',
       previewTokens: 'Preview tokens',
@@ -179,25 +163,12 @@ export const localeStrings: Record<Language, LocaleStrings> = {
       openDocs: 'Open docs',
       whyLibrary: 'Why this library',
       whyLibraryTitle: 'Less rework and more consistency across products with the same signature.',
-      whyLibraryDescription: 'Auralith UI bridges visual identity and implementation, avoiding rewrites of glass panels, auth shell, fields, and overlays in every new project.',
-      authEyebrow: 'Pattern preview',
-      authTitle: 'Auth shell ready for login, recovery, onboarding, and private access.',
-      authDescription: 'This pattern brings the core login composition into the library, keeping trust stats, side content, and a reusable form panel.',
-      authHighlights: ['trust stats', 'auth ready', 'responsive shell'],
-      authStats: [
-        { value: '99.98%', label: 'uptime for auth services' },
-        { value: '< 120ms', label: 'average response time' },
-        { value: '24/7', label: 'monitoring layer' },
-      ],
-      authPreview: 'Auth preview',
-      accessWorkspace: 'Access workspace',
-      authPreviewDescription: 'Use this structure as a base for sign-in, verification, waitlist or private access.',
-      password: 'Password',
-      passwordPlaceholder: 'Enter your secure password',
-      continue: 'Continue',
-      recoveryFlow: 'Recovery flow',
+      whyLibraryDescription: 'Auralith UI bridges visual identity and implementation, avoiding rewrites of glass panels, fields, and overlays in every new project.',
+      releaseEyebrow: 'Release highlights',
+      releaseTitle: 'What is new in v0.1.8 for real product flows',
+      releaseDescription: 'Includes new components and visual refinements for overlays, confirmations, and readability in context.',
       nextStep: 'Next step',
-      nextStepTitle: 'Open docs to browse all 38 components with preview, code, and usage references.',
+      nextStepTitle: 'Open docs to browse components with preview, code, and usage references.',
       openDocumentation: 'Open documentation',
     },
     docs: {

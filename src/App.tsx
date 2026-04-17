@@ -269,12 +269,12 @@ function App() {
                       <button
                         className="inline-flex w-full items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] px-2 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.1em] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover-strong)] hover:text-[color:var(--text-main)]"
                         onClick={() => {
-                          navigateToHash('#components/auth-shell')
+                          navigateToHash('#components/alert-dialog')
                           setAccountMenuOpen(false)
                         }}
                         type="button"
                       >
-                        {language === 'pt' ? 'Abrir perfil' : 'Open profile'}
+                        {language === 'pt' ? 'Abrir componente' : 'Open component'}
                       </button>
                     </div>
                   </div>
@@ -287,7 +287,11 @@ function App() {
           <div className="mx-auto w-full max-w-[1000px] p-2">
             <div className="flex min-h-[calc(100vh-2rem)] flex-col">
               {route.page === 'landing' ? (
-                <LandingPage onOpenDocs={() => navigateToHash('#docs')} />
+                <LandingPage
+                  onNavigateToHash={navigateToHash}
+                  onOpenComponents={() => navigateToHash('#components')}
+                  onOpenDocs={() => navigateToHash('#docs')}
+                />
               ) : (
                 <DocsPage
                   docs={componentDocs}
