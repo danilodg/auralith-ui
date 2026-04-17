@@ -42,6 +42,8 @@ jobs:
           fi
 
       - name: Build showcase
+        env:
+          VITE_GA_MEASUREMENT_ID: ${{ secrets.VITE_GA_MEASUREMENT_ID }}
         run: npm run build
 
       - name: Deploy to gh-pages branch

@@ -24,6 +24,19 @@ type AppRoute = {
 type ThemeMode = 'dark' | 'light'
 
 const THEME_STORAGE_KEY = 'auralith-ui:theme'
+const gaMeasurementId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined) || 'G-DQHCX4M98M'
+
+function trackPageView() {
+  if (!gaMeasurementId || typeof window.gtag !== 'function') {
+    return
+  }
+
+  window.gtag('event', 'page_view', {
+    send_to: gaMeasurementId,
+    page_location: window.location.href,
+    page_path: `${window.location.pathname}${window.location.search}${window.location.hash}`,
+  })
+}
 
 function getInitialTheme(): ThemeMode {
   if (typeof window === 'undefined') return 'dark'
@@ -83,9 +96,15 @@ function App() {
   const componentDocs = useMemo(() => createComponentDocs(language), [language])
 
   useEffect(() => {
-    const handleHashChange = () => setRoute(getRouteFromHash(window.location.hash))
+    const handleHashChange = () => {
+      setRoute(getRouteFromHash(window.location.hash))
+      trackPageView()
+    }
 
     window.addEventListener('hashchange', handleHashChange)
+
+    trackPageView()
+
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
@@ -95,6 +114,8 @@ function App() {
     if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== nextUrl) {
       window.history.replaceState(null, '', nextUrl)
     }
+
+    trackPageView()
   }, [language])
 
   useEffect(() => {
