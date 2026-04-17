@@ -11,7 +11,7 @@ declare global {
 }
 
 function setupGoogleAnalytics() {
-  const measurementId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined) || 'G-DQHCX4M98M'
+  const measurementId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined) || 'G-4D1S2T4M31'
 
   if (!measurementId) {
     return
