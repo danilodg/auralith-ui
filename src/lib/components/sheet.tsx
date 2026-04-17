@@ -142,7 +142,7 @@ function SheetContent({ children, className, side = 'right', ...props }: SheetCo
       <button
         aria-label="Close sheet"
         className={cn(
-          'absolute inset-0 bg-[color:var(--overlay-backdrop)]/90 backdrop-blur-sm',
+          'absolute inset-0 bg-black/40',
           isClosing ? 'auralith-sheet-overlay-out' : 'auralith-sheet-overlay',
         )}
         onClick={() => setOpen(false)}
@@ -151,7 +151,7 @@ function SheetContent({ children, className, side = 'right', ...props }: SheetCo
 
       <div
         className={cn(
-          'absolute z-10 border border-[color:var(--panel-border)] bg-[color:var(--modal-bg)] shadow-[var(--panel-shadow)]',
+          'absolute z-10 border border-[color:var(--panel-border)] bg-[color:var(--surface-menu)] shadow-[var(--panel-shadow)]',
           side === 'right'
             ? `${isClosing ? 'auralith-sheet-exit-right' : 'auralith-sheet-enter-right'} right-0 top-0 h-full w-[min(92vw,420px)] border-l`
             : '',

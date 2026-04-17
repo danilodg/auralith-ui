@@ -222,6 +222,4 @@ function NavbarBase({
   )
 }
 
-type NavbarComponent = typeof NavbarBase
-
 export const Navbar = NavbarBase

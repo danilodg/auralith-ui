@@ -12,7 +12,7 @@
 - `dist/` and `dist-showcase/` are generated artifacts; do not hand-edit.
 
 ## Current npm release
-- Latest published package: `auralith-ui@0.1.7`.
+- Latest published package: `auralith-ui@0.1.8`.
 - Quick check: `npm view auralith-ui version`.
 
 ## SideRail breakpoint rule
@@ -50,6 +50,12 @@
 ## Practical verification order
 - Library changes: `npm run build:lib` -> `npm run pack:check`.
 - Showcase changes: `VITE_BASE_PATH=/auralith-ui/ npm run build` (to mirror Pages behavior).
+
+## Documentation sync rule
+- Every change in `src/lib/components/*` or `src/lib/index.ts` must be reflected in docs/showcase before task completion.
+- Update `README.md` whenever public API, links, install/publish instructions, or usage guidance changes.
+- Update showcase docs (`src/data/component-docs.tsx`) whenever a component is added, removed, or behavior/UI contract changes.
+- Do not publish a new npm version without docs updated and verified.
 
 ## Documentation policy (Context7 first)
 - For library/framework documentation, query Context7 first.

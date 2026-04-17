@@ -151,7 +151,7 @@ function CommandPaletteBase({
       className="fixed inset-0 z-[100] flex items-start justify-center bg-black/40 pt-[15vh]"
       onClick={handleBackdropClick}
     >
-      <div className="w-full max-w-[560px] rounded-[12px] border border-[var(--card-border)] bg-[var(--surface-base)] shadow-[0_16px_48px_rgba(0,0,0,0.4)]">
+      <div className="w-full max-w-[560px] rounded-[12px] border border-[var(--card-border)] bg-[var(--surface-menu)] shadow-[0_16px_48px_rgba(0,0,0,0.4)] backdrop-blur-md">
         <div className="flex items-center gap-2 border-b border-[var(--card-border)] px-4 py-3">
           <Search className="h-4 w-4 text-[var(--text-muted)]" />
           <input
@@ -242,7 +242,5 @@ function CommandPaletteBase({
     </>
   )
 }
-
-type CommandPaletteComponent = typeof CommandPaletteBase
 
 export const CommandPalette = CommandPaletteBase

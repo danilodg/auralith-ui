@@ -27,10 +27,11 @@ import {
   Plus,
   Settings2,
   Command,
-  Menu
+  Menu,
+  Minus
 } from 'lucide-react'
 
-import { Accordion, AccordionItem, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Card, Checkbox, CheckboxGroup, CodeBlock, CommandPalette, Combobox, ContextMenu, DataTable, DateInput, DropdownMenu, EmptyState, FileUpload, FormField, FormHint, FormMessage, GlassPanel, Input, Navbar, NumberInput, Pagination, Popover, Progress, RadioGroup, SearchInput, SectionLabel, Select, Sheet, Skeleton, Slider, Stepper, Switch, TableToolbar, Tabs, TabsContent, TabsList, TabsTrigger, Tag, Textarea, TimeInput, ToastProvider, ToggleGroup, Tooltip } from '../lib'
+import { Accordion, AccordionItem, Alert, AlertDialog, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Card, Checkbox, CheckboxGroup, CodeBlock, CommandPalette, Combobox, ContextMenu, DataTable, DateInput, DropdownMenu, EmptyState, FileUpload, FormField, FormHint, FormMessage, GlassPanel, Input, Navbar, NumberInput, Pagination, Popover, Progress, RadioGroup, SearchInput, SectionHeader, SectionLabel, Select, Separator, Sheet, Skeleton, Slider, Stepper, Switch, TableToolbar, Tabs, TabsContent, TabsList, TabsTrigger, Tag, Textarea, TimeInput, ToastProvider, ToggleGroup, Tooltip } from '../lib'
 import { ModalPreview } from '../features/docs/modal-preview'
 import { SiteBackgroundPlayground } from '../features/docs/site-background-playground'
 import { ToastPreview } from '../features/docs/toast-preview'
@@ -69,10 +70,36 @@ function getStructuredMeta(id: string, isPt: boolean) {
         ? ['Este componente e de showcase do site e afeta o fundo global em tempo real.', 'As cores base continuam vindo do CSS global (tokens do tema).']
         : ['This is a showcase-site component that affects the global background in real time.', 'Base colors still come from global CSS theme tokens.'],
     },
+    'section-header': {
+      anatomy: ['SectionHeader'],
+      parts: [
+        { name: 'eyebrow', description: isPt ? 'Texto superior opcional para contexto da secao.' : 'Optional upper text for section context.' },
+        { name: 'title', description: isPt ? 'Titulo principal da secao.' : 'Primary section title.' },
+        { name: 'description', description: isPt ? 'Texto de apoio logo abaixo do titulo.' : 'Supporting copy below the title.' },
+      ],
+      notes: isPt ? ['Ideal para abertura de blocos de conteudo e docs.'] : ['Great for section openings in docs and content blocks.'],
+    },
     'section-label': {
       anatomy: ['SectionLabel'],
       parts: [{ name: 'SectionLabel', description: isPt ? 'Eyebrow tecnico simples.' : 'Simple technical eyebrow.' }],
       notes: isPt ? ['Componente de uso direto, sem necessidade de subpartes.'] : ['Direct-use component, no subparts needed.'],
+    },
+    separator: {
+      anatomy: ['Separator'],
+      parts: [
+        { name: 'orientation', description: isPt ? 'Define se a linha e horizontal ou vertical.' : 'Defines whether the line is horizontal or vertical.' },
+        { name: 'tone', description: isPt ? 'Controla o gradiente entre `accent` e `muted`.' : 'Controls gradient tone between `accent` and `muted`.' },
+      ],
+      notes: isPt ? ['Use para dividir grupos em cards e listas sem criar borda dura.'] : ['Use to split card/list groups without introducing a hard border.'],
+    },
+    'alert-dialog': {
+      anatomy: ['AlertDialog.Root', 'AlertDialog.Trigger', 'AlertDialog.Content', 'AlertDialog.Footer'],
+      parts: [
+        { name: 'AlertDialog.Root', description: isPt ? 'Gerencia estado controlado ou nao controlado do dialog.' : 'Manages controlled or uncontrolled dialog state.' },
+        { name: 'AlertDialog.Cancel', description: isPt ? 'Acao secundaria para cancelar/fechar.' : 'Secondary action to cancel/close.' },
+        { name: 'AlertDialog.Action', description: isPt ? 'Acao principal de confirmacao, com suporte a `tone="danger"`.' : 'Primary confirmation action, with `tone="danger"` support.' },
+      ],
+      notes: isPt ? ['Use para confirmacao destrutiva; para dialog generico continue com `Modal`.'] : ['Use for destructive confirmation; keep using `Modal` for generic dialogs.'],
     },
     tag: {
       anatomy: ['Tag'],
@@ -533,6 +560,33 @@ updateSettings({
     ],
   },
   {
+    id: 'section-header',
+    name: 'SectionHeader',
+    category: 'typography',
+    icon: <CaseSensitive size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Cabecalho de secao com eyebrow, heading e descricao em layout consistente.' : 'Section heading block with eyebrow, heading, and description in a consistent layout.',
+    source: 'src/lib/components/section-header.tsx',
+    importCode: "import { SectionHeader } from '@/lib'",
+    snippet: isPt ? `<SectionHeader
+  eyebrow="Plataforma"
+  heading="Equipe e governanca"
+  description="Gerencie membros, papeis e acessos em um unico lugar."
+/>` : `<SectionHeader
+  eyebrow="Platform"
+  heading="Team and governance"
+  description="Manage members, roles, and access in one place."
+/>`,
+    href: '#components/section-header',
+    urlText: 'components/section-header',
+    preview: (
+      <SectionHeader
+        eyebrow={isPt ? 'Plataforma' : 'Platform'}
+        heading={isPt ? 'Equipe e governanca' : 'Team and governance'}
+        description={isPt ? 'Gerencie membros, papeis e acessos em um unico lugar.' : 'Manage members, roles, and access in one place.'}
+      />
+    ),
+  },
+  {
     id: 'section-label',
     name: 'SectionLabel',
     category: 'typography',
@@ -544,6 +598,33 @@ updateSettings({
     href: '#components/section-label',
     urlText: 'components/section-label',
     preview: <SectionLabel>{isPt ? 'Direcao do sistema' : 'System direction'}</SectionLabel>,
+  },
+  {
+    id: 'separator',
+    name: 'Separator',
+    category: 'typography',
+    icon: <Minus size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Divisor visual com degradê horizontal ou vertical para separar blocos sem peso excessivo.' : 'Visual divider with horizontal/vertical gradient to separate blocks without heavy borders.',
+    source: 'src/lib/components/separator.tsx',
+    importCode: "import { Separator } from '@/lib'",
+    snippet: isPt ? `<div className="space-y-4">
+  <p>Grupo A</p>
+  <Separator />
+  <p>Grupo B</p>
+</div>` : `<div className="space-y-4">
+  <p>Group A</p>
+  <Separator />
+  <p>Group B</p>
+</div>`,
+    href: '#components/separator',
+    urlText: 'components/separator',
+    preview: (
+      <div className="w-full max-w-[660px] rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-4">
+        <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Bloco superior' : 'Top block'}</p>
+        <Separator className="my-3" />
+        <p className="text-sm text-[color:var(--text-soft)]">{isPt ? 'Bloco inferior' : 'Bottom block'}</p>
+      </div>
+    ),
   },
   {
     id: 'tag',
@@ -1311,6 +1392,116 @@ updateSettings({
         </Popover.Root>
       </div>
     ),
+  },
+  {
+    id: 'alert-dialog',
+    name: 'AlertDialog',
+    category: 'overlay',
+    icon: <Bell size={16} strokeWidth={1.8} />,
+    description: isPt ? 'Dialog de confirmacao para acoes criticas e destrutivas com CTA de cancelamento e confirmacao.' : 'Confirmation dialog for critical/destructive actions with cancel and confirm CTAs.',
+    source: 'src/lib/components/alert-dialog.tsx',
+    importCode: "import { AlertDialog, Button } from '@/lib'",
+    snippet: isPt ? `<AlertDialog.Root>
+  <AlertDialog.Trigger asChild>
+    <Button variant="secondary">Excluir projeto</Button>
+  </AlertDialog.Trigger>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Excluir projeto?</AlertDialog.Title>
+      <AlertDialog.Description>Essa acao nao pode ser desfeita.</AlertDialog.Description>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancelar</AlertDialog.Cancel>
+      <AlertDialog.Action tone="danger">Excluir</AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>` : `<AlertDialog.Root>
+  <AlertDialog.Trigger asChild>
+    <Button variant="secondary">Delete project</Button>
+  </AlertDialog.Trigger>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Delete project?</AlertDialog.Title>
+      <AlertDialog.Description>This action cannot be undone.</AlertDialog.Description>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action tone="danger">Delete</AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>`,
+    href: '#components/alert-dialog',
+    urlText: 'components/alert-dialog',
+    preview: (
+      <AlertDialog.Root>
+        <AlertDialog.Trigger asChild>
+          <Button variant="secondary">{isPt ? 'Excluir projeto' : 'Delete project'}</Button>
+        </AlertDialog.Trigger>
+        <AlertDialog.Content>
+          <AlertDialog.Header>
+            <AlertDialog.Title>{isPt ? 'Excluir projeto?' : 'Delete project?'}</AlertDialog.Title>
+            <AlertDialog.Description>
+              {isPt ? 'Essa acao remove definitivamente os dados deste projeto.' : 'This action permanently removes this project data.'}
+            </AlertDialog.Description>
+          </AlertDialog.Header>
+          <AlertDialog.Footer>
+            <AlertDialog.Cancel>{isPt ? 'Cancelar' : 'Cancel'}</AlertDialog.Cancel>
+            <AlertDialog.Action tone="danger">{isPt ? 'Excluir' : 'Delete'}</AlertDialog.Action>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
+    ),
+    examples: [
+      {
+        title: isPt ? 'Confirmacao destrutiva' : 'Destructive confirmation',
+        code: isPt ? `<AlertDialog.Root>
+  <AlertDialog.Trigger asChild>
+    <Button variant="secondary">Excluir item</Button>
+  </AlertDialog.Trigger>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Excluir item?</AlertDialog.Title>
+      <AlertDialog.Description>Essa acao nao pode ser desfeita.</AlertDialog.Description>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancelar</AlertDialog.Cancel>
+      <AlertDialog.Action tone="danger">Excluir</AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>` : `<AlertDialog.Root>
+  <AlertDialog.Trigger asChild>
+    <Button variant="secondary">Delete item</Button>
+  </AlertDialog.Trigger>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Delete item?</AlertDialog.Title>
+      <AlertDialog.Description>This action cannot be undone.</AlertDialog.Description>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action tone="danger">Delete</AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>`,
+      },
+    ],
+    api: [
+      {
+        name: 'AlertDialog.Root',
+        type: isPt ? 'container' : 'container',
+        description: isPt ? 'Aceita `defaultOpen`, `open` e `onOpenChange` para controle de estado.' : 'Accepts `defaultOpen`, `open`, and `onOpenChange` for state control.',
+      },
+      {
+        name: 'AlertDialog.Action',
+        type: isPt ? 'acao principal' : 'primary action',
+        description: isPt ? 'Botao de confirmacao com suporte a `tone="danger"` para risco.' : 'Confirmation button with `tone="danger"` support for risky actions.',
+      },
+      {
+        name: 'AlertDialog.Cancel',
+        type: isPt ? 'acao secundaria' : 'secondary action',
+        description: isPt ? 'Fecha o dialog e cancela a acao atual.' : 'Closes the dialog and cancels current action.',
+      },
+    ],
   },
   {
     id: 'sheet',

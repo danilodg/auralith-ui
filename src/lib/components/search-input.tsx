@@ -29,7 +29,6 @@ function SearchInputBase({
   value: controlledValue,
 }: SearchInputProps) {
   const [internalValue, setInternalValue] = React.useState(defaultValue ?? '')
-  const [debouncedValue, setDebouncedValue] = React.useState(defaultValue ?? '')
   const isControlled = controlledValue !== undefined
   const currentValue = isControlled ? controlledValue : internalValue
 
@@ -41,11 +40,9 @@ function SearchInputBase({
     }
 
     if (debounceMs === 0) {
-      setDebouncedValue(currentValue)
       onSearch?.(currentValue)
     } else {
       timeoutRef.current = setTimeout(() => {
-        setDebouncedValue(currentValue)
         onSearch?.(currentValue)
       }, debounceMs)
     }
@@ -68,7 +65,6 @@ function SearchInputBase({
   const handleClear = () => {
     if (!isControlled) {
       setInternalValue('')
-      setDebouncedValue('')
     }
     onValueChange?.('')
     onSearch?.('')
@@ -115,7 +111,5 @@ function SearchInputBase({
     </div>
   )
 }
-
-type SearchInputComponent = typeof SearchInputBase
 
 export const SearchInput = SearchInputBase

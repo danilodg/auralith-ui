@@ -136,7 +136,7 @@ function DropdownMenuContent({ children, className, ...props }: HTMLAttributes<H
   return createPortal(
     <div
       className={cn(
-        'fixed z-[260] min-w-[260px] rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]',
+        'fixed z-[260] min-w-[260px] rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-3 shadow-[0_18px_46px_rgba(0,0,0,0.24)]',
         className,
       )}
       style={{
@@ -169,7 +169,7 @@ function DropdownMenuItem({ children, className, description, onClick, ...props 
 
   return (
     <button
-      className={cn('flex w-full flex-col rounded-[8px] px-4 py-3 text-left transition hover:bg-[color:var(--surface-hover)]', className)}
+      className={cn('flex w-full flex-col rounded-[8px] px-3 py-2 text-left transition hover:bg-[color:var(--surface-hover)]', className)}
       onClick={handleClick}
       type="button"
       {...props}
@@ -181,7 +181,7 @@ function DropdownMenuItem({ children, className, description, onClick, ...props 
 }
 
 function DropdownMenuSeparator({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('my-1 h-px bg-[color:var(--card-border)]', className)} {...props} />
+  return <div className={cn('my-2 h-px bg-[color:var(--card-border)]', className)} {...props} />
 }
 
 export const DropdownMenu = {

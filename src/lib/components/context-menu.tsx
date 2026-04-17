@@ -99,7 +99,7 @@ function ContextMenuBase({ items, children, className }: ContextMenuProps) {
             {hasChildren && <ChevronRight className="h-3.5 w-3.5 text-[var(--text-muted)]" />}
           </button>
           {hasChildren && isSubmenuOpen && (
-            <div className="absolute left-full top-0 ml-1 min-w-[160px] rounded-[8px] border border-[var(--card-border)] bg-[var(--surface-base)] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.3)]">
+            <div className="absolute left-full top-0 ml-1 min-w-[160px] rounded-[8px] border border-[var(--card-border)] bg-[var(--surface-menu)] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.3)] backdrop-blur-md">
               {item.items!.map((subItem) => (
                 <button
                   key={subItem.id}
@@ -138,7 +138,7 @@ function ContextMenuBase({ items, children, className }: ContextMenuProps) {
   const menu = isOpen && (
     <div
       ref={menuRef}
-      className="fixed z-[100] min-w-[180px] rounded-[8px] border border-[var(--card-border)] bg-[var(--surface-base)] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.3)]"
+      className="fixed z-[100] min-w-[180px] rounded-[8px] border border-[var(--card-border)] bg-[var(--surface-menu)] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.3)] backdrop-blur-md"
       style={{ left: position.x, top: position.y }}
       role="menu"
     >
@@ -153,7 +153,5 @@ function ContextMenuBase({ items, children, className }: ContextMenuProps) {
     </div>
   )
 }
-
-type ContextMenuComponent = typeof ContextMenuBase
 
 export const ContextMenu = ContextMenuBase

@@ -69,7 +69,9 @@ export function SignupCard() {
 ### Primitives
 - `Button`
 - `Tag`
+- `SectionHeader`
 - `SectionLabel`
+- `Separator`
 
 ### Forms
 - `Input`
@@ -81,6 +83,7 @@ export function SignupCard() {
 ### Surfaces and overlays
 - `Card`
 - `GlassPanel`
+- `AlertDialog`
 - `Modal`
 - `Tooltip`
 - `DropdownMenu`

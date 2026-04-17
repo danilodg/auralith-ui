@@ -120,24 +120,24 @@ function ModalContent({ children, className, ...props }: ModalContentProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2">
       <button
         aria-label="Close modal"
-        className="absolute inset-0 bg-[color:var(--overlay-backdrop)] backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40"
         onClick={() => setOpen(false)}
         type="button"
       />
 
       <div
         className={cn(
-          'relative z-10 w-full max-w-2xl rounded-[8px] border border-[color:var(--panel-border)] bg-[color:var(--modal-bg)] p-2 shadow-[var(--panel-shadow)] sm:p-2',
+          'relative z-10 w-full max-w-2xl rounded-[8px] border border-[color:var(--panel-border)] bg-[color:var(--surface-menu)] p-3 shadow-[var(--panel-shadow)]',
           className,
         )}
         {...props}
       >
         <button
-          className="absolute right-6 top-6 inline-flex h-10 w-10 items-center justify-center rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-soft)] text-[color:var(--text-soft)] transition hover:text-[color:var(--text-main)]"
+          className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-[8px] border border-[color:var(--panel-border)] bg-[color:var(--surface-soft)] text-[color:var(--text-soft)] transition hover:text-[color:var(--text-main)]"
           onClick={() => setOpen(false)}
           type="button"
         >
-          <X size={16} />
+          <X size={14} />
         </button>
         {children}
       </div>
@@ -148,7 +148,7 @@ function ModalContent({ children, className, ...props }: ModalContentProps) {
 
 function ModalHeader({ children, className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('pr-14', className)} {...props}>
+    <div className={cn('pr-10', className)} {...props}>
       {children}
     </div>
   )
@@ -170,7 +170,7 @@ function ModalTitle({ children, className, ...props }: HTMLAttributes<HTMLHeadin
 
 function ModalDescription({ children, className, ...props }: HTMLAttributes<HTMLParagraphElement>) {
   return (
-    <p className={cn('mt-3 text-sm leading-6 text-[color:var(--text-soft)]', className)} {...props}>
+    <p className={cn('mt-2 text-sm leading-6 text-[color:var(--text-soft)]', className)} {...props}>
       {children}
     </p>
   )
@@ -178,7 +178,7 @@ function ModalDescription({ children, className, ...props }: HTMLAttributes<HTML
 
 function ModalBody({ children, className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('mt-6', className)} {...props}>
+    <div className={cn('mt-2', className)} {...props}>
       {children}
     </div>
   )
@@ -186,7 +186,7 @@ function ModalBody({ children, className, ...props }: HTMLAttributes<HTMLDivElem
 
 function ModalFooter({ children, className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('mt-6 flex flex-wrap justify-end gap-3', className)} {...props}>
+    <div className={cn('mt-2 flex flex-wrap justify-end gap-2', className)} {...props}>
       {children}
     </div>
   )
