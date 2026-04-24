@@ -4,6 +4,7 @@ import { CtaSection } from '../features/landing/cta-section'
 import { HeroSection } from '../features/landing/hero-section'
 import { PillarsSection } from '../features/landing/pillars-section'
 import { PrimitivesShowcase } from '../features/landing/primitives-showcase'
+import { RecommendedStackSection } from '../features/landing/recommended-stack-section'
 import { ReleaseHighlightsSection } from '../features/landing/release-highlights-section'
 import { StackSection } from '../features/landing/stack-section'
 import { useLocale } from '../locale-context'
@@ -26,6 +27,7 @@ export function LandingPage({ onNavigateToHash, onOpenComponents, onOpenDocs }: 
       <PillarsSection pillars={content.pillars} />
       <StackSection technicalSection={content.technicalSection} onOpenComponents={onOpenComponents} />
       <PrimitivesShowcase />
+      <RecommendedStackSection setup={content.recommendedSetup} />
       <CtaSection onOpenDocs={onOpenDocs} />
     </div>
   )

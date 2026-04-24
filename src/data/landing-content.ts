@@ -137,5 +137,34 @@ export function createLandingContent(language: Language) {
           : 'Project cards, editorial blocks, and docs-ready structures speed up composition.',
       },
     ] as const,
+    recommendedSetup: {
+      eyebrow: isPt ? 'Recomendado' : 'Recommended',
+      title: isPt ? 'Setup rapido para projetos SaaS' : 'Fast setup for SaaS projects',
+      description: isPt
+        ? 'Gere um projeto pronto para producao com React 19, Vite, Tailwind v4 e Auralith UI integrada desde o primeiro commit.'
+        : 'Generate a production-ready project with React 19, Vite, Tailwind v4, and Auralith UI integrated from the first commit.',
+      badges: ['auralith-stack'],
+      featureCards: [
+        {
+          title: isPt ? 'Templates Premium' : 'Premium templates',
+          description: isPt ? 'Landing e Dashboard integrados.' : 'Integrated Landing and Dashboard.',
+        },
+        {
+          title: 'Zero Config',
+          description: isPt ? 'Tokens, tema e base prontos.' : 'Tokens, theme, and base ready.',
+        },
+      ],
+      commandLabels: {
+        landing: isPt ? 'Criar landing' : 'Create landing',
+        dashboard: isPt ? 'Criar dashboard' : 'Create dashboard',
+      },
+      commands: {
+        landing: 'npx create-auralith-app my-app --template landing',
+        dashboard: 'npx create-auralith-app my-app --template dashboard',
+      },
+      repositoryLabel: isPt ? 'Repositorio:' : 'Repository:',
+      repositoryUrl: 'https://github.com/danilodg/auralith-stack',
+      repositoryText: 'github.com/danilodg/auralith-stack',
+    } as const,
   }
 }

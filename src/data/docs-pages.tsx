@@ -2,6 +2,7 @@ import { BookOpen, Layers, TerminalSquare } from 'lucide-react'
 
 import { Card, CodeBlock, GlassPanel, SectionLabel, Tag } from '../lib'
 import { SectionHeader } from '../lib/components/section-header'
+import { RecommendedStackSection } from '../features/landing/recommended-stack-section'
 import type { Language } from '../i18n'
 import type { DocPage } from '../types/docs'
 
@@ -18,6 +19,38 @@ export function createDocsPages(language: Language): DocPage[] {
       icon: <TerminalSquare size={16} strokeWidth={1.8} />,
       content: (
         <div className="flex flex-col gap-6">
+          <RecommendedStackSection
+            setup={{
+              eyebrow: isPt ? 'Recomendado' : 'Recommended',
+              title: isPt ? 'Setup rapido para projetos SaaS' : 'Fast setup for SaaS projects',
+              description: isPt
+                ? 'Gere um projeto pronto para producao com React 19, Vite, Tailwind v4 e Auralith UI integrada desde o primeiro commit.'
+                : 'Generate a production-ready project with React 19, Vite, Tailwind v4, and Auralith UI integrated from the first commit.',
+              badges: ['auralith-stack'],
+              featureCards: [
+                {
+                  title: isPt ? 'Templates Premium' : 'Premium templates',
+                  description: isPt ? 'Landing e Dashboard integrados.' : 'Integrated Landing and Dashboard.',
+                },
+                {
+                  title: 'Zero Config',
+                  description: isPt ? 'Tokens, tema e base prontos.' : 'Tokens, theme, and base ready.',
+                },
+              ],
+              commandLabels: {
+                landing: isPt ? 'Criar landing' : 'Create landing',
+                dashboard: isPt ? 'Criar dashboard' : 'Create dashboard',
+              },
+              commands: {
+                landing: 'npx create-auralith-app my-app --template landing',
+                dashboard: 'npx create-auralith-app my-app --template dashboard',
+              },
+              repositoryLabel: isPt ? 'Repositorio:' : 'Repository:',
+              repositoryUrl: 'https://github.com/danilodg/auralith-stack',
+              repositoryText: 'github.com/danilodg/auralith-stack',
+            }}
+          />
+
           <section className="grid gap-5 sm:gap-6 lg:grid-cols-2 lg:gap-8">
             <GlassPanel className="min-w-0 flex flex-col justify-center border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-5 shadow-sm sm:p-8 lg:p-10">
               <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -33,27 +66,27 @@ export function createDocsPages(language: Language): DocPage[] {
                 description={isPt ? 'Como instalar a biblioteca e preparar o ambiente no seu projeto.' : 'How to install the library and prepare the environment in your project.'}
               />
 
-                <div className="mt-5 space-y-3 sm:mt-6 sm:space-y-4">
+              <div className="mt-5 space-y-3 sm:mt-6 sm:space-y-4">
                 <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-3)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">
                     {isPt ? 'Instalar pacote' : 'Install package'}
                   </p>
-                    <CodeBlock
-                      className="mt-2 w-full"
-                      showLanguageTabs={false}
-                      snippets={[{ code: 'npm install auralith-ui', language: 'bash', label: 'Bash' }]}
-                    />
+                  <CodeBlock
+                    className="mt-2 w-full"
+                    showLanguageTabs={false}
+                    snippets={[{ code: 'npm install auralith-ui', language: 'bash', label: 'Bash' }]}
+                  />
                 </div>
 
                 <div className="rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2">
                   <p className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] uppercase tracking-[0.18em] text-[color:var(--text-muted)]">
                     {isPt ? 'Incluir estilos' : 'Include styles'}
                   </p>
-                    <CodeBlock
-                      className="mt-2 w-full"
-                      showLanguageTabs={false}
-                      snippets={[{ code: "@import 'auralith-ui/styles.css';", language: 'css', label: 'CSS' }]}
-                    />
+                  <CodeBlock
+                    className="mt-2 w-full"
+                    showLanguageTabs={false}
+                    snippets={[{ code: "@import 'auralith-ui/styles.css';", language: 'css', label: 'CSS' }]}
+                  />
                 </div>
               </div>
             </GlassPanel>
@@ -68,30 +101,31 @@ export function createDocsPages(language: Language): DocPage[] {
                   <Tag className="border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] px-2.5 py-1 text-[0.72rem] text-[color:var(--accent-line)] sm:text-[0.8rem]">tailwind v4</Tag>
                 </div>
                 <div className="mt-6 grid gap-3 sm:mt-8 sm:gap-4">
-                {[0, 1, 2].map((index) => {
-                  const content = isPt
+                  {(isPt
                     ? [
                         ['1. Instale a biblioteca', 'Adicione o pacote no projeto onde os componentes serao usados.'],
                         ['2. Importe os estilos', 'Garanta que os tokens visuais e estilos base carreguem no app.'],
                         ['3. Use os componentes', 'Importe `Button`, `Input`, `Card` e os outros blocos conforme necessario.'],
-                      ][index]
+                        ['4. Para setup completo, use auralith-stack', 'Scaffold com CLI e templates landing/dashboard quando quiser iniciar um projeto novo do zero.'],
+                        ['5. Suba o app localmente', 'Rode `npm run dev` para validar layout, tema e comportamento antes de publicar.'],
+                      ]
                     : [
                         ['1. Install the library', 'Add the package to the project where the components will be used.'],
                         ['2. Import the styles', 'Make sure the visual tokens and base styles are loaded in the app.'],
                         ['3. Use the components', 'Import `Button`, `Input`, `Card` and the other building blocks as needed.'],
-                      ][index]
-
-                  return (
-                    <Card className="bg-[rgba(255,255,255,0.015)] p-3 transition-colors hover:border-[rgba(111,224,255,0.2)] sm:p-4" key={content[0]} variant="subtle">
-                      <p className="font-medium text-[color:var(--text-main)]">{content[0]}</p>
-                      <p className="mt-2 text-[0.9rem] leading-6 text-[color:var(--text-soft)] sm:text-[0.95rem]">{content[1]}</p>
+                        ['4. For full setup, use auralith-stack', 'Scaffold with CLI and landing/dashboard templates when you want a new project from scratch.'],
+                        ['5. Run the app locally', 'Use `npm run dev` to validate layout, theme, and behavior before publishing.'],
+                      ]).map((item) => (
+                    <Card className="bg-[rgba(255,255,255,0.015)] p-3 transition-colors hover:border-[rgba(111,224,255,0.2)] sm:p-4" key={item[0]} variant="subtle">
+                      <p className="font-medium text-[color:var(--text-main)]">{item[0]}</p>
+                      <p className="mt-2 text-[0.9rem] leading-6 text-[color:var(--text-soft)] sm:text-[0.95rem]">{item[1]}</p>
                     </Card>
-                  )
-                })}
-              </div>
+                  ))}
+                </div>
               </div>
             </Card>
           </section>
+
         </div>
       ),
     },

@@ -42,6 +42,16 @@ Import styles once in your app entrypoint (`main.tsx` or `App.tsx`):
 import 'auralith-ui/styles.css'
 ```
 
+For a full project bootstrap (landing/dashboard template + Auralith UI pre-integrated), use Auralith Stack:
+
+```bash
+npx create-auralith-app my-app --template landing
+# or
+npx create-auralith-app my-app --template dashboard
+```
+
+Repository: [https://github.com/danilodg/auralith-stack](https://github.com/danilodg/auralith-stack)
+
 ## Quick usage
 
 ```tsx
