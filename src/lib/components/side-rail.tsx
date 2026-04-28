@@ -32,6 +32,7 @@ interface SideRailProps {
   bottomSlot?: ReactNode
   onPinnedChange?: (isPinned: boolean) => void
   onLayoutOffsetChange?: (offset: number) => void
+  mobileHeaderSlot?: ReactNode
 }
 
 function getTooltipText(item: SideRailItem) {
@@ -329,6 +330,7 @@ export function SideRail({
   items,
   onPinnedChange,
   onLayoutOffsetChange,
+  mobileHeaderSlot,
 }: SideRailProps) {
   const [pinned, setPinned] = useState(getInitialPinnedState)
   const [expanded, setExpanded] = useState(() => getInitialPinnedState())
@@ -728,14 +730,17 @@ export function SideRail({
             </span>
           </a>
           
-          <button
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[color:var(--surface-hover)] text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-hover-strong)]"
-            onClick={openMobileMenu}
-            title="Abrir menu"
-            type="button"
-          >
-            <Menu size={18} />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {mobileHeaderSlot}
+            <button
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[color:var(--surface-hover)] text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-hover-strong)]"
+              onClick={openMobileMenu}
+              title="Abrir menu"
+              type="button"
+            >
+              <Menu size={18} />
+            </button>
+          </div>
         </div>
 
         {mobileMenuRendered && (
