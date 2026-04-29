@@ -2,6 +2,8 @@ import * as React from 'react'
 import { createPortal } from 'react-dom'
 import { AlertCircle, CheckCircle2, Info, X } from 'lucide-react'
 
+import { ToastContext } from './toast-context'
+
 export type ToastVariant = 'default' | 'success' | 'error' | 'info'
 export type ToastPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
 
@@ -162,19 +164,6 @@ export function Toast({ id, title, description, variant = 'default', position = 
       </button>
     </div>
   )
-}
-
-// Toast Context & Provider
-interface ToastContextValue {
-  toast: (props: Omit<ToastProps, 'id' | 'onClose'>) => void
-}
-
-const ToastContext = React.createContext<ToastContextValue | null>(null)
-
-export function useToast() {
-  const ctx = React.useContext(ToastContext)
-  if (!ctx) throw new Error('useToast must be used within ToastProvider')
-  return ctx.toast
 }
 
 export function ToastProvider({ children, position = 'bottom-right' }: { children: React.ReactNode; position?: ToastPosition }) {
