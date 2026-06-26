@@ -6,9 +6,12 @@ import { Clock3 } from 'lucide-react'
 import { useState } from 'react'
 
 import { cn } from '../utils/cn'
+import { getFieldMotionClass } from './field-motion'
+import type { FieldMotion } from './field-motion'
 
 export interface TimeInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'onChange' | 'value' | 'defaultValue'> {
   defaultValue?: string
+  fieldMotion?: FieldMotion
   hint?: string
   label?: string
   onValueChange?: (value: string) => void
@@ -21,7 +24,7 @@ function normalizeTime(raw: string) {
   return `${digits.slice(0, 2)}:${digits.slice(2, 4)}`
 }
 
-function TimeInputBase({ className, defaultValue = '', hint, id, label, onValueChange, placeholder = 'HH:MM', value, ...props }: TimeInputProps) {
+function TimeInputBase({ className, defaultValue = '', fieldMotion = 'subtle', hint, id, label, onValueChange, placeholder = 'HH:MM', value, ...props }: TimeInputProps) {
   const fieldId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
   const [internalValue, setInternalValue] = useState(defaultValue)
   const isControlled = value !== undefined
@@ -42,6 +45,7 @@ function TimeInputBase({ className, defaultValue = '', hint, id, label, onValueC
         <input
           className={cn(
             'w-full rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] px-3 py-1.5 pr-9 text-[0.88rem] text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
+            getFieldMotionClass(fieldMotion),
             className,
           )}
           id={fieldId}

@@ -54,8 +54,8 @@ export function ToastPreview({ isPt }: { isPt: boolean }) {
   }
 
   return (
-    <div className="w-full max-w-[760px] p-6">
-      <div className="mx-auto flex max-w-[640px] flex-col items-center gap-5 text-center">
+    <div className="w-full max-w-[760px] p-3 sm:p-6">
+      <div className="mx-auto flex max-w-[640px] flex-col items-center gap-4 text-center sm:gap-5">
         <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[color:var(--surface-hover)] text-[color:var(--accent-line)]">
           <BellRing size={22} strokeWidth={1.9} />
         </div>

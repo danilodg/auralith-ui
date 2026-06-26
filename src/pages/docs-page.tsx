@@ -45,19 +45,19 @@ export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedCo
     }
 
     return (
-      <div className="mx-auto flex min-h-full w-full max-w-[1000px] flex-1 flex-col gap-6 overflow-x-hidden">
-        <GlassPanel className="relative overflow-hidden border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-5 text-center shadow-[0_8px_40px_rgba(0,0,0,0.12)] sm:p-10 lg:p-16">
+      <div className="mx-auto flex min-h-full w-full max-w-[1000px] flex-1 flex-col gap-4 overflow-x-hidden sm:gap-6">
+        <GlassPanel className="relative overflow-hidden border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-4 text-center shadow-[0_8px_40px_rgba(0,0,0,0.12)] sm:p-10 lg:p-16">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(111,224,255,0.06)_0%,transparent_60%)] pointer-events-none" />
           <div className="absolute inset-0 max-w-4xl mx-auto rounded-[100%] bg-[color:var(--accent-line)] opacity-[0.03] blur-[80px] pointer-events-none" />
 
           <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center w-full">
-            <Tag className="absolute top-[20px] left-1/2 -translate-x-1/2 mb-0 whitespace-nowrap border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)] sm:static sm:left-auto sm:top-auto sm:translate-x-0 sm:mb-6">
+            <Tag className="mb-5 whitespace-nowrap border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)] sm:mb-6">
               {strings.docs.heroEyebrow}
             </Tag>
             <h1 className="max-w-3xl font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(1.75rem,7vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-[color:var(--text-main)] drop-shadow-sm">
               {isPt ? 'Fundamentos e Guias' : 'Foundations & Guides'}
             </h1>
-            <p className="mt-4 max-w-2xl text-[0.98rem] leading-7 text-[color:var(--text-soft)] sm:text-[1.1rem]">
+            <p className="mt-4 max-w-2xl text-[0.92rem] leading-6 text-[color:var(--text-soft)] sm:text-[1.1rem] sm:leading-7">
               {isPt ? 'Guia completo de instalacao e os fundamentos base para aplicar os patterns no seu projeto.' : 'Complete installation guide and baseline foundations for applying patterns in your project.'}
             </p>
 
@@ -69,7 +69,7 @@ export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedCo
           </div>
         </GlassPanel>
 
-        <div className="grid gap-6">
+        <div className="grid gap-4 sm:gap-6">
           {docPages.map((entry) => (
             <DocDetailView docPage={entry} key={entry.id} />
           ))}
@@ -83,16 +83,16 @@ export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedCo
   }
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-[1000px] flex-1 flex-col gap-6 overflow-x-hidden">
-      <section className="flex flex-col gap-8 w-full">
+    <div className="mx-auto flex min-h-full w-full max-w-[1000px] flex-1 flex-col gap-4 overflow-x-hidden sm:gap-6">
+      <section className="flex w-full flex-col gap-4 sm:gap-8">
         <DocsHero categories={categories} onBackHome={onBackHome} totalComponents={filteredDocs.length} />
         <DocsOverview />
       </section>
 
-      <section className="grid gap-8">
+      <section className="grid gap-5 sm:gap-8">
         {docsByCategory.map((categoryGroup) => (
-          <div className="grid gap-4" key={categoryGroup.category}>
-            <GlassPanel className="border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-4 sm:p-5">
+          <div className="grid gap-3 sm:gap-4" key={categoryGroup.category}>
+            <GlassPanel className="border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-3.5 sm:p-5">
               <div className="flex flex-wrap items-center gap-3">
                 <Tag className="border-[rgba(111,224,255,0.2)] bg-[rgba(111,224,255,0.05)] text-[color:var(--accent-line)]">
                   {getDocCategoryLabel(categoryGroup.category, isPt)}
@@ -101,15 +101,15 @@ export function DocsPage({ docs, docPage, docPages, onBackHome, page, selectedCo
                   {categoryGroup.items.length} {isPt ? 'componentes' : 'components'}
                 </Tag>
               </div>
-              <h2 className="mt-3 font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[1.2rem] font-semibold tracking-[-0.02em] text-[color:var(--text-main)]">
+              <h2 className="mt-3 font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[1.08rem] font-semibold tracking-[-0.02em] text-[color:var(--text-main)] sm:text-[1.2rem]">
                 {getDocCategoryTitle(categoryGroup.category, isPt)}
               </h2>
-              <p className="mt-2 text-[0.9rem] leading-6 text-[color:var(--text-soft)]">
+              <p className="mt-2 text-[0.86rem] leading-6 text-[color:var(--text-soft)] sm:text-[0.9rem]">
                 {getDocCategoryDescription(categoryGroup.category, isPt)}
               </p>
             </GlassPanel>
 
-            <div className="grid gap-6">
+            <div className="grid gap-4 sm:gap-6">
               {categoryGroup.items.map((doc) => (
                 <ComponentDocCard doc={doc} key={doc.id} />
               ))}

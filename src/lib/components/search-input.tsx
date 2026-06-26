@@ -2,6 +2,8 @@ import * as React from 'react'
 import { Search, X } from 'lucide-react'
 
 import { cn } from '../utils/cn'
+import { getFieldMotionClass } from './field-motion'
+import type { FieldMotion } from './field-motion'
 
 export interface SearchInputProps {
   label?: string
@@ -12,6 +14,7 @@ export interface SearchInputProps {
   onSearch?: (value: string) => void
   debounceMs?: number
   disabled?: boolean
+  fieldMotion?: FieldMotion
   hint?: string
   className?: string
 }
@@ -21,6 +24,7 @@ function SearchInputBase({
   defaultValue,
   debounceMs = 300,
   disabled,
+  fieldMotion = 'subtle',
   hint,
   label,
   onSearch,
@@ -93,6 +97,7 @@ function SearchInputBase({
           onChange={handleChange}
           className={cn(
             'w-full rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] py-1.5 pr-8 pl-9 text-[0.88rem] text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
+            getFieldMotionClass(fieldMotion),
             disabled && 'cursor-not-allowed opacity-50',
           )}
         />

@@ -6,6 +6,8 @@ import { createPortal } from 'react-dom'
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 
 import { cn } from '../utils/cn'
+import { getFieldMotionClass } from './field-motion'
+import type { FieldMotion } from './field-motion'
 
 type DateInputMode = 'single' | 'range'
 
@@ -20,6 +22,7 @@ export interface DateInputProps {
   className?: string
   defaultValue?: DateInputValue
   disabled?: boolean
+  fieldMotion?: FieldMotion
   hint?: string
   id?: string
   label?: string
@@ -102,6 +105,7 @@ function DateInputBase({
   className,
   defaultValue,
   disabled = false,
+  fieldMotion = 'subtle',
   hint,
   id,
   label,
@@ -335,6 +339,7 @@ function DateInputBase({
           aria-expanded={open}
           className={cn(
             'w-full rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] px-3 py-1.5 pr-9 text-left text-[0.88rem] text-[color:var(--text-main)] outline-none transition focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
+            getFieldMotionClass(fieldMotion),
             disabled ? 'cursor-not-allowed opacity-60' : '',
             className,
           )}

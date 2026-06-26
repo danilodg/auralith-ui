@@ -4,15 +4,18 @@ import type { InputHTMLAttributes, ReactNode } from 'react'
 import type { HTMLAttributes, LabelHTMLAttributes } from 'react'
 
 import { cn } from '../utils/cn'
+import { getFieldMotionClass } from './field-motion'
+import type { FieldMotion } from './field-motion'
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
   hint?: string
   icon?: ReactNode
   endAdornment?: ReactNode
+  fieldMotion?: FieldMotion
 }
 
-function InputBase({ className, endAdornment, hint, icon, id, label, ...props }: InputProps) {
+function InputBase({ className, endAdornment, fieldMotion = 'subtle', hint, icon, id, label, ...props }: InputProps) {
   const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
 
   return (
@@ -28,6 +31,7 @@ function InputBase({ className, endAdornment, hint, icon, id, label, ...props }:
           id={inputId}
           className={cn(
             'w-full rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] px-3 py-1.5 text-[0.88rem] text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
+            getFieldMotionClass(fieldMotion),
             icon ? 'pl-9 pr-3' : '',
             endAdornment ? 'pr-10' : '',
             className,
@@ -61,13 +65,14 @@ function InputLabel({ children, className, ...props }: HTMLAttributes<HTMLSpanEl
   )
 }
 
-function InputField({ className, endAdornment, icon, ...props }: Omit<InputProps, 'hint' | 'label'>) {
+function InputField({ className, endAdornment, fieldMotion = 'subtle', icon, ...props }: Omit<InputProps, 'hint' | 'label'>) {
   return (
     <span className="relative block">
       {icon ? <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]">{icon}</span> : null}
       <input
         className={cn(
           'w-full rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] px-3 py-1.5 text-[0.88rem] text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
+          getFieldMotionClass(fieldMotion),
           icon ? 'pl-9 pr-3' : '',
           endAdornment ? 'pr-10' : '',
           className,

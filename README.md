@@ -25,7 +25,7 @@ If you want to contribute or explore components visually, run this repo locally 
 
 ## What you get in practice
 
-- Consistent form controls with predictable states and sizing.
+- Consistent form controls with predictable states, sizing, and configurable subtle motion.
 - Ready-to-use overlays and navigation patterns for app shells.
 - Shared style tokens and CSS that keep visual rhythm across products.
 - Typed React components that fit strict TypeScript projects.
@@ -61,7 +61,7 @@ export function SignupCard() {
   return (
     <Card className="p-4">
       <SectionLabel>Get started</SectionLabel>
-      <Input label="Email" placeholder="you@email.com" />
+      <Input label="Email" placeholder="you@email.com" fieldMotion="glow" />
       <Button className="mt-3">Continue</Button>
     </Card>
   )
@@ -73,6 +73,18 @@ export function SignupCard() {
 - Internal dashboards that need a cohesive visual system.
 - SaaS frontends that want premium visuals without custom UI from scratch.
 - Teams that want one source of truth for shared React UI components.
+
+## Field motion
+
+Form controls use a discreet entry/focus motion by default. Configure it with `fieldMotion` on `Input`, `Input.Field`, `SearchInput`, `DateInput`, `TimeInput`, `NumberInput`, `Textarea`, and `Textarea.Field`.
+
+```tsx
+<Input label="Email" fieldMotion="glow" />
+<Textarea label="Brief" fieldMotion="lift" />
+<NumberInput label="Quantity" fieldMotion="none" />
+```
+
+Available values: `subtle` (default), `glow`, `lift`, and `none`.
 
 ## Components included
 

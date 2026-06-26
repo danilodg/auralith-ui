@@ -109,22 +109,22 @@ function CodeBlockBase({ className, defaultLanguage, defaultTone = 'color', show
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)]',
+        'min-w-0 overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)]',
         className,
       )}
       {...props}
     >
       {(showLanguageTabs && snippets.length > 1) || showToneToggle || showCopyButton ? (
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[color:var(--card-border)] bg-[color:var(--surface-soft)] px-2 py-1.5">
+        <div className="flex items-center justify-between gap-1.5 border-b border-[color:var(--card-border)] bg-[color:var(--surface-soft)] px-1.5 py-1.5 sm:flex-wrap sm:gap-2 sm:px-2">
           {showLanguageTabs && snippets.length > 1 ? (
-            <div className="flex flex-wrap gap-1">
+            <div className="flex min-w-0 flex-1 gap-1 overflow-x-auto sm:flex-none sm:flex-wrap sm:overflow-visible">
               {snippets.map((snippet) => {
                 const isActive = snippet.language === activeSnippet.language
 
                 return (
                   <button
                     className={cn(
-                      'rounded-[8px] px-2 py-1 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.62rem] uppercase tracking-[0.1em] transition',
+                      'shrink-0 rounded-[8px] px-2 py-1 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.58rem] uppercase tracking-[0.1em] transition sm:text-[0.62rem]',
                       isActive
                         ? 'bg-[linear-gradient(135deg,var(--accent-start),var(--accent-mid)_55%,var(--accent-end))] text-white'
                         : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-hover)]',
@@ -140,33 +140,33 @@ function CodeBlockBase({ className, defaultLanguage, defaultTone = 'color', show
             </div>
           ) : <span />}
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             {showToneToggle ? (
               <button
-                className="inline-flex items-center gap-1 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] px-2 py-1 text-[0.62rem] uppercase tracking-[0.1em] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)]"
+                className="inline-flex items-center gap-1 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] px-2 py-1 text-[0.58rem] uppercase tracking-[0.1em] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)] sm:text-[0.62rem]"
                 onClick={() => setTone((current) => (current === 'color' ? 'mono' : 'color'))}
                 type="button"
               >
                 {tone === 'color' ? <Palette size={11} /> : <Paintbrush2 size={11} />}
-                {tone === 'color' ? 'Color' : 'Mono'}
+                <span className="hidden sm:inline">{tone === 'color' ? 'Color' : 'Mono'}</span>
               </button>
             ) : null}
 
             {showCopyButton ? (
               <button
-                className="inline-flex items-center gap-1 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] px-2 py-1 text-[0.62rem] uppercase tracking-[0.1em] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)]"
+                className="inline-flex items-center gap-1 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] px-2 py-1 text-[0.58rem] uppercase tracking-[0.1em] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)] sm:text-[0.62rem]"
                 onClick={handleCopyCode}
                 type="button"
               >
                 {copied ? <Check size={11} /> : <Copy size={11} />}
-                {copied ? 'Copied' : 'Copy'}
+                <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy'}</span>
               </button>
             ) : null}
           </div>
         </div>
       ) : null}
 
-      <pre className={cn('overflow-x-auto p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs leading-6', tone === 'mono' ? 'text-[color:var(--text-soft)]' : 'text-[color:var(--text-main)]')}>
+      <pre className={cn('overflow-x-auto p-2 font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.68rem] leading-5 sm:text-xs sm:leading-6', tone === 'mono' ? 'text-[color:var(--text-soft)]' : 'text-[color:var(--text-main)]')}>
         {tone === 'mono'
           ? <code>{activeSnippet.code}</code>
           : <code dangerouslySetInnerHTML={{ __html: colorizeCode(activeSnippet.code, activeSnippet.language) }} />}

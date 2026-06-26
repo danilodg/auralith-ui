@@ -704,9 +704,9 @@ export function SideRail({
       ) : null}
 
       {!isDesktopViewport ? (
-      <header className="fixed inset-x-0 top-0 z-40">
-        <div className="flex h-[60px] items-center justify-between gap-3 border-b border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] px-[14px] shadow-[0_10px_30px_rgba(0,0,0,0.16)] [view-transition-name:none]">
-          <a className="inline-flex min-w-0 flex-1 items-center gap-3 text-[color:var(--text-main)] no-underline" href={brandHref}>
+      <header className="fixed inset-x-0 top-0 z-40 px-3 pt-3 [view-transition-name:none]">
+        <div className="mx-auto flex h-[60px] max-w-[1000px] items-center justify-between gap-2 rounded-[8px] border border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] px-3 shadow-[0_10px_30px_rgba(0,0,0,0.16)] sm:gap-3 sm:px-[14px]">
+          <a className="inline-flex min-w-0 flex-1 items-center gap-2 text-[color:var(--text-main)] no-underline sm:gap-3" href={brandHref}>
             <span
               className={cn(
                 'inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px]',
@@ -726,7 +726,7 @@ export function SideRail({
                   </span>
                 ) : null}
               </strong>
-              <span className="block truncate text-[0.68rem] uppercase tracking-[0.14em] text-[color:var(--text-muted)]">{brandSubtitle}</span>
+              <span className="hidden truncate text-[0.68rem] uppercase tracking-[0.14em] text-[color:var(--text-muted)] min-[380px]:block">{brandSubtitle}</span>
             </span>
           </a>
           
@@ -755,7 +755,7 @@ export function SideRail({
 
             <div
               className={cn(
-                'relative flex w-[280px] max-w-[calc(100vw-3rem)] flex-col border-r border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] shadow-xl transition-transform duration-300 ease-out',
+                'relative flex w-[288px] max-w-[calc(100vw-1rem)] flex-col border-r border-[color:var(--nav-border,var(--panel-border))] bg-[var(--nav-bg,var(--panel-bg))] shadow-xl transition-transform duration-300 ease-out sm:max-w-[calc(100vw-3rem)]',
                 mobileMenuOpen ? 'translate-x-0' : '-translate-x-full',
               )}
             >
@@ -830,7 +830,7 @@ export function SideRail({
       </header>
       ) : null}
 
-      {!isDesktopViewport ? <div aria-hidden="true" className="h-[60px]" /> : null}
+      {!isDesktopViewport ? <div aria-hidden="true" className="h-[72px]" /> : null}
     </>
   )
 }

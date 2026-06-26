@@ -3,7 +3,7 @@ import { Button, Card, Modal, Input, Select, Tag } from '../../lib'
 
 export function ModalPreview({ isPt }: { isPt: boolean }) {
   return (
-    <Card className="flex w-full flex-col items-center justify-center p-8 py-12 shadow-[inset_0px_1px_1px_rgba(255,255,255,0.05)] border-0" variant="subtle" style={{ backgroundColor: 'transparent' }}>
+    <Card className="flex w-full flex-col items-center justify-center border-0 p-4 py-7 shadow-[inset_0px_1px_1px_rgba(255,255,255,0.05)] sm:p-8 sm:py-12" variant="subtle" style={{ backgroundColor: 'transparent' }}>
       <div className="flex max-w-[420px] flex-col items-center text-center">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[color:var(--surface-hover)] text-[color:var(--accent-line)] shadow-[inset_0px_1px_1px_rgba(255,255,255,0.1)]">
           <Users size={26} strokeWidth={1.8} />
@@ -27,7 +27,7 @@ export function ModalPreview({ isPt }: { isPt: boolean }) {
             </Modal.Trigger>
           </div>
 
-          <Modal.Content className="w-full max-w-[500px]">
+          <Modal.Content className="w-[calc(100vw-2rem)] max-w-[500px]">
             <Modal.Header>
               <Modal.Title>{isPt ? 'Convidar pessoas' : 'Invite people'}</Modal.Title>
               <Modal.Description>
@@ -37,19 +37,19 @@ export function ModalPreview({ isPt }: { isPt: boolean }) {
 
             <Modal.Body className="space-y-6">
               {/* Form de convite */}
-              <div className="flex items-start gap-3">
+              <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-start">
                 <div className="flex-1">
                   <Input.Root>
                     <Input.Field icon={<Mail size={16} />} placeholder={isPt ? 'E-mail do membro...' : 'Member email...'} type="email" />
                   </Input.Root>
                 </div>
-                <div className="w-[125px]">
+                <div className="w-full sm:w-[125px]">
                   <Select defaultValue="viewer">
                     <Select.Option value="viewer" label={isPt ? 'Visualizador' : 'Can view'} />
                     <Select.Option value="editor" label={isPt ? 'Editor' : 'Can edit'} />
                   </Select>
                 </div>
-                <Button variant="secondary" className="px-4 shrink-0">
+                <Button variant="secondary" className="shrink-0 px-4">
                   {isPt ? 'Enviar' : 'Send'}
                 </Button>
               </div>
@@ -62,14 +62,14 @@ export function ModalPreview({ isPt }: { isPt: boolean }) {
                   {isPt ? 'Membros atuais' : 'Current members'}
                 </p>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex min-w-0 items-center gap-3">
                     <div className="flex h-[36px] w-[36px] items-center justify-center rounded-[8px] bg-[color:var(--accent-end)] text-white shadow-[inset_0px_1px_1px_rgba(255,255,255,0.2)] font-[Space_Grotesk,sans-serif] font-medium text-xs">
                       DG
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex min-w-0 flex-col">
                       <span className="text-sm font-medium text-[color:var(--text-main)]">Danilo Gomes</span>
-                      <span className="text-xs text-[color:var(--text-muted)]">danilo@auralith.com</span>
+                      <span className="truncate text-xs text-[color:var(--text-muted)]">danilo@auralith.com</span>
                     </div>
                   </div>
                   <Tag className="bg-[rgba(255,255,255,0.06)] border-[rgba(255,255,255,0.05)] text-[color:var(--text-soft)]">
@@ -77,17 +77,17 @@ export function ModalPreview({ isPt }: { isPt: boolean }) {
                   </Tag>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex min-w-0 items-center gap-3">
                     <div className="flex h-[36px] w-[36px] items-center justify-center rounded-[8px] bg-[color:var(--surface-panel-3)] border border-[color:var(--card-border)] text-[color:var(--text-main)] font-[Space_Grotesk,sans-serif] font-medium text-xs">
                       AR
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex min-w-0 flex-col">
                       <span className="text-sm font-medium text-[color:var(--text-main)]">Alice Ribeiro</span>
-                      <span className="text-xs text-[color:var(--text-muted)]">alice@example.com</span>
+                      <span className="truncate text-xs text-[color:var(--text-muted)]">alice@example.com</span>
                     </div>
                   </div>
-                  <div className="w-[125px]">
+                  <div className="w-full sm:w-[125px]">
                     <Select defaultValue="editor" hint="">
                       <Select.Option value="viewer" label={isPt ? 'Visualizador' : 'Viewer'} />
                       <Select.Option value="editor" label={isPt ? 'Editor' : 'Editor'} />
@@ -97,7 +97,7 @@ export function ModalPreview({ isPt }: { isPt: boolean }) {
               </div>
             </Modal.Body>
 
-            <Modal.Footer className="justify-between items-center rounded-b-[18px]">
+            <Modal.Footer className="items-stretch justify-between rounded-b-[18px] sm:items-center">
               <Button variant="secondary" className="bg-transparent border-0 px-2 text-[color:var(--text-soft)] hover:text-[color:var(--text-main)] hover:bg-[color:var(--surface-hover)]">
                 <Link2 size={16} className="-ml-1 mr-2 opacity-70" />
                 {isPt ? 'Copiar link' : 'Copy link'}

@@ -305,7 +305,7 @@ function App() {
         />
 
         <div className="relative min-h-screen w-full transition-[padding] duration-200" style={{ paddingLeft: isSidebarPinned ? `${sidebarOffset}px` : undefined }}>
-          <div className="mx-auto w-full max-w-[1000px] p-2">
+          <div className="mx-auto w-full max-w-[1000px] px-3 pb-6 pt-3 sm:p-2">
             <div className="flex min-h-[calc(100vh-2rem)] flex-col">
               {route.page === 'landing' ? (
                 <LandingPage

@@ -6,16 +6,19 @@ import { Minus, Plus } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
 import { cn } from '../utils/cn'
+import { getFieldMotionClass } from './field-motion'
+import type { FieldMotion } from './field-motion'
 
 export interface NumberInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'onChange' | 'value' | 'defaultValue'> {
   defaultValue?: number
+  fieldMotion?: FieldMotion
   hint?: string
   label?: string
   onValueChange?: (value: number) => void
   value?: number
 }
 
-function NumberInputBase({ className, defaultValue = 0, hint, id, label, max, min, onValueChange, step = 1, value, ...props }: NumberInputProps) {
+function NumberInputBase({ className, defaultValue = 0, fieldMotion = 'subtle', hint, id, label, max, min, onValueChange, step = 1, value, ...props }: NumberInputProps) {
   const fieldId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
   const [internalValue, setInternalValue] = useState(defaultValue)
   const isControlled = value !== undefined
@@ -47,6 +50,7 @@ function NumberInputBase({ className, defaultValue = 0, hint, id, label, max, mi
       <div
         className={cn(
           'flex items-center rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)]',
+          getFieldMotionClass(fieldMotion),
           className,
         )}
       >

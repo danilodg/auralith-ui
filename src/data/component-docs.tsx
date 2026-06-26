@@ -120,10 +120,10 @@ function getStructuredMeta(id: string, isPt: boolean) {
       parts: [
         { name: 'Input.Root', description: isPt ? 'Wrapper do campo.' : 'Field wrapper.' },
         { name: 'Input.Label', description: isPt ? 'Legenda principal do campo.' : 'Primary field label.' },
-        { name: 'Input.Field', description: isPt ? 'Input com suporte a icon e adornment.' : 'Input element with icon and adornment support.' },
+        { name: 'Input.Field', description: isPt ? 'Input com suporte a icon, adornment e `fieldMotion`.' : 'Input element with icon, adornment, and `fieldMotion` support.' },
         { name: 'Input.Hint', description: isPt ? 'Texto de apoio abaixo do campo.' : 'Supporting copy below the field.' },
       ],
-      notes: isPt ? ['Use a composicao quando precisar de mais controle de estrutura.'] : ['Use composition when you need more structure control.'],
+      notes: isPt ? ['Use a composicao quando precisar de mais controle de estrutura.', 'Configure `fieldMotion` com `subtle`, `glow`, `lift` ou `none`.'] : ['Use composition when you need more structure control.', 'Configure `fieldMotion` with `subtle`, `glow`, `lift`, or `none`.'],
     },
     'form-field': {
       anatomy: ['FormField', 'FormField.Label', 'FormHint', 'FormMessage'],
@@ -170,23 +170,23 @@ function getStructuredMeta(id: string, isPt: boolean) {
     'input-date': {
       anatomy: ['DateInput'],
       parts: [
-        { name: 'DateInput', description: isPt ? 'Campo customizado para data em formato `YYYY-MM-DD`.' : 'Custom date field using `YYYY-MM-DD` format.' },
+        { name: 'DateInput', description: isPt ? 'Campo customizado para data em formato `YYYY-MM-DD`, com `fieldMotion`.' : 'Custom date field using `YYYY-MM-DD` format, with `fieldMotion`.' },
       ],
-      notes: isPt ? ['Use para datas unicas e mantenha a validacao no submit.'] : ['Use for single dates and keep validation at submit time.'],
+      notes: isPt ? ['Use para datas unicas e mantenha a validacao no submit.', '`fieldMotion="none"` remove a animacao do gatilho.'] : ['Use for single dates and keep validation at submit time.', '`fieldMotion="none"` removes trigger animation.'],
     },
     'input-time': {
       anatomy: ['TimeInput'],
       parts: [
-        { name: 'TimeInput', description: isPt ? 'Campo customizado para hora em formato `HH:MM`.' : 'Custom time field using `HH:MM` format.' },
+        { name: 'TimeInput', description: isPt ? 'Campo customizado para hora em formato `HH:MM`, com motion configuravel.' : 'Custom time field using `HH:MM` format, with configurable motion.' },
       ],
-      notes: isPt ? ['Bom para agendas, horarios de atendimento e janelas de disponibilidade.'] : ['Good for schedules, support windows and availability slots.'],
+      notes: isPt ? ['Bom para agendas, horarios de atendimento e janelas de disponibilidade.', 'Use `fieldMotion="glow"` para destacar campos importantes sem exagero.'] : ['Good for schedules, support windows and availability slots.', 'Use `fieldMotion="glow"` to highlight important fields without excess.'],
     },
     'input-number': {
       anatomy: ['NumberInput'],
       parts: [
-        { name: 'NumberInput', description: isPt ? 'Campo numerico customizado com controles de incremento e decremento.' : 'Custom numeric field with increment and decrement controls.' },
+        { name: 'NumberInput', description: isPt ? 'Campo numerico customizado com controles de incremento, decremento e `fieldMotion`.' : 'Custom numeric field with increment, decrement, and `fieldMotion` controls.' },
       ],
-      notes: isPt ? ['Defina `min`, `max` e `step` para reduzir erros de digitacao.', 'O valor fica alinhado a esquerda e os controles +/- ficam no canto direito.'] : ['Set `min`, `max` and `step` to reduce typing errors.', 'The value is left-aligned and +/- controls stay on the right corner.'],
+      notes: isPt ? ['Defina `min`, `max` e `step` para reduzir erros de digitacao.', 'O valor fica alinhado a esquerda e os controles +/- ficam no canto direito.', 'A animacao e aplicada no wrapper para incluir input e controles.'] : ['Set `min`, `max` and `step` to reduce typing errors.', 'The value is left-aligned and +/- controls stay on the right corner.', 'Motion is applied to the wrapper to include the input and controls.'],
     },
     checkbox: {
       anatomy: ['Checkbox', 'Checkbox.Item', 'Checkbox.Root', 'Checkbox.Field', 'Checkbox.Label', 'Checkbox.Hint'],
@@ -211,11 +211,11 @@ function getStructuredMeta(id: string, isPt: boolean) {
       parts: [
         { name: 'Textarea.Root', description: isPt ? 'Wrapper do campo multilinha.' : 'Multiline field wrapper.' },
         { name: 'Textarea.Label', description: isPt ? 'Legenda do textarea.' : 'Textarea label.' },
-        { name: 'Textarea.Field', description: isPt ? 'Area de texto principal.' : 'Primary textarea element.' },
+        { name: 'Textarea.Field', description: isPt ? 'Area de texto principal com `fieldMotion`.' : 'Primary textarea element with `fieldMotion`.' },
         { name: 'Textarea.Hint', description: isPt ? 'Texto de ajuda.' : 'Help copy.' },
         { name: 'Textarea.Footer', description: isPt ? 'Area para contadores ou acoes.' : 'Area for counters or actions.' },
       ],
-      notes: isPt ? ['Footer e opcional e ajuda em formularios mais ricos.'] : ['Footer is optional and helps with richer forms.'],
+      notes: isPt ? ['Footer e opcional e ajuda em formularios mais ricos.', 'Use `fieldMotion="lift"` quando quiser feedback de foco um pouco mais fisico.'] : ['Footer is optional and helps with richer forms.', 'Use `fieldMotion="lift"` when you want slightly more physical focus feedback.'],
     },
     card: {
       anatomy: ['Card.Root', 'Card.Header', 'Card.Title', 'Card.Description', 'Card.Content', 'Card.Footer'],
@@ -652,7 +652,7 @@ updateSettings({
     name: 'CodeBlock',
     category: 'typography',
     icon: <Code2 size={16} strokeWidth={1.8} />,
-    description: isPt ? 'Bloco de codigo com abas de linguagem e toggle entre modo colorido e cor unica.' : 'Code block with language tabs and toggle between colorful and single-color mode.',
+    description: isPt ? 'Bloco de codigo responsivo com abas de linguagem e toggle entre modo colorido e cor unica.' : 'Responsive code block with language tabs and toggle between colorful and single-color mode.',
     source: 'src/lib/components/code-block.tsx',
     importCode: "import { CodeBlock } from '@/lib'",
     snippet: isPt ? `<CodeBlock
@@ -700,16 +700,16 @@ updateSettings({
     name: 'Input',
     category: 'form',
     icon: <TextCursorInput size={16} strokeWidth={1.8} />,
-    description: isPt ? 'Campo com anatomia composta para root, label, field e hint, mantendo suporte a icones.' : 'Field with composable anatomy for root, label, field and hint, keeping icon support.',
+    description: isPt ? 'Campo com anatomia composta para root, label, field e hint, mantendo suporte a icones e motion configuravel.' : 'Field with composable anatomy for root, label, field and hint, keeping icon and configurable motion support.',
     source: 'src/lib/components/input.tsx',
     importCode: "import { Input } from '@/lib'",
     snippet: isPt ? `<Input.Root>
   <Input.Label>Email profissional</Input.Label>
-  <Input.Field icon={<Mail />} placeholder="name@company.com" />
+  <Input.Field fieldMotion="glow" icon={<Mail />} placeholder="name@company.com" />
   <Input.Hint>Campo principal do formulario.</Input.Hint>
 </Input.Root>` : `<Input.Root>
   <Input.Label>Work email</Input.Label>
-  <Input.Field icon={<Mail />} placeholder="name@company.com" />
+  <Input.Field fieldMotion="glow" icon={<Mail />} placeholder="name@company.com" />
   <Input.Hint>Main form field.</Input.Hint>
 </Input.Root>`,
     href: '#components/input',
@@ -718,23 +718,23 @@ updateSettings({
       <div className="grid gap-6 w-full max-w-[600px] sm:grid-cols-2">
         <Input.Root>
           <Input.Label>{isPt ? 'Email profissional' : 'Work email'}</Input.Label>
-          <Input.Field icon={<Mail size={18} />} placeholder="name@company.com" type="email" />
+          <Input.Field fieldMotion="glow" icon={<Mail size={18} />} placeholder="name@company.com" type="email" />
           <Input.Hint>{isPt ? 'Aviso padrão ativo.' : 'Standard hint active.'}</Input.Hint>
         </Input.Root>
 
         <Input.Root>
           <Input.Label>{isPt ? 'Senha' : 'Password'}</Input.Label>
-          <Input.Field placeholder="********" type="password" />
+          <Input.Field fieldMotion="lift" placeholder="********" type="password" />
         </Input.Root>
 
         <Input.Root className="opacity-60 pointer-events-none">
           <Input.Label>{isPt ? 'Campo desabilitado' : 'Disabled field'}</Input.Label>
-          <Input.Field placeholder="Desabilitado..." disabled />
+          <Input.Field fieldMotion="none" placeholder="Desabilitado..." disabled />
         </Input.Root>
 
         <Input.Root>
           <Input.Label className="text-red-400">{isPt ? 'Erro de validacao' : 'Validation error'}</Input.Label>
-          <Input.Field icon={<Mail size={18} className="text-red-400" />} className="border-red-400/50 bg-red-400/5" placeholder="Erro..." />
+          <Input.Field fieldMotion="subtle" icon={<Mail size={18} className="text-red-400" />} className="border-red-400/50 bg-red-400/5" placeholder="Erro..." />
           <Input.Hint className="text-red-400">{isPt ? 'Obrigatorio.' : 'Required.'}</Input.Hint>
         </Input.Root>
       </div>
@@ -961,22 +961,24 @@ updateSettings({
     name: isPt ? 'Input Date' : 'Input Date',
     category: 'form',
     icon: <CalendarDays size={16} strokeWidth={1.8} />,
-    description: isPt ? 'Campo de data customizado com calendario, presets e modo range.' : 'Custom date field with calendar, presets and range mode.',
+    description: isPt ? 'Campo de data customizado com calendario, presets, modo range e motion configuravel.' : 'Custom date field with calendar, presets, range mode and configurable motion.',
     source: 'src/lib/components/date-input.tsx',
     importCode: "import { DateInput } from '@/lib'",
-    snippet: isPt ? `<DateInput label="Data" />
-<DateInput label="Periodo" mode="range" />` : `<DateInput label="Date" />
-<DateInput label="Range" mode="range" />`,
+    snippet: isPt ? `<DateInput label="Data" fieldMotion="glow" />
+<DateInput label="Periodo" mode="range" fieldMotion="none" />` : `<DateInput label="Date" fieldMotion="glow" />
+<DateInput label="Range" mode="range" fieldMotion="none" />`,
     href: '#components/input-date',
     urlText: 'components/input-date',
     preview: (
       <div className="grid gap-2">
         <DateInput
           hint={isPt ? 'Inclui atalhos: hoje, amanha, ontem e anteontem.' : 'Includes shortcuts: today, tomorrow, yesterday and day before yesterday.'}
+          fieldMotion="glow"
           label={isPt ? 'Data de entrega' : 'Delivery date'}
         />
         <DateInput
           hint={isPt ? 'Modo range abre dois calendarios lado a lado no desktop.' : 'Range mode opens two calendars side by side on desktop.'}
+          fieldMotion="none"
           label={isPt ? 'Periodo de analise' : 'Analysis range'}
           mode="range"
         />
@@ -988,15 +990,16 @@ updateSettings({
     name: isPt ? 'Input Time' : 'Input Time',
     category: 'form',
     icon: <Clock3 size={16} strokeWidth={1.8} />,
-    description: isPt ? 'Campo de hora customizado, sem seletor nativo do browser.' : 'Custom time field without the browser native picker.',
+    description: isPt ? 'Campo de hora customizado, sem seletor nativo do browser e com motion configuravel.' : 'Custom time field without the browser native picker and with configurable motion.',
     source: 'src/lib/components/time-input.tsx',
     importCode: "import { TimeInput } from '@/lib'",
-    snippet: isPt ? '<TimeInput label="Horario" />' : '<TimeInput label="Time" />',
+    snippet: isPt ? '<TimeInput label="Horario" fieldMotion="lift" />' : '<TimeInput label="Time" fieldMotion="lift" />',
     href: '#components/input-time',
     urlText: 'components/input-time',
     preview: (
       <TimeInput
         hint={isPt ? 'Ideal para agendas e janelas de atendimento.' : 'Ideal for schedules and support windows.'}
+        fieldMotion="lift"
         label={isPt ? 'Horario da reuniao' : 'Meeting time'}
       />
     ),
@@ -1006,16 +1009,17 @@ updateSettings({
     name: isPt ? 'Input Number' : 'Input Number',
     category: 'form',
     icon: <Hash size={16} strokeWidth={1.8} />,
-    description: isPt ? 'Campo numerico customizado com controles de + e -.' : 'Custom numeric field with + and - controls.',
+    description: isPt ? 'Campo numerico customizado com controles de + e - e motion configuravel.' : 'Custom numeric field with + and - controls and configurable motion.',
     source: 'src/lib/components/number-input.tsx',
     importCode: "import { NumberInput } from '@/lib'",
-    snippet: isPt ? '<NumberInput label="Quantidade" min={1} step={1} />' : '<NumberInput label="Quantity" min={1} step={1} />',
+    snippet: isPt ? '<NumberInput label="Quantidade" min={1} step={1} fieldMotion="glow" />' : '<NumberInput label="Quantity" min={1} step={1} fieldMotion="glow" />',
     href: '#components/input-number',
     urlText: 'components/input-number',
     preview: (
       <div className="grid gap-6 w-full max-w-[600px] sm:grid-cols-2">
         <NumberInput
           defaultValue={1}
+          fieldMotion="glow"
           hint={isPt ? 'Use min/max e step.' : 'Use min/max and step.'}
           label={isPt ? 'Quantidade de licencas' : 'License quantity'}
           min={1}
@@ -1024,6 +1028,7 @@ updateSettings({
         <div className="opacity-60 pointer-events-none">
           <NumberInput
             defaultValue={5}
+            fieldMotion="none"
             hint={isPt ? 'Valor bloqueado.' : 'Locked value.'}
             label={isPt ? 'Desabilitado' : 'Disabled'}
           />
@@ -1036,16 +1041,16 @@ updateSettings({
     name: 'Textarea',
     category: 'form',
     icon: <BetweenHorizontalStart size={16} strokeWidth={1.8} />,
-    description: isPt ? 'Area de texto com estrutura composta para label, field, hint e footer.' : 'Textarea with composable structure for label, field, hint and footer.',
+    description: isPt ? 'Area de texto com estrutura composta para label, field, hint, footer e motion configuravel.' : 'Textarea with composable structure for label, field, hint, footer and configurable motion.',
     source: 'src/lib/components/textarea.tsx',
     importCode: "import { Textarea } from '@/lib'",
     snippet: isPt ? `<Textarea.Root>
   <Textarea.Label>Resumo do projeto</Textarea.Label>
-  <Textarea.Field placeholder="Descreva o contexto..." />
+  <Textarea.Field fieldMotion="lift" placeholder="Descreva o contexto..." />
   <Textarea.Hint>Mensagem inicial.</Textarea.Hint>
 </Textarea.Root>` : `<Textarea.Root>
   <Textarea.Label>Project brief</Textarea.Label>
-  <Textarea.Field placeholder="Describe the context..." />
+  <Textarea.Field fieldMotion="lift" placeholder="Describe the context..." />
   <Textarea.Hint>Initial message.</Textarea.Hint>
 </Textarea.Root>`,
     href: '#components/textarea',
@@ -1054,12 +1059,12 @@ updateSettings({
       <div className="grid gap-6 w-full max-w-[640px] sm:grid-cols-2">
         <Textarea.Root>
           <Textarea.Label>{isPt ? 'Resumo do projeto' : 'Project brief'}</Textarea.Label>
-          <Textarea.Field placeholder={isPt ? 'Descreva produto, prazo e direcao visual...' : 'Describe the product, timeline and visual direction...'} />
+          <Textarea.Field fieldMotion="lift" placeholder={isPt ? 'Descreva produto, prazo e direcao visual...' : 'Describe the product, timeline and visual direction...'} />
           <Textarea.Hint>{isPt ? 'Mensagem inicial.' : 'Initial message.'}</Textarea.Hint>
         </Textarea.Root>
         <Textarea.Root className="opacity-60 pointer-events-none">
           <Textarea.Label>{isPt ? 'Mensagem Oculta (Disabled)' : 'Hidden Message (Disabled)'}</Textarea.Label>
-          <Textarea.Field placeholder={isPt ? 'Nao pode ser editado...' : 'Cannot be edited...'} disabled />
+          <Textarea.Field fieldMotion="none" placeholder={isPt ? 'Nao pode ser editado...' : 'Cannot be edited...'} disabled />
         </Textarea.Root>
       </div>
     ),
@@ -1775,10 +1780,10 @@ updateSettings({
     name: 'SearchInput',
     category: 'form',
     icon: <Search size={16} strokeWidth={1.8} />,
-    description: isPt ? 'Input de busca com debounce integrado e botao de limpar.' : 'Search input with built-in debounce and clear button.',
+    description: isPt ? 'Input de busca com debounce integrado, botao de limpar e motion configuravel.' : 'Search input with built-in debounce, clear button and configurable motion.',
     source: 'src/lib/components/search-input.tsx',
     importCode: "import { SearchInput } from '@/lib'",
-    snippet: isPt ? `<SearchInput label="Buscar" placeholder="Digite para buscar..." debounceMs={300} />` : `<SearchInput label="Search" placeholder="Type to search..." debounceMs={300} />`,
+    snippet: isPt ? `<SearchInput label="Buscar" placeholder="Digite para buscar..." debounceMs={300} fieldMotion="glow" />` : `<SearchInput label="Search" placeholder="Type to search..." debounceMs={300} fieldMotion="glow" />`,
     href: '#components/search-input',
     urlText: 'components/search-input',
     preview: (
@@ -1787,17 +1792,22 @@ updateSettings({
           label={isPt ? 'Buscar produtos' : 'Search products'}
           placeholder={isPt ? 'Nome do produto...' : 'Product name...'}
           debounceMs={300}
+          fieldMotion="glow"
         />
       </div>
     ),
     examples: [
       {
         title: isPt ? 'Básico' : 'Basic',
-        code: isPt ? `<SearchInput placeholder="Buscar..." />` : `<SearchInput placeholder="Search..." />`,
+        code: isPt ? `<SearchInput placeholder="Buscar..." fieldMotion="subtle" />` : `<SearchInput placeholder="Search..." fieldMotion="subtle" />`,
       },
       {
         title: isPt ? 'Com debounce' : 'With debounce',
         code: isPt ? `<SearchInput debounceMs={500} onSearch={(value) => console.log(value)} />` : `<SearchInput debounceMs={500} onSearch={(value) => console.log(value)} />`,
+      },
+      {
+        title: isPt ? 'Sem motion' : 'Without motion',
+        code: '<SearchInput fieldMotion="none" />',
       },
     ],
   },

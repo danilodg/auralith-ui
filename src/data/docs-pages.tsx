@@ -18,7 +18,7 @@ export function createDocsPages(language: Language): DocPage[] {
       urlText: 'docs/installation',
       icon: <TerminalSquare size={16} strokeWidth={1.8} />,
       content: (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4 sm:gap-6">
           <RecommendedStackSection
             setup={{
               eyebrow: isPt ? 'Recomendado' : 'Recommended',
@@ -52,15 +52,15 @@ export function createDocsPages(language: Language): DocPage[] {
           />
 
           <section className="grid gap-5 sm:gap-6 lg:grid-cols-2 lg:gap-8">
-            <GlassPanel className="min-w-0 flex flex-col justify-center border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-5 shadow-sm sm:p-8 lg:p-10">
+            <GlassPanel className="min-w-0 flex flex-col justify-center border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-4 shadow-sm sm:p-8 lg:p-10">
               <div className="flex flex-wrap gap-2 sm:gap-3">
                 <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">docs</Tag>
                 <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">{isPt ? 'Instalacao' : 'Installation'}</Tag>
-                <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">docs/installation</Tag>
+                <Tag className="max-w-full break-all border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">docs/installation</Tag>
               </div>
 
               <SectionHeader
-                className="mt-8"
+                className="mt-6 sm:mt-8"
                 eyebrow={isPt ? 'Pagina de documentacao' : 'Documentation page'}
                 heading={isPt ? 'Instalacao' : 'Installation'}
                 description={isPt ? 'Como instalar a biblioteca e preparar o ambiente no seu projeto.' : 'How to install the library and prepare the environment in your project.'}
@@ -91,7 +91,7 @@ export function createDocsPages(language: Language): DocPage[] {
               </div>
             </GlassPanel>
 
-             <Card className="group relative min-w-0 overflow-hidden border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-5 sm:p-8 lg:p-10" variant="elevated">
+             <Card className="group relative min-w-0 overflow-hidden border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-4 sm:p-8 lg:p-10" variant="elevated">
               <div className="absolute top-0 right-0 w-64 h-64 bg-[color:var(--accent-line)] opacity-[0.02] blur-[50px] group-hover:opacity-[0.04] transition-opacity duration-700" />
               <div className="relative z-10">
                 <SectionLabel>{isPt ? 'Checklist de setup' : 'Setup checklist'}</SectionLabel>
@@ -137,17 +137,17 @@ export function createDocsPages(language: Language): DocPage[] {
       urlText: 'docs/usage',
       icon: <BookOpen size={16} strokeWidth={1.8} />,
       content: (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4 sm:gap-6">
           <section className="grid gap-5 sm:gap-6 lg:grid-cols-2 lg:gap-8">
-            <GlassPanel className="min-w-0 flex flex-col justify-center border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-5 shadow-sm sm:p-8 lg:p-10">
+            <GlassPanel className="min-w-0 flex flex-col justify-center border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-4 shadow-sm sm:p-8 lg:p-10">
               <div className="flex flex-wrap gap-2 sm:gap-3">
                 <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">docs</Tag>
                 <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">{isPt ? 'Uso' : 'Usage'}</Tag>
-                <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">docs/usage</Tag>
+                <Tag className="max-w-full break-all border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">docs/usage</Tag>
               </div>
 
               <SectionHeader
-                className="mt-8"
+                className="mt-6 sm:mt-8"
                 eyebrow={isPt ? 'Pagina de documentacao' : 'Documentation page'}
                 heading={isPt ? 'Uso' : 'Usage'}
                 description={isPt ? 'Como importar, combinar e escalar os componentes no seu projeto.' : 'How to import, combine and scale the components in your project.'}
@@ -177,7 +177,7 @@ export function createDocsPages(language: Language): DocPage[] {
               </div>
             </GlassPanel>
 
-            <Card className="group relative min-w-0 overflow-hidden border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-5 sm:p-8 lg:p-10" variant="elevated">
+            <Card className="group relative min-w-0 overflow-hidden border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-4 sm:p-8 lg:p-10" variant="elevated">
               <div className="absolute top-0 right-0 w-64 h-64 bg-[color:var(--accent-line)] opacity-[0.02] blur-[50px] group-hover:opacity-[0.04] transition-opacity duration-700" />
               <div className="relative z-10">
                 <SectionLabel>{isPt ? 'Diretrizes' : 'Guidelines'}</SectionLabel>
@@ -219,16 +219,16 @@ export function createDocsPages(language: Language): DocPage[] {
       urlText: 'docs/roadmap',
       icon: <Layers size={16} strokeWidth={1.8} />,
       content: (
-        <div className="flex flex-col gap-6">
-          <GlassPanel className="min-w-0 border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-5 shadow-sm sm:p-8 lg:p-10">
+        <div className="flex flex-col gap-4 sm:gap-6">
+          <GlassPanel className="min-w-0 border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-4 shadow-sm sm:p-8 lg:p-10">
             <div className="flex flex-wrap gap-2 sm:gap-3">
               <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">docs</Tag>
               <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">roadmap</Tag>
-              <Tag className="border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">docs/roadmap</Tag>
+              <Tag className="max-w-full break-all border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2.5 py-1 text-[0.72rem] sm:px-3 sm:py-1.5 sm:text-[0.8rem]">docs/roadmap</Tag>
             </div>
 
             <SectionHeader
-              className="mt-8"
+              className="mt-6 sm:mt-8"
               eyebrow={isPt ? 'Planejamento vivo' : 'Living plan'}
               heading={isPt ? 'Evolucao por etapas' : 'Stage-based evolution'}
               description={isPt ? 'Cada etapa adiciona novos componentes e atualiza a documentacao no mesmo ciclo de entrega.' : 'Each stage adds new components and updates documentation in the same delivery cycle.'}

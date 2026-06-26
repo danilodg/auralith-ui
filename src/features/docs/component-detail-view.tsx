@@ -22,27 +22,27 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
   const isAccordionDoc = doc.id === 'accordion'
 
   return (
-    <div className="flex min-h-full flex-1 flex-col gap-6 w-full max-w-full">
+    <div className="flex min-h-full w-full max-w-full flex-1 flex-col gap-4 sm:gap-6">
       {/* 1. HERO MASSIVE CANVAS */}
       <GlassPanel className="w-full p-0 overflow-hidden border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] relative shadow-[inset_0px_1px_1px_rgba(255,255,255,0.02)]">
         <div className={`absolute ${isAccordionDoc ? '-inset-10' : 'inset-0'} bg-[radial-gradient(ellipse_60%_70%_at_50%_-10%,rgba(111,224,255,0.06)_0%,transparent_60%),repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px),repeating-linear-gradient(90deg,transparent,transparent_24px,rgba(255,255,255,0.01)_24px,rgba(255,255,255,0.01)_25px)] pointer-events-none`} />
         
-        <div className="relative p-6 sm:p-10 flex flex-col items-center">
-           <div className="flex flex-wrap gap-3 mb-8 w-full max-w-[1000px]">
+        <div className="relative flex flex-col items-center p-4 sm:p-8 lg:p-10">
+           <div className="mb-5 flex w-full max-w-[1000px] flex-wrap gap-2 sm:mb-8 sm:gap-3">
             <Tag>{getDocCategoryLabel(doc.category, isPt)}</Tag>
             <Tag>{doc.name}</Tag>
-            <Tag className="bg-[rgba(255,255,255,0.03)] text-[color:var(--text-muted)] border-0 select-none">
+            <Tag className="select-none border-0 bg-[rgba(255,255,255,0.03)] text-[color:var(--text-muted)]">
               {doc.urlText}
             </Tag>
           </div>
 
-          <div className="mb-10 w-full max-w-[1000px]">
-            <h1 className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-4xl sm:text-5xl font-bold tracking-[-0.04em] text-[color:var(--text-main)] drop-shadow-sm">{doc.name}</h1>
-            <p className="mt-5 text-[1.05rem] leading-7 text-[color:var(--text-soft)] max-w-[640px]">{doc.description}</p>
+          <div className="mb-5 w-full max-w-[1000px] sm:mb-10">
+            <h1 className="font-[Space_Grotesk,Trebuchet_MS,sans-serif] text-[clamp(2rem,10vw,3rem)] font-bold tracking-[-0.04em] text-[color:var(--text-main)] drop-shadow-sm sm:text-5xl">{doc.name}</h1>
+            <p className="mt-3 max-w-[640px] text-[0.94rem] leading-6 text-[color:var(--text-soft)] sm:mt-5 sm:text-[1.05rem] sm:leading-7">{doc.description}</p>
           </div>
 
-          <div className={`w-full relative flex justify-center py-6 ${isAccordionDoc ? 'min-h-[430px] items-start' : ''}`}>
-            <div className="relative z-10 w-full max-w-3xl flex justify-center">
+          <div className={`relative flex w-full justify-center overflow-hidden py-3 sm:py-6 ${isAccordionDoc ? 'min-h-[320px] items-start sm:min-h-[430px]' : ''}`}>
+            <div className="relative z-10 flex w-full min-w-0 max-w-3xl justify-center">
                {doc.preview}
             </div>
           </div>
@@ -50,12 +50,12 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
       </GlassPanel>
 
       {/* 2. THE BENTO GRID */}
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,360px)] w-full max-w-full">
+      <div className="grid w-full max-w-full gap-4 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,360px)]">
         
         {/* LEFT COLUMN: Main Tech Information */}
         <div className="space-y-6 min-w-0">
-          <GlassPanel className="p-6">
-            <div className="flex items-center gap-2 mb-5">
+          <GlassPanel className="p-4 sm:p-6">
+            <div className="mb-4 flex items-center gap-2 sm:mb-5">
               <Zap size={16} className="text-[color:var(--accent-line)]" />
               <p className={sectionLabelClass}>{strings.docs.basicUsageLabel}</p>
             </div>
@@ -63,12 +63,12 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
           </GlassPanel>
 
           {examples.length ? (
-            <GlassPanel className="p-6">
+            <GlassPanel className="p-4 sm:p-6">
               <div className="flex items-center gap-2">
                 <Code2 size={16} className="text-[color:var(--accent-line)]" />
                 <p className={sectionLabelClass}>{isPt ? 'Exemplos Estendidos' : 'Extended Examples'}</p>
               </div>
-              <div className="mt-6 flex flex-col gap-6">
+              <div className="mt-4 flex flex-col gap-4 sm:mt-6 sm:gap-6">
                 {examples.map((example) => (
                   <div key={example.title}>
                     <p className="mb-3 text-[0.96rem] font-medium text-[color:var(--text-main)]">{example.title}</p>
@@ -80,12 +80,12 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
           ) : null}
 
           {doc.parts?.length ? (
-            <GlassPanel className="p-6 relative overflow-hidden bg-[radial-gradient(ellipse_120%_90%_at_0%_0%,rgba(111,224,255,0.03)_0%,transparent_60%)]">
-              <div className="flex items-center gap-2 mb-6">
+            <GlassPanel className="relative overflow-hidden bg-[radial-gradient(ellipse_120%_90%_at_0%_0%,rgba(111,224,255,0.03)_0%,transparent_60%)] p-4 sm:p-6">
+              <div className="mb-4 flex items-center gap-2 sm:mb-6">
                 <Puzzle size={16} className="text-[color:var(--accent-soft)]" />
                 <p className={sectionLabelClass}>{isPt ? 'Subcomponentes (Parts)' : 'Sub-components'}</p>
               </div>
-              <div className="grid gap-3 sm:grid-cols-2 relative z-10">
+              <div className="relative z-10 grid gap-3 sm:grid-cols-2">
                 {doc.parts.map((part) => (
                   <div className="group rounded-[12px] border border-[color:var(--card-border)] bg-[rgba(255,255,255,0.015)] p-4 hover:border-[rgba(111,224,255,0.1)] transition-colors duration-300" key={part.name}>
                     <span className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-xs text-[color:var(--text-main)] font-medium bg-[rgba(255,255,255,0.04)] shadow-[inset_0px_1px_1px_rgba(255,255,255,0.05)] inline-block px-2.5 py-1 rounded-[6px] mb-3 group-hover:bg-[rgba(255,255,255,0.08)] transition-colors">
@@ -101,7 +101,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
 
         {/* RIGHT COLUMN: Metadata & API Details */}
         <div className="space-y-6 min-w-0">
-          <GlassPanel className="p-5 relative overflow-hidden group">
+          <GlassPanel className="group relative overflow-hidden p-4 sm:p-5">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-[color:var(--accent-line)] opacity-[0.02] blur-[40px] rounded-full group-hover:opacity-[0.06] transition-opacity duration-500" />
             
             <p className={sectionLabelClass}>{strings.docs.importLabel}</p>
@@ -109,7 +109,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
                <CodeBlock snippets={[{ code: doc.importCode, language: 'ts' }]} />
             </div>
             
-            <hr className="my-6 border-[color:var(--card-border)] opacity-60" />
+            <hr className="my-4 border-[color:var(--card-border)] opacity-60 sm:my-6" />
             
             <p className={sectionLabelClass}>{strings.docs.sourceLabel}</p>
             <div className="mt-3 rounded-[8px] bg-[rgba(0,0,0,0.15)] border border-[color:var(--card-border)] px-3 py-2.5 shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] relative z-10">
@@ -120,7 +120,7 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
           </GlassPanel>
 
           {doc.notes?.length ? (
-            <GlassPanel className="p-6 border-l-2 border-l-[color:var(--accent-line)] bg-gradient-to-r from-[rgba(111,224,255,0.03)] to-transparent">
+            <GlassPanel className="border-l-2 border-l-[color:var(--accent-line)] bg-gradient-to-r from-[rgba(111,224,255,0.03)] to-transparent p-4 sm:p-6">
                <p className={sectionLabelClass}>{isPt ? 'Notas e Dicas' : 'Notes & Tips'}</p>
                <div className="mt-5 flex flex-col gap-4">
                  {doc.notes.map((note) => (
@@ -133,8 +133,8 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
           ) : null}
 
           {doc.anatomy?.length ? (
-            <GlassPanel className="p-6 bg-[color:var(--surface-base)]">
-              <div className="flex items-center gap-2 mb-5">
+            <GlassPanel className="bg-[color:var(--surface-base)] p-4 sm:p-6">
+              <div className="mb-4 flex items-center gap-2 sm:mb-5">
                 <Layers size={16} className="text-[color:var(--text-muted)] opacity-80" />
                 <p className={sectionLabelClass}>{isPt ? 'Anatomia' : 'Anatomy'}</p>
               </div>
@@ -153,14 +153,14 @@ export function ComponentDetailView({ doc }: ComponentDetailViewProps) {
 
           {doc.api?.length ? (
             <GlassPanel className="p-0 border overflow-hidden">
-              <div className="flex items-center gap-2 p-5 border-b border-[color:var(--card-border)] bg-[rgba(255,255,255,0.015)]">
+              <div className="flex items-center gap-2 border-b border-[color:var(--card-border)] bg-[rgba(255,255,255,0.015)] p-4 sm:p-5">
                 <Library size={16} className="text-[color:var(--text-muted)] opacity-80" />
                 <p className={sectionLabelClass}>{isPt ? 'Referencia de API' : 'API Reference'}</p>
               </div>
-              <div className="flex flex-col p-5 gap-4">
+              <div className="flex flex-col gap-4 p-4 sm:p-5">
                 {doc.api.map((item) => (
                   <div className="border-b last:border-0 border-[color:var(--card-border)]/50 pb-4 last:pb-0" key={item.name}>
-                    <div className="flex justify-between items-center mb-2.5">
+                    <div className="mb-2.5 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
                        <span className="font-[IBM_Plex_Mono,Trebuchet_MS,monospace] text-[0.75rem] font-medium text-[color:var(--accent-soft)] break-all px-1 bg-[rgba(111,224,255,0.05)] rounded">
                          {item.name}
                        </span>

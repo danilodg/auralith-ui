@@ -4,14 +4,17 @@ import type { ReactNode, TextareaHTMLAttributes } from 'react'
 import type { HTMLAttributes, LabelHTMLAttributes } from 'react'
 
 import { cn } from '../utils/cn'
+import { getFieldMotionClass } from './field-motion'
+import type { FieldMotion } from './field-motion'
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string
   hint?: string
   footer?: ReactNode
+  fieldMotion?: FieldMotion
 }
 
-function TextareaBase({ className, footer, hint, id, label, ...props }: TextareaProps) {
+function TextareaBase({ className, fieldMotion = 'subtle', footer, hint, id, label, ...props }: TextareaProps) {
   const textareaId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
 
   return (
@@ -21,6 +24,7 @@ function TextareaBase({ className, footer, hint, id, label, ...props }: Textarea
         id={textareaId}
         className={cn(
           'min-h-36 w-full rounded-[8px] border border-[color:var(--input-border)] bg-[var(--input-bg)] px-4 py-3.5 text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/60 focus:ring-2 focus:ring-cyan-300/20',
+          getFieldMotionClass(fieldMotion),
           className,
         )}
         {...props}
@@ -47,11 +51,12 @@ function TextareaLabel({ children, className, ...props }: HTMLAttributes<HTMLSpa
   )
 }
 
-function TextareaField({ className, ...props }: Omit<TextareaProps, 'footer' | 'hint' | 'label'>) {
+function TextareaField({ className, fieldMotion = 'subtle', ...props }: Omit<TextareaProps, 'footer' | 'hint' | 'label'>) {
   return (
     <textarea
       className={cn(
         'min-h-36 w-full rounded-[8px] border border-[color:var(--input-border)] bg-[var(--input-bg)] px-4 py-3.5 text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/60 focus:ring-2 focus:ring-cyan-300/20',
+        getFieldMotionClass(fieldMotion),
         className,
       )}
       {...props}
