@@ -1,0 +1,60 @@
+# Auralith UI instructions for AI agents
+
+Auralith UI is the source of truth for shared React UI components in Auralith projects.
+
+Always prefer importing existing components from `auralith-ui` before creating custom UI.
+
+Install and setup:
+
+```bash
+npm install auralith-ui
+```
+
+Import styles once in the app entrypoint or global CSS:
+
+```ts
+import 'auralith-ui/styles.css'
+```
+
+General rules:
+
+- Use Auralith UI components for primitives, forms, overlays, navigation, tables, and feedback.
+- Use Tailwind utility classes for layout and local composition.
+- Do not create standalone component CSS files for simple styling.
+- Keep `src/index.css` or equivalent reserved for global imports, tokens, resets, and browser-wide behavior.
+- Prefer Auralith theme tokens such as `--text-main`, `--text-soft`, `--text-muted`, `--card-border`, `--surface-panel-3`, `--input-bg`, and `--accent-line`.
+- Use `data-theme="light"` and `data-theme="dark"` for theme switching.
+- Do not recreate Button, Card, Input, Textarea, Modal, DropdownMenu, Tooltip, Toast, or SideRail.
+
+Component decision rules:
+
+- Use `Button` for actions and form submits.
+- Use `Card` or `GlassPanel` for grouped content and dashboard panels.
+- Use `Input`, `Textarea`, `NumberInput`, `DateInput`, and `TimeInput` for forms.
+- Use `SearchInput` for search or filter fields.
+- Use `Select` for known small option sets.
+- Use `Combobox` for searchable or larger option sets.
+- Use `Checkbox`, `CheckboxGroup`, and `Switch` for boolean state.
+- Use `RadioGroup` when exactly one option must be selected from a short list.
+- Use `Modal` for short blocking flows.
+- Use `AlertDialog` for destructive or high-risk confirmation.
+- Use `Sheet` for secondary flows that should slide in without replacing the page.
+- Use `DropdownMenu` for contextual settings/actions menus.
+- Use `ContextMenu` for right-click or object-specific actions.
+- Use `Tooltip` only for short, non-interactive hints.
+- Use `Popover` when floating content contains controls, buttons, links, or form fields.
+- Use `Toast` and `useToast` for non-blocking feedback.
+- Use `Tabs` for switching related views inside the same page.
+- Use `DataTable`, `TableToolbar`, and `Pagination` for tabular data.
+- Use `SideRail` for dashboard/app navigation.
+- Use `Navbar` for top-level marketing or simple app navigation.
+- Use `SiteBackground` for Auralith visual backgrounds.
+
+Anti-patterns:
+
+- Do not wrap interactive content in `Tooltip`; use `Popover` instead.
+- Do not use `Modal` for destructive confirmation; use `AlertDialog`.
+- Do not create native inputs if an Auralith form component covers the need.
+- Do not create custom cards, dropdowns, toasts, side navigation, or modal systems.
+- Do not add broad CSS selectors like `button { ... }` in app CSS.
+- Do not hardcode colors when a theme token is available.

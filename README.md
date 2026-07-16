@@ -74,6 +74,16 @@ export function SignupCard() {
 - SaaS frontends that want premium visuals without custom UI from scratch.
 - Teams that want one source of truth for shared React UI components.
 
+## AI usage guides
+
+Guides for AI agents and code assistants are available under `docs/ai/`:
+
+- `docs/ai/llms.txt` - compact instructions for AI agents.
+- `docs/ai/component-map.json` - machine-readable component decision metadata.
+- `docs/ai/decision-guide.md` - human-readable component selection guide.
+- `docs/ai/recipes.md` - common implementation recipes.
+- `docs/ai/anti-patterns.md` - patterns agents should avoid.
+
 ## Field motion
 
 Form controls use a discreet entry/focus motion by default. Configure it with `fieldMotion` on `Input`, `Input.Field`, `SearchInput`, `DateInput`, `TimeInput`, `NumberInput`, `Textarea`, and `Textarea.Field`.

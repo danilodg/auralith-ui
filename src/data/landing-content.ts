@@ -9,7 +9,7 @@ export function createLandingContent(language: Language) {
     metrics: [
       { value: '49', label: isPt ? 'componentes documentados' : 'documented components' },
       { value: '7', label: isPt ? 'categorias de interface' : 'interface categories' },
-      { value: 'v0.1.8', label: isPt ? 'release ativa' : 'active release' },
+      { value: 'v1.9.0', label: isPt ? 'release ativa' : 'active release' },
     ] as const,
     releaseHighlights: [
       {

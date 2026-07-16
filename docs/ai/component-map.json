@@ -1,0 +1,218 @@
+{
+  "metadata": {
+    "package": "auralith-ui",
+    "purpose": "Decision metadata for AI agents using Auralith UI components.",
+    "styleModel": "Use Auralith UI components plus Tailwind utility classes for layout and composition."
+  },
+  "components": {
+    "Button": {
+      "category": "primitive",
+      "useWhen": ["primary action", "secondary action", "form submit", "toolbar action"],
+      "avoidWhen": ["navigation links without button semantics", "destructive confirmation without confirmation UI"],
+      "commonProps": ["variant", "className", "disabled", "type", "onClick"],
+      "pairsWith": ["Card", "Modal", "AlertDialog", "FormField"]
+    },
+    "Card": {
+      "category": "surface",
+      "useWhen": ["group content", "dashboard panel", "settings block", "form container"],
+      "avoidWhen": ["full page shell", "simple inline text"],
+      "commonProps": ["variant", "className"],
+      "pairsWith": ["SectionHeader", "SectionLabel", "Badge", "Button"]
+    },
+    "GlassPanel": {
+      "category": "surface",
+      "useWhen": ["premium glass surface", "hero panel", "visual highlight section"],
+      "avoidWhen": ["dense table rows", "small inline controls"],
+      "pairsWith": ["SectionHeader", "Button", "Tag"]
+    },
+    "Input": {
+      "category": "form",
+      "useWhen": ["single line text", "email", "password", "short typed value"],
+      "avoidWhen": ["long text", "search-specific field", "number-only field with controls"],
+      "commonProps": ["label", "hint", "icon", "endAdornment", "fieldMotion", "placeholder"],
+      "pairsWith": ["FormField", "FormMessage", "Button"]
+    },
+    "Textarea": {
+      "category": "form",
+      "useWhen": ["long text", "description", "comment", "message body"],
+      "avoidWhen": ["short value", "search", "numeric value"],
+      "commonProps": ["label", "hint", "fieldMotion", "placeholder"],
+      "pairsWith": ["FormField", "Button"]
+    },
+    "SearchInput": {
+      "category": "form",
+      "useWhen": ["search", "filter", "table filter", "command filtering"],
+      "avoidWhen": ["normal text input", "password", "multi-line text"],
+      "commonProps": ["value", "onValueChange", "onSearch", "debounceMs", "placeholder"],
+      "pairsWith": ["TableToolbar", "DataTable", "CommandPalette"]
+    },
+    "Select": {
+      "category": "form",
+      "useWhen": ["short known option list", "status selection", "category selection"],
+      "avoidWhen": ["large searchable option list", "free text input"],
+      "pairsWith": ["FormField", "TableToolbar"]
+    },
+    "Combobox": {
+      "category": "form",
+      "useWhen": ["searchable options", "large option list", "autocomplete-like selection"],
+      "avoidWhen": ["small list where Select is simpler", "free text field without options"],
+      "pairsWith": ["FormField", "Popover"]
+    },
+    "Checkbox": {
+      "category": "form",
+      "useWhen": ["single boolean option", "agreement", "toggleable item state"],
+      "avoidWhen": ["exclusive choice group", "primary on/off setting"],
+      "pairsWith": ["CheckboxGroup", "FormField"]
+    },
+    "CheckboxGroup": {
+      "category": "form",
+      "useWhen": ["multiple selections from a list"],
+      "avoidWhen": ["single choice only"],
+      "pairsWith": ["FormField"]
+    },
+    "Switch": {
+      "category": "form",
+      "useWhen": ["setting toggle", "instant boolean preference"],
+      "avoidWhen": ["form agreement checkbox", "multi-select option"],
+      "pairsWith": ["FormField", "Card"]
+    },
+    "RadioGroup": {
+      "category": "form",
+      "useWhen": ["one required selection from a short list"],
+      "avoidWhen": ["multiple selections", "large option list"],
+      "pairsWith": ["FormField"]
+    },
+    "Modal": {
+      "category": "overlay",
+      "useWhen": ["short blocking task", "quick edit", "focused form", "small detail view"],
+      "avoidWhen": ["destructive confirmation", "long workflow", "side panel workflow"],
+      "pairsWith": ["Button", "Input", "Textarea"]
+    },
+    "AlertDialog": {
+      "category": "overlay",
+      "useWhen": ["destructive confirmation", "irreversible action", "high-risk decision"],
+      "avoidWhen": ["normal edit form", "informational content only"],
+      "pairsWith": ["Button"]
+    },
+    "Sheet": {
+      "category": "overlay",
+      "useWhen": ["side panel", "details drawer", "mobile navigation", "secondary workflow"],
+      "avoidWhen": ["small confirmation", "short tooltip hint"],
+      "pairsWith": ["Button", "FormField", "SideRail"]
+    },
+    "DropdownMenu": {
+      "category": "overlay",
+      "useWhen": ["context actions", "settings menu", "row actions", "profile menu"],
+      "avoidWhen": ["large forms", "persistent navigation", "destructive action without confirmation"],
+      "pairsWith": ["Button", "Avatar", "DataTable"]
+    },
+    "ContextMenu": {
+      "category": "overlay",
+      "useWhen": ["right-click actions", "object-specific actions"],
+      "avoidWhen": ["primary navigation", "always-visible toolbar"],
+      "pairsWith": ["Card", "DataTable"]
+    },
+    "Tooltip": {
+      "category": "overlay",
+      "useWhen": ["short non-interactive hint", "label clarification", "icon explanation"],
+      "avoidWhen": ["clickable content", "forms", "menus", "long content"],
+      "pairsWith": ["Button", "Badge", "Avatar"]
+    },
+    "Popover": {
+      "category": "overlay",
+      "useWhen": ["interactive floating content", "small floating form", "rich hint with actions"],
+      "avoidWhen": ["simple text hint", "full blocking workflow"],
+      "pairsWith": ["Button", "Input", "Calendar-like controls"]
+    },
+    "Toast": {
+      "category": "feedback",
+      "useWhen": ["non-blocking success", "non-blocking error", "background status"],
+      "avoidWhen": ["blocking confirmation", "form field validation only"],
+      "pairsWith": ["ToastProvider", "useToast"]
+    },
+    "Tabs": {
+      "category": "navigation",
+      "useWhen": ["switch related views", "settings sections", "dashboard subsections"],
+      "avoidWhen": ["top-level app routes", "unrelated pages"],
+      "pairsWith": ["Card", "DataTable"]
+    },
+    "Navbar": {
+      "category": "navigation",
+      "useWhen": ["top navigation", "marketing page", "simple app header"],
+      "avoidWhen": ["complex dashboard shell", "dense side navigation"],
+      "pairsWith": ["Button", "DropdownMenu"]
+    },
+    "SideRail": {
+      "category": "navigation",
+      "useWhen": ["dashboard shell", "app navigation", "persistent side navigation"],
+      "avoidWhen": ["marketing-only landing page", "simple one-page app"],
+      "pairsWith": ["Sheet", "Tooltip"]
+    },
+    "DataTable": {
+      "category": "data",
+      "useWhen": ["tabular data", "dashboard list", "admin list"],
+      "avoidWhen": ["small key-value display", "freeform content cards"],
+      "pairsWith": ["TableToolbar", "Pagination", "DropdownMenu"]
+    },
+    "TableToolbar": {
+      "category": "data",
+      "useWhen": ["table search", "table filters", "table actions"],
+      "avoidWhen": ["non-table content"],
+      "pairsWith": ["SearchInput", "Select", "DataTable"]
+    },
+    "Pagination": {
+      "category": "data",
+      "useWhen": ["paged list", "paged table"],
+      "avoidWhen": ["infinite scroll", "small static list"],
+      "pairsWith": ["DataTable"]
+    },
+    "Badge": {
+      "category": "primitive",
+      "useWhen": ["status", "small label", "count", "category marker"],
+      "avoidWhen": ["primary action", "large content block"],
+      "pairsWith": ["Card", "TableToolbar", "Avatar"]
+    },
+    "Avatar": {
+      "category": "primitive",
+      "useWhen": ["user identity", "profile indicator", "team member"],
+      "avoidWhen": ["generic decorative icon"],
+      "pairsWith": ["AvatarGroup", "DropdownMenu", "Tooltip"]
+    },
+    "EmptyState": {
+      "category": "feedback",
+      "useWhen": ["no data", "no search results", "first-run state"],
+      "avoidWhen": ["loading state", "error state"],
+      "pairsWith": ["Button", "SearchInput"]
+    },
+    "Skeleton": {
+      "category": "feedback",
+      "useWhen": ["loading placeholder", "async content skeleton"],
+      "avoidWhen": ["empty result", "error result"],
+      "pairsWith": ["Card", "DataTable"]
+    },
+    "Progress": {
+      "category": "feedback",
+      "useWhen": ["task progress", "completion percentage"],
+      "avoidWhen": ["indeterminate loading only"],
+      "pairsWith": ["Card"]
+    },
+    "SectionHeader": {
+      "category": "layout",
+      "useWhen": ["section title with description", "page block header"],
+      "avoidWhen": ["inline label", "button title"],
+      "pairsWith": ["Card", "Button"]
+    },
+    "SectionLabel": {
+      "category": "layout",
+      "useWhen": ["small section eyebrow", "context label"],
+      "avoidWhen": ["form label where Input label exists"],
+      "pairsWith": ["SectionHeader", "Card"]
+    },
+    "SiteBackground": {
+      "category": "layout",
+      "useWhen": ["Auralith page background", "showcase shell", "premium app backdrop"],
+      "avoidWhen": ["inside cards", "inside small components"],
+      "pairsWith": ["GlassPanel", "Card", "Navbar"]
+    }
+  }
+}
