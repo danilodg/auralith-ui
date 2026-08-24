@@ -170,9 +170,9 @@ function getStructuredMeta(id: string, isPt: boolean) {
     'input-date': {
       anatomy: ['DateInput'],
       parts: [
-        { name: 'DateInput', description: isPt ? 'Campo customizado para data em formato `YYYY-MM-DD`, com `fieldMotion`.' : 'Custom date field using `YYYY-MM-DD` format, with `fieldMotion`.' },
+        { name: 'DateInput', description: isPt ? 'Campo customizado para data em formato `YYYY-MM-DD`, com digitacao manual, calendario e `fieldMotion`.' : 'Custom date field using `YYYY-MM-DD` format, with manual typing, calendar and `fieldMotion`.' },
       ],
-      notes: isPt ? ['Use para datas unicas e mantenha a validacao no submit.', '`fieldMotion="none"` remove a animacao do gatilho.'] : ['Use for single dates and keep validation at submit time.', '`fieldMotion="none"` removes trigger animation.'],
+      notes: isPt ? ['Use para datas unicas ou periodos; o usuario pode digitar ou escolher no calendario.', 'A digitacao aceita apenas numeros e formata automaticamente como `YYYY-MM-DD` ou `YYYY-MM-DD - YYYY-MM-DD`.', 'O calendario permite navegar direto por mes e ano, alem das setas.', 'O modo periodo inclui atalhos para ultimos 7/30 dias, mes atual e mes anterior.', '`fieldMotion="none"` remove a animacao do campo.'] : ['Use for single dates or ranges; users can type or choose from the calendar.', 'Typing accepts numbers only and formats automatically as `YYYY-MM-DD` or `YYYY-MM-DD - YYYY-MM-DD`.', 'The calendar can jump directly by month and year, plus arrow navigation.', 'Range mode includes shortcuts for last 7/30 days, this month and previous month.', '`fieldMotion="none"` removes field animation.'],
     },
     'input-time': {
       anatomy: ['TimeInput'],
@@ -961,7 +961,7 @@ updateSettings({
     name: isPt ? 'Input Date' : 'Input Date',
     category: 'form',
     icon: <CalendarDays size={16} strokeWidth={1.8} />,
-    description: isPt ? 'Campo de data customizado com calendario, presets, modo range e motion configuravel.' : 'Custom date field with calendar, presets, range mode and configurable motion.',
+    description: isPt ? 'Campo de data customizado com digitacao manual, calendario, presets, modo range e motion configuravel.' : 'Custom date field with manual typing, calendar, presets, range mode and configurable motion.',
     source: 'src/lib/components/date-input.tsx',
     importCode: "import { DateInput } from '@/lib'",
     snippet: isPt ? `<DateInput label="Data" fieldMotion="glow" />
@@ -972,12 +972,12 @@ updateSettings({
     preview: (
       <div className="grid gap-2">
         <DateInput
-          hint={isPt ? 'Inclui atalhos: hoje, amanha, ontem e anteontem.' : 'Includes shortcuts: today, tomorrow, yesterday and day before yesterday.'}
+          hint={isPt ? 'Inclui atalhos: hoje, amanha, ontem e em 7 dias.' : 'Includes shortcuts: today, tomorrow, yesterday and in 7 days.'}
           fieldMotion="glow"
           label={isPt ? 'Data de entrega' : 'Delivery date'}
         />
         <DateInput
-          hint={isPt ? 'Modo range abre dois calendarios lado a lado no desktop.' : 'Range mode opens two calendars side by side on desktop.'}
+          hint={isPt ? 'Inclui atalhos para ultimos 7/30 dias, mes atual e mes anterior.' : 'Includes shortcuts for last 7/30 days, this month and previous month.'}
           fieldMotion="none"
           label={isPt ? 'Periodo de analise' : 'Analysis range'}
           mode="range"

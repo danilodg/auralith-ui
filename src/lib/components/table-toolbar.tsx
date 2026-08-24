@@ -22,7 +22,7 @@ export function TableToolbar({
 }: TableToolbarProps) {
   return (
     <div className={cn('flex flex-wrap items-center gap-2.5 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-panel-1)] p-2.5', className)} {...props}>
-      <label className="relative min-w-[220px] flex-1">
+      <label className="relative h-fit min-w-[220px] flex-1">
         <Search className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]" size={14} />
         <input
           className="w-full rounded-[8px] border border-[color:var(--input-border)] bg-[var(--input-bg)] py-1.5 pl-8 pr-2.5 text-[0.82rem] text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15"

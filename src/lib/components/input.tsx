@@ -21,9 +21,9 @@ function InputBase({ className, endAdornment, fieldMotion = 'subtle', hint, icon
   return (
     <label className="grid gap-2" htmlFor={inputId}>
       {label ? <span className="text-sm font-medium text-[color:var(--text-main)]">{label}</span> : null}
-      <span className="relative block">
+      <span className="relative block h-fit">
         {icon ? (
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]">
+          <span className="pointer-events-none absolute left-3 top-1/2 flex -translate-y-1/2 items-center justify-center leading-none text-[color:var(--text-muted)]">
             {icon}
           </span>
         ) : null}
@@ -39,7 +39,7 @@ function InputBase({ className, endAdornment, fieldMotion = 'subtle', hint, icon
           {...props}
         />
         {endAdornment ? (
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]">
+          <span className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center justify-center leading-none text-[color:var(--text-muted)]">
             {endAdornment}
           </span>
         ) : null}
@@ -67,8 +67,8 @@ function InputLabel({ children, className, ...props }: HTMLAttributes<HTMLSpanEl
 
 function InputField({ className, endAdornment, fieldMotion = 'subtle', icon, ...props }: Omit<InputProps, 'hint' | 'label'>) {
   return (
-    <span className="relative block">
-      {icon ? <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]">{icon}</span> : null}
+    <span className="relative block h-fit">
+      {icon ? <span className="pointer-events-none absolute left-3 top-1/2 flex -translate-y-1/2 items-center justify-center leading-none text-[color:var(--text-muted)]">{icon}</span> : null}
       <input
         className={cn(
           'w-full rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] px-3 py-1.5 text-[0.88rem] text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
@@ -79,7 +79,7 @@ function InputField({ className, endAdornment, fieldMotion = 'subtle', icon, ...
         )}
         {...props}
       />
-      {endAdornment ? <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]">{endAdornment}</span> : null}
+      {endAdornment ? <span className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center justify-center leading-none text-[color:var(--text-muted)]">{endAdornment}</span> : null}
     </span>
   )
 }

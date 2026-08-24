@@ -7,6 +7,9 @@ import { cn } from '../utils/cn'
 
 const SIDE_RAIL_PINNED_STORAGE_KEY = 'auralith-ui:side-rail:pinned'
 
+/** Realce unico do estado selecionado, compartilhado pelo item raiz e pelos subitens. */
+const ACTIVE_HIGHLIGHT_CLASS = 'bg-[color-mix(in_srgb,var(--accent-line)_16%,transparent)] text-[color:var(--accent-line)]'
+
 function getIsDesktopViewport() {
   if (typeof window === 'undefined') return true
   return window.matchMedia('(min-width: 1024px)').matches
@@ -136,7 +139,7 @@ function ChildLink({
           aria-current={isActive ? 'page' : undefined}
           ref={(node: HTMLAnchorElement | HTMLButtonElement | null) => registerRef?.(item.id, node)}
           className={cn(
-            'group flex h-10 min-w-0 items-center rounded-[8px] text-sm transition',
+            'group flex h-10 min-w-0 cursor-pointer items-center rounded-[8px] text-sm no-underline transition',
             expanded
               ? cn(
                   'mx-1 w-[calc(100%-8px)] gap-3 py-2.5',
@@ -158,7 +161,7 @@ function ChildLink({
               className={cn(
                 'flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] transition',
                 isActive
-                  ? 'bg-[linear-gradient(135deg,rgba(111,224,255,0.18),rgba(104,126,255,0.2)_55%,rgba(139,102,255,0.22))] text-[color:var(--accent-line)]'
+                  ? ACTIVE_HIGHLIGHT_CLASS
                   : 'bg-[color:var(--surface-hover)] group-hover:bg-[color:var(--surface-hover-strong)]',
               )}
             >
@@ -186,8 +189,9 @@ function ChildLink({
 
         {hasChildren && expanded ? (
           <button
+            aria-expanded={open}
             aria-label={`Toggle ${item.title} submenu`}
-            className="absolute right-[10px] top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[8px] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]"
+            className="absolute right-[10px] top-1/2 inline-flex h-7 w-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-[8px] bg-[color:var(--surface-hover)] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover-strong)] hover:text-[color:var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-line)]/40"
             onClick={handleToggleClick}
             type="button"
           >
@@ -197,18 +201,20 @@ function ChildLink({
       </div>
 
       {hasChildren ? (
-        <div className={cn('overflow-hidden transition-[max-height] duration-300 ease-out', expanded && open ? 'max-h-[1200px]' : 'max-h-0')}>
-          <div className="pb-1 pt-1">
-            {item.items?.map((child) => (
-              <ChildLink
-                expanded={expanded}
-                item={child}
-                key={child.id}
-                level={level + 1}
-                onItemClick={onItemClick}
-                registerRef={registerRef}
-              />
-            ))}
+        <div className={cn('grid transition-[grid-template-rows] duration-300 ease-out', expanded && open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]')}>
+          <div className="min-h-0 overflow-hidden">
+            <div className="pb-1 pt-1">
+              {item.items?.map((child) => (
+                <ChildLink
+                  expanded={expanded}
+                  item={child}
+                  key={child.id}
+                  level={level + 1}
+                  onItemClick={onItemClick}
+                  registerRef={registerRef}
+                />
+              ))}
+            </div>
           </div>
         </div>
       ) : null}
@@ -262,7 +268,7 @@ function DesktopNavItem({
           aria-current={isActive ? 'page' : undefined}
           ref={(node: HTMLAnchorElement | HTMLButtonElement | null) => registerRef?.(item.id, node)}
           className={cn(
-            'group relative flex h-11 items-center rounded-[8px] text-left transition',
+            'group relative flex h-11 cursor-pointer items-center rounded-[8px] text-left no-underline transition',
             expanded ? 'w-full gap-3 px-3' : 'mx-auto w-11 justify-center px-0',
             hasChildren && expanded ? 'pr-10' : '',
             isActive
@@ -275,7 +281,7 @@ function DesktopNavItem({
               className={cn(
                 'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition',
                 isActive
-                  ? 'bg-[rgba(111,224,255,0.16)] text-[color:var(--accent-line)]'
+                  ? ACTIVE_HIGHLIGHT_CLASS
                   : 'group-hover:bg-[color:var(--surface-hover-strong)]',
               )}
           >
@@ -293,8 +299,9 @@ function DesktopNavItem({
 
         {hasChildren && expanded ? (
           <button
+            aria-expanded={open}
             aria-label={`Toggle ${item.title} submenu`}
-            className="absolute right-[10px] top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-[8px] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]"
+            className="absolute right-[10px] top-1/2 inline-flex h-7 w-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-[8px] bg-[color:var(--surface-hover)] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover-strong)] hover:text-[color:var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-line)]/40"
             onClick={handleToggleClick}
             type="button"
           >
@@ -303,18 +310,20 @@ function DesktopNavItem({
         ) : null}
       </div>
 
-      <div className={cn('overflow-hidden transition-[max-height] duration-300 ease-out', expanded && open ? 'max-h-[1200px]' : 'max-h-0')}>
-        <div className="pb-1 pt-1">
-          {item.items?.map((child) => (
-            <ChildLink
-              expanded={expanded}
-              item={child}
-              key={child.id}
-              level={1}
-              onItemClick={onItemClick}
-              registerRef={registerRef}
-            />
-          ))}
+      <div className={cn('grid transition-[grid-template-rows] duration-300 ease-out', expanded && open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]')}>
+        <div className="min-h-0 overflow-hidden">
+          <div className="pb-1 pt-1">
+            {item.items?.map((child) => (
+              <ChildLink
+                expanded={expanded}
+                item={child}
+                key={child.id}
+                level={1}
+                onItemClick={onItemClick}
+                registerRef={registerRef}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -603,7 +612,7 @@ export function SideRail({
             <div className="flex h-[68px] items-center gap-3 border-b border-[color:var(--card-border)] px-[14px]">
               <button
                 className={cn(
-                  'flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] border transition',
+                  'flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-[8px] border transition',
                   brandIconSrc
                     ? 'overflow-hidden border-[color:var(--card-border)] bg-transparent p-0'
                     : 'border-[color:var(--card-border)] bg-[linear-gradient(145deg,var(--accent-start),color-mix(in_srgb,var(--accent-mid)_55%,transparent))] text-white shadow-[0_0_20px_var(--accent-shadow)] hover:shadow-[0_0_24px_var(--accent-shadow)]',
@@ -642,9 +651,9 @@ export function SideRail({
               {expanded ? (
                 <button
                   className={cn(
-                    'ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] border transition',
+                    'ml-auto flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-[8px] border transition',
                     pinned
-                      ? 'border-[color:var(--accent-line)] bg-[rgba(111,224,255,0.12)] text-[color:var(--accent-line)]'
+                      ? cn('border-[color:var(--accent-line)]', ACTIVE_HIGHLIGHT_CLASS)
                       : 'border-[color:var(--card-border)] bg-[color:var(--surface-hover)] text-[color:var(--text-muted)] hover:text-[color:var(--text-main)]',
                   )}
                   onClick={togglePinnedSidebar}
@@ -673,7 +682,7 @@ export function SideRail({
               >
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute left-2 right-2 z-0 rounded-[8px] border border-[color:var(--accent-line)]/25 bg-[color:var(--surface-hover)] shadow-[0_0_0_1px_rgba(111,224,255,0.08)] transition-[transform,height,opacity] duration-300 ease-out"
+                  className="pointer-events-none absolute left-2 right-2 z-0 rounded-[8px] border border-[color:var(--accent-line)]/25 bg-[color:var(--surface-hover)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent-line)_8%,transparent)] transition-[transform,height,opacity] duration-300 ease-out"
                   style={{
                     height: `${desktopIndicatorStyle.height}px`,
                     opacity: desktopIndicatorStyle.opacity,
@@ -733,7 +742,7 @@ export function SideRail({
           <div className="flex items-center gap-1.5 shrink-0">
             {mobileHeaderSlot}
             <button
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[color:var(--surface-hover)] text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-hover-strong)]"
+              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-[8px] bg-[color:var(--surface-hover)] text-[color:var(--text-main)] transition hover:bg-[color:var(--surface-hover-strong)]"
               onClick={openMobileMenu}
               title="Abrir menu"
               type="button"
@@ -779,7 +788,7 @@ export function SideRail({
                   ) : null}
                 </span>
                 <button
-                  className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]"
+                  className="ml-auto flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-[8px] text-[color:var(--text-muted)] transition hover:bg-[color:var(--surface-hover)] hover:text-[color:var(--text-main)]"
                   onClick={closeMobileMenu}
                   title="Fechar"
                   type="button"
@@ -796,7 +805,7 @@ export function SideRail({
                 <nav aria-label="Side rail navigation mobile" className="relative space-y-1" ref={mobileNavRef}>
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute left-2 right-2 z-0 rounded-[8px] border border-[color:var(--accent-line)]/25 bg-[color:var(--surface-hover)] shadow-[0_0_0_1px_rgba(111,224,255,0.08)] transition-[transform,height,opacity] duration-300 ease-out"
+                    className="pointer-events-none absolute left-2 right-2 z-0 rounded-[8px] border border-[color:var(--accent-line)]/25 bg-[color:var(--surface-hover)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent-line)_8%,transparent)] transition-[transform,height,opacity] duration-300 ease-out"
                     style={{
                       height: `${mobileIndicatorStyle.height}px`,
                       opacity: mobileIndicatorStyle.opacity,

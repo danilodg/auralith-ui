@@ -151,7 +151,7 @@ function ComboboxBase({
   return (
     <label className="grid gap-2" htmlFor={comboboxId}>
       {label ? <span className="text-sm font-medium text-[color:var(--text-main)]">{label}</span> : null}
-      <div className="relative" ref={containerRef}>
+      <div className="relative h-fit" ref={containerRef}>
         <button
           aria-controls={comboboxId ? `${comboboxId}-content` : undefined}
           aria-expanded={open}
@@ -172,7 +172,7 @@ function ComboboxBase({
           </span>
         </button>
 
-        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]">
+        <span className="pointer-events-none absolute right-3 top-1/2 flex -translate-y-1/2 items-center justify-center leading-none text-[color:var(--text-muted)]">
           <ChevronsUpDown size={14} />
         </span>
 

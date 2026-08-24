@@ -8,6 +8,7 @@ import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '../utils/cn'
 import { getFieldMotionClass } from './field-motion'
 import type { FieldMotion } from './field-motion'
+import { Select } from './select'
 
 type DateInputMode = 'single' | 'range'
 
@@ -62,6 +63,16 @@ function addMonths(date: Date, months: number) {
   return copy
 }
 
+function getMonthRange(date: Date) {
+  const start = new Date(date.getFullYear(), date.getMonth(), 1)
+  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+
+  return {
+    start: toDateKey(start),
+    end: toDateKey(end),
+  }
+}
+
 function isBeforeDateKey(a: string, b: string) {
   return a < b
 }
@@ -73,6 +84,40 @@ function normalizeRange(value: DateInputValue | undefined): DateRangeValue {
     start: value.start ?? '',
     end: value.end ?? '',
   }
+}
+
+function formatInputValue(mode: DateInputMode, singleValue: string, rangeValue: DateRangeValue) {
+  if (mode === 'single') return singleValue
+  if (!rangeValue.start && !rangeValue.end) return ''
+  return `${rangeValue.start} - ${rangeValue.end}`
+}
+
+function formatDateDigits(value: string) {
+  const digits = value.replace(/\D/g, '').slice(0, 8)
+  if (digits.length <= 4) return digits
+  if (digits.length <= 6) return `${digits.slice(0, 4)}-${digits.slice(4)}`
+  return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6)}`
+}
+
+function formatRangeDigits(value: string) {
+  const digits = value.replace(/\D/g, '').slice(0, 16)
+  const start = formatDateDigits(digits.slice(0, 8))
+  const end = formatDateDigits(digits.slice(8))
+
+  return end ? `${start} - ${end}` : start
+}
+
+function parseRangeInput(value: string) {
+  const match = /^\s*(\d{4}-\d{2}-\d{2})\s+-\s+(\d{4}-\d{2}-\d{2})\s*$/.exec(value)
+  if (!match) return null
+
+  const start = parseDateKey(match[1])
+  const end = parseDateKey(match[2])
+  if (!start || !end) return null
+
+  return isBeforeDateKey(match[2], match[1])
+    ? { start: match[2], end: match[1] }
+    : { start: match[1], end: match[2] }
 }
 
 function getMonthDays(baseMonth: Date) {
@@ -88,17 +133,6 @@ function getMonthDays(baseMonth: Date) {
       inCurrentMonth: date.getMonth() === baseMonth.getMonth(),
     }
   })
-}
-
-function formatDateLabel(value: string, locale: string) {
-  const parsed = parseDateKey(value)
-  if (!parsed) return value
-
-  return new Intl.DateTimeFormat(locale, {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }).format(parsed)
 }
 
 function DateInputBase({
@@ -142,6 +176,13 @@ function DateInputBase({
     ? (isControlled ? normalizeRange(value) : internalRangeValue)
     : RANGE_EMPTY
 
+  const committedInputValue = formatInputValue(mode, currentSingleValue, currentRangeValue)
+  const [inputValue, setInputValue] = useState(committedInputValue)
+
+  useEffect(() => {
+    setInputValue(committedInputValue)
+  }, [committedInputValue])
+
   function updatePanelPosition() {
     const trigger = containerRef.current
     if (!trigger) return
@@ -163,6 +204,7 @@ function DateInputBase({
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as Node
+      if (target instanceof Element && target.closest('[data-auralith-select-content]')) return
       if (containerRef.current?.contains(target) || panelRef.current?.contains(target)) return
       setOpen(false)
     }
@@ -206,9 +248,8 @@ function DateInputBase({
       return [
         { label: isPt ? 'Hoje' : 'Today', value: toDateKey(base) },
         { label: isPt ? 'Amanha' : 'Tomorrow', value: toDateKey(addDays(base, 1)) },
-        { label: isPt ? 'Depois de amanha' : 'Day after tomorrow', value: toDateKey(addDays(base, 2)) },
         { label: isPt ? 'Ontem' : 'Yesterday', value: toDateKey(addDays(base, -1)) },
-        { label: isPt ? 'Anteontem' : 'Day before yesterday', value: toDateKey(addDays(base, -2)) },
+        { label: isPt ? 'Em 7 dias' : 'In 7 days', value: toDateKey(addDays(base, 7)) },
       ]
     },
     [isPt],
@@ -218,23 +259,50 @@ function DateInputBase({
     () => {
       const base = new Date()
       const todayKey = toDateKey(base)
+      const currentMonth = getMonthRange(base)
+      const previousMonth = getMonthRange(addMonths(base, -1))
+
       return [
         { label: isPt ? 'Hoje' : 'Today', value: { start: todayKey, end: todayKey } },
         {
-          label: isPt ? 'Ontem ate hoje' : 'Yesterday to today',
-          value: { start: toDateKey(addDays(base, -1)), end: todayKey },
+          label: isPt ? 'Ultimos 7 dias' : 'Last 7 days',
+          value: { start: toDateKey(addDays(base, -6)), end: todayKey },
+        },
+        {
+          label: isPt ? 'Ultimos 30 dias' : 'Last 30 days',
+          value: { start: toDateKey(addDays(base, -29)), end: todayKey },
+        },
+        {
+          label: isPt ? 'Mes atual' : 'This month',
+          value: currentMonth,
+        },
+        {
+          label: isPt ? 'Mes anterior' : 'Previous month',
+          value: previousMonth,
         },
         {
           label: isPt ? 'Proximos 7 dias' : 'Next 7 days',
           value: { start: todayKey, end: toDateKey(addDays(base, 6)) },
         },
-        {
-          label: isPt ? 'Ultimos 7 dias' : 'Last 7 days',
-          value: { start: toDateKey(addDays(base, -6)), end: todayKey },
-        },
       ]
     },
     [isPt],
+  )
+
+  const monthOptions = useMemo(
+    () => Array.from({ length: 12 }, (_, monthIndex) => ({
+      label: new Intl.DateTimeFormat(locale, { month: 'short' }).format(new Date(2024, monthIndex, 1)),
+      value: monthIndex,
+    })),
+    [locale],
+  )
+
+  const yearOptions = useMemo(
+    () => {
+      const viewYear = viewMonth.getFullYear()
+      return Array.from({ length: 21 }, (_, index) => viewYear - 10 + index)
+    },
+    [viewMonth],
   )
 
   function applySingle(nextValue: string) {
@@ -245,11 +313,53 @@ function DateInputBase({
     setOpen(false)
   }
 
+  function updateSingle(nextValue: string) {
+    if (!isControlled) {
+      setInternalSingleValue(nextValue)
+    }
+    onValueChange?.(nextValue)
+  }
+
   function applyRange(nextValue: DateRangeValue) {
     if (!isControlled) {
       setInternalRangeValue(nextValue)
     }
     onValueChange?.(nextValue)
+  }
+
+  function handleInputChange(nextValue: string) {
+    const formattedValue = mode === 'single' ? formatDateDigits(nextValue) : formatRangeDigits(nextValue)
+    setInputValue(formattedValue)
+
+    if (mode === 'single') {
+      const trimmedValue = formattedValue.trim()
+      if (!trimmedValue) {
+        updateSingle('')
+        return
+      }
+
+      const parsed = parseDateKey(trimmedValue)
+      if (!parsed) return
+
+      updateSingle(trimmedValue)
+      setViewMonth(parsed)
+      return
+    }
+
+    if (!formattedValue.trim()) {
+      applyRange(RANGE_EMPTY)
+      return
+    }
+
+    const parsedRange = parseRangeInput(formattedValue)
+    if (!parsedRange) return
+
+    applyRange(parsedRange)
+    setViewMonth(parseDateKey(parsedRange.start) ?? new Date())
+  }
+
+  function handleInputBlur() {
+    setInputValue(committedInputValue)
   }
 
   function handleDatePick(dateKey: string) {
@@ -280,7 +390,7 @@ function DateInputBase({
     const weekdayLabels = isPt ? ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
     return (
-      <div className="w-[272px] max-w-full rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-2">
+      <div className="w-full min-w-0 rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-base)] p-2">
         <p className="mb-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-[color:var(--text-soft)]">{monthLabel}</p>
         <div className="mb-1 grid grid-cols-7 gap-1">
           {weekdayLabels.map((weekday) => (
@@ -324,17 +434,11 @@ function DateInputBase({
     )
   }
 
-  const triggerLabel = mode === 'single'
-    ? (currentSingleValue ? formatDateLabel(currentSingleValue, locale) : (isPt ? 'Selecionar data' : 'Select date'))
-    : (currentRangeValue.start && currentRangeValue.end
-      ? `${formatDateLabel(currentRangeValue.start, locale)} - ${formatDateLabel(currentRangeValue.end, locale)}`
-      : (isPt ? 'Selecionar periodo' : 'Select range'))
-
   return (
     <label className="grid gap-2" htmlFor={fieldId}>
       {label ? <span className="text-sm font-medium text-[color:var(--text-main)]">{label}</span> : null}
-      <div className="relative" ref={containerRef}>
-        <button
+      <div className="relative h-fit" ref={containerRef}>
+        <input
           aria-controls={`${fieldId}-calendar`}
           aria-expanded={open}
           className={cn(
@@ -345,12 +449,16 @@ function DateInputBase({
           )}
           disabled={disabled}
           id={fieldId}
-          onClick={() => setOpen((current) => !current)}
-          type="button"
-        >
-          {triggerLabel}
-        </button>
-        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]">
+          inputMode="numeric"
+          onBlur={handleInputBlur}
+          onChange={(event) => handleInputChange(event.target.value)}
+          onClick={() => setOpen(true)}
+          onFocus={() => setOpen(true)}
+          placeholder={mode === 'single' ? 'YYYY-MM-DD' : 'YYYY-MM-DD - YYYY-MM-DD'}
+          type="text"
+          value={inputValue}
+        />
+        <span className="pointer-events-none absolute right-3 top-1/2 flex -translate-y-1/2 items-center justify-center leading-none text-[color:var(--text-muted)]">
           <CalendarDays size={14} />
         </span>
 
@@ -366,20 +474,46 @@ function DateInputBase({
                   width: `${panelPosition.width}px`,
                 }}
               >
-            <div className="mb-2 flex items-center justify-between">
+            <div className={cn('mb-2 flex gap-2', mode === 'range' ? 'items-center justify-between' : 'flex-col')}>
               <p className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-[color:var(--text-muted)]">
                 {mode === 'single' ? (isPt ? 'Data unica' : 'Single date') : (isPt ? 'Periodo' : 'Date range')}
               </p>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1.5">
                 <button
-                  className="inline-flex h-7 w-7 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)]"
+                  className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)]"
                   onClick={() => setViewMonth((current) => addMonths(current, -1))}
                   type="button"
                 >
                   <ChevronLeft size={14} />
                 </button>
+                <div className="flex flex-1 items-center justify-center gap-1.5">
+                  <div className="w-[5.5rem] shrink-0">
+                    <Select
+                      className="flex h-7 items-center whitespace-nowrap rounded-[8px] border-[color:var(--card-border)] bg-[color:var(--surface-soft)] py-0 pl-2 text-[0.72rem] leading-none"
+                      onValueChange={(nextMonth) => setViewMonth((current) => new Date(current.getFullYear(), Number(nextMonth), 1))}
+                      placeholder={isPt ? 'Mes' : 'Month'}
+                      value={String(viewMonth.getMonth())}
+                    >
+                      {monthOptions.map((month) => (
+                        <Select.Option key={month.value} label={month.label} value={String(month.value)} />
+                      ))}
+                    </Select>
+                  </div>
+                  <div className="w-[5.5rem] shrink-0">
+                    <Select
+                      className="flex h-7 items-center whitespace-nowrap rounded-[8px] border-[color:var(--card-border)] bg-[color:var(--surface-soft)] py-0 pl-2 text-[0.72rem] leading-none"
+                      onValueChange={(nextYear) => setViewMonth((current) => new Date(Number(nextYear), current.getMonth(), 1))}
+                      placeholder={isPt ? 'Ano' : 'Year'}
+                      value={String(viewMonth.getFullYear())}
+                    >
+                      {yearOptions.map((year) => (
+                        <Select.Option key={year} label={String(year)} value={String(year)} />
+                      ))}
+                    </Select>
+                  </div>
+                </div>
                 <button
-                  className="inline-flex h-7 w-7 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)]"
+                  className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[8px] text-[color:var(--text-soft)] transition hover:bg-[color:var(--surface-hover)]"
                   onClick={() => setViewMonth((current) => addMonths(current, 1))}
                   type="button"
                 >
@@ -400,6 +534,7 @@ function DateInputBase({
                     else {
                       const range = (preset as { label: string; value: DateRangeValue }).value
                       applyRange(range)
+                      setViewMonth(parseDateKey(range.start) ?? new Date())
                     }
                   }}
                   type="button"

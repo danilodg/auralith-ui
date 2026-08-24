@@ -83,7 +83,7 @@ function SearchInputBase({
           {label}
         </label>
       ) : null}
-      <div className="relative">
+      <div className="relative h-fit">
         <Search
           className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--text-muted)]"
           strokeWidth={2}
@@ -96,7 +96,7 @@ function SearchInputBase({
           disabled={disabled}
           onChange={handleChange}
           className={cn(
-            'w-full rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] py-1.5 pr-8 pl-9 text-[0.88rem] text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
+            'w-full appearance-none rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] py-1.5 pr-8 pl-9 text-[0.88rem] text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none',
             getFieldMotionClass(fieldMotion),
             disabled && 'cursor-not-allowed opacity-50',
           )}

@@ -3,7 +3,7 @@
 import { Children, isValidElement, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { Check, ChevronDown } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 import { cn } from '../utils/cn'
 
@@ -134,7 +134,7 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
   return (
     <label className="grid gap-2" htmlFor={selectId}>
       {label ? <span className="text-sm font-medium text-[color:var(--text-main)]">{label}</span> : null}
-      <div className="relative" ref={containerRef}>
+      <div className="relative h-fit" ref={containerRef}>
         <button
           aria-controls={selectId ? `${selectId}-content` : undefined}
           aria-expanded={open}
@@ -154,14 +154,15 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
             {selectedOption?.label ?? placeholder}
           </span>
         </button>
-        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]">
+        <span className="pointer-events-none absolute right-3 top-1/2 flex -translate-y-1/2 items-center justify-center leading-none text-[color:var(--text-muted)]">
           <ChevronDown className={cn('transition-transform duration-200', open ? 'rotate-180' : '')} size={14} />
         </span>
 
         {open && panelPosition && typeof document !== 'undefined'
           ? createPortal(
               <div
-                className="fixed z-[320] overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
+                className="fixed z-[320] overflow-hidden rounded-[8px] border border-[color:var(--card-border)] bg-[color:var(--surface-menu)] p-1 shadow-[0_18px_46px_rgba(0,0,0,0.24)] backdrop-blur-[18px]"
+                data-auralith-select-content=""
                 id={selectId ? `${selectId}-content` : undefined}
                 ref={panelRef}
                 role="listbox"
@@ -178,9 +179,9 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
                     return (
                       <button
                         className={cn(
-                          'flex w-full items-start justify-between gap-2 rounded-[8px] px-2 py-1.5 text-left transition',
+                          'flex w-full items-start rounded-[8px] px-2 py-1.5 text-left transition',
                           isSelected
-                            ? 'bg-[rgba(111,224,255,0.12)] text-[color:var(--accent-soft)]'
+                            ? 'bg-[rgba(111,224,255,0.18)] font-semibold text-[color:var(--accent-soft)]'
                             : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-hover)]',
                         )}
                         key={option.value}
@@ -188,11 +189,10 @@ function SelectBase({ children, className, defaultValue, disabled = false, hint,
                         role="option"
                         type="button"
                       >
-                        <span>
-                          <span className="block text-[0.84rem] font-medium">{option.label}</span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-[0.84rem] font-medium">{option.label}</span>
                           {option.description ? <span className="mt-0.5 block text-[0.74rem] text-[color:var(--text-muted)]">{option.description}</span> : null}
                         </span>
-                        <span className="pt-0.5">{isSelected ? <Check size={14} /> : null}</span>
                       </button>
                     )
                   })}

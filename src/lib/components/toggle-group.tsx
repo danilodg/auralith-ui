@@ -83,7 +83,7 @@ function ToggleGroupBase({
               className={cn(
                 'flex-1 whitespace-nowrap rounded-[6px] px-3 py-1.5 text-[0.84rem] font-medium transition-all duration-200',
                 isActive
-                  ? 'bg-[var(--accent-line)] text-[var(--text-inverse)] shadow-[0_0_12px_rgba(111,224,255,0.3)]'
+                  ? 'bg-[var(--accent-line)] text-[#06111f] shadow-[0_0_12px_rgba(111,224,255,0.3)]'
                   : 'text-[color:var(--text-muted)] hover:text-[color:var(--text-main)] hover:bg-[var(--surface-raised)]',
                 item.disabled && 'cursor-not-allowed opacity-50',
               )}

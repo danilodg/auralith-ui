@@ -41,7 +41,7 @@ function TimeInputBase({ className, defaultValue = '', fieldMotion = 'subtle', h
   return (
     <label className="grid gap-2" htmlFor={fieldId}>
       {label ? <span className="text-sm font-medium text-[color:var(--text-main)]">{label}</span> : null}
-      <span className="relative block">
+      <span className="relative block h-fit">
         <input
           className={cn(
             'w-full rounded-[8px] border border-[color:color-mix(in_srgb,var(--input-border)_65%,transparent)] bg-[var(--input-bg)] px-3 py-1.5 pr-9 text-[0.88rem] text-[color:var(--text-main)] outline-none transition placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--accent-line)]/45 focus:ring-1 focus:ring-cyan-300/15',
@@ -56,7 +56,7 @@ function TimeInputBase({ className, defaultValue = '', fieldMotion = 'subtle', h
           value={currentValue}
           {...props}
         />
-        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)]">
+        <span className="pointer-events-none absolute right-3 top-1/2 flex -translate-y-1/2 items-center justify-center leading-none text-[color:var(--text-muted)]">
           <Clock3 size={14} />
         </span>
       </span>
